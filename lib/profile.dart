@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+
 class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -55,8 +56,6 @@ class Profile extends StatelessWidget {
               indent: 10,
             ),
             MenuButton("Indstillinger"),
-              
-            
           ],
         ),
         decoration: BoxDecoration(
@@ -76,12 +75,25 @@ class MenuButton extends StatefulWidget {
 }
 
 class _MenuButtonState extends State<MenuButton> {
-
+  String route;
   @override
   Widget build(BuildContext context) {
     return  Container(
       child: FlatButton(
-        onPressed: () {},
+        onPressed: () {
+          switch(widget.text){
+            case "Vis Profil":
+              route="/showProfile";
+              break;
+            case "Rediger":
+              route="/editProfile";
+              break;
+            case "Indstillinger":
+              route = "/settings";
+              break;
+          }
+          Navigator.pushNamed(context, route);
+        },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
