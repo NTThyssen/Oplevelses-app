@@ -133,34 +133,9 @@ class MyApp extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      FloatingActionButton(
-                        heroTag: "btn1",
-                        onPressed: () {
-                          // Add your onPressed code here!
-                        },
-                        child: Icon(Icons.filter_list),
-                        backgroundColor: Colors.lightBlue[300],
-                      ),
-                      FloatingActionButton(
-                        heroTag: "btn2",
-                        onPressed: () {
-                          print(
-                              "Size W is ${MediaQuery.of(context).size.width}");
-                          print(
-                              "Size H is ${MediaQuery.of(context).size.height}");
-                          // Add your onPressed code here!
-                        },
-                        child: Icon(Icons.add_circle_outline),
-                        backgroundColor: Colors.lightBlue[300],
-                      ),
-                      FloatingActionButton(
-                        heroTag: "btn3",
-                        onPressed: () {
-                          Navigator.pushNamed(context, "/profile");
-                        },
-                        child: Icon(Icons.account_circle),
-                        backgroundColor: Colors.lightBlue[300],
-                      ),
+                      CustomFAB(30.0, "left", 50.0, 50.0),
+                     CustomFAB(30.0, "middle", 50.0, 50.0),
+                      CustomFAB(30.0, "right", 50.0, 50.0)
                     ],
                   ),
                 )
@@ -172,3 +147,42 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+class CustomFAB extends StatelessWidget {
+  final double iconSize;
+  final String iconImg;
+  final double width;
+  final double height;
+
+  final Map<String, IconData> iconMapping = {
+    'left' : Icons.filter_list,
+    'middle' : Icons.add,
+    'right' : Icons.account_circle,
+  };
+  CustomFAB(this.iconSize, this.iconImg, this.width, this.height);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: height,
+      width: width,
+      child: FloatingActionButton(
+        heroTag: iconImg,
+        onPressed: () {
+          String routeName;
+          if(iconImg.contains("left")){
+            routeName = "/filter";
+          }else if(iconImg.contains("middle")){
+            routeName = "/add";
+          }else{
+            routeName = "/profile";
+          }
+          Navigator.pushNamed(context, routeName);
+        },
+        child: Icon(iconMapping[iconImg], size: iconSize,),
+        backgroundColor: Colors.lightBlue[300],
+      ),
+    );
+  }
+}
+

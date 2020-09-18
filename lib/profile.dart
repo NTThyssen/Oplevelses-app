@@ -37,7 +37,10 @@ class Profile extends StatelessWidget {
               endIndent: 50.0,
               indent: 50,
             ),
-            MenuButton("Profil"),
+            Padding(
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+              child: MenuButton("Vis Profil"),
+            ),
             Divider(
               height: 1,
               thickness: 1.0,
@@ -84,7 +87,9 @@ class _MenuButtonState extends State<MenuButton> {
           children: [
             Padding(
               padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-              child: Text(widget.text),
+              child: Text(widget.text, style: TextStyle(color: Colors.black,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16)),
             ),
             Icon(Icons.arrow_forward_ios, color: Colors.grey,),
           ],
