@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:flutter_app/size_config.dart';
 class EditProfile extends StatefulWidget {
   @override
@@ -32,15 +35,15 @@ class _EditProfileState extends State<EditProfile> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    ImageContainer(),
+                    CameraConnect(),
                     SizedBox(
                       width: 5,
                     ),
-                    ImageContainer(),
+                    CameraConnect(),
                     SizedBox(
                       width: 5,
                     ),
-                    ImageContainer(),
+                    CameraConnect(),
                   ],
                 ),
               ),
@@ -49,15 +52,15 @@ class _EditProfileState extends State<EditProfile> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      ImageContainer(),
+                      CameraConnect(),
                       SizedBox(
                         width: 5,
                       ),
-                      ImageContainer(),
+                      CameraConnect(),
                       SizedBox(
                         width: 5,
                       ),
-                      ImageContainer()
+                      CameraConnect()
                   ]),
                 ),
                 Center(
@@ -216,6 +219,7 @@ class ImageContainer extends StatefulWidget {
 }
 
 class _ImageContainerState extends State<ImageContainer> {
+  File img;
   @override
   Widget build(BuildContext context) {
     return DottedBorder(
@@ -238,6 +242,95 @@ class _ImageContainerState extends State<ImageContainer> {
       padding: EdgeInsets.all(0),
       radius: Radius.circular(15.0),
       dashPattern: [4, 2, 4, 2],
+    );
+  }
+}
+
+class CameraConnect extends StatefulWidget {
+  @override
+  _CameraConnectState createState() => _CameraConnectState();
+}
+class _CameraConnectState extends State<CameraConnect> {
+  File image;
+  //connect camera
+  cameraConnect() async {
+    print('Picker is Called');
+    File img = await ImagePicker.pickImage(source: ImageSource.gallery);
+    if (img != null) {
+      image = img;
+      setState(() {});
+    }
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        child: Column(
+          children: [
+            GestureDetector(
+              onTap: () {
+                cameraConnect();
+              },
+              child: Container(
+                child: image == null ? DottedBorder(
+                  child: Container(
+                    width: SizeConfig.blockSizeHorizontal*24,
+                    height: SizeConfig.blockSizeVertical*16.66,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Icon(Icons.image),
+                        Icon(CupertinoIcons.clear_circled_solid, color: Colors.red, )
+                      ],
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                      color: Colors.grey[400],
+                    ),
+                  ),
+                  borderType: BorderType.RRect,
+                  padding: EdgeInsets.all(0),
+                  radius: Radius.circular(15.0),
+                  dashPattern: [4, 2, 4, 2],
+                ) : DottedBorder(
+                                                                      child: Container(
+                                                                      width: SizeConfig.blockSizeHorizontal*24,
+                                                                        height: SizeConfig.blockSizeVertical*16.66,
+                                                                        child: Column(
+                                                                          mainAxisAlignment: MainAxisAlignment.end,
+                                                                          crossAxisAlignment: CrossAxisAlignment.end,
+                                                                          children: [
+                                                                            Stack(
+                                                                              children: [
+                                                                                ClipRRect(
+                                                                                  borderRadius: BorderRadius.circular(15.0),
+                                                                                  child: Container(
+                                                                                      child: Image.file(image,
+                                                                                      width: SizeConfig.blockSizeHorizontal*24,
+                                                                                        height: SizeConfig.blockSizeVertical*16.66,
+                                                                                      fit: BoxFit.fill,)
+                                                                                  ),
+                                                                                ),
+                                                                                Icon(CupertinoIcons.clear_circled_solid, color: Colors.red, )
+                                                                              ],
+                                                                            )
+                                                                          ],
+                                                                        ),
+                                                                        decoration: BoxDecoration(
+                                                                          borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                                                                          color: Colors.grey[400],
+                                                                        ),
+                                                                      ),
+                                                                      borderType: BorderType.RRect,
+                                                                      padding: EdgeInsets.all(0),
+                                                                      radius: Radius.circular(15.0),
+                                                                      dashPattern: [4, 2, 4, 2],
+                                                                      ),
+
+              ),
+            ),
+          ],
+        ),
     );
   }
 }
