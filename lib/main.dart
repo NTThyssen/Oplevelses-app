@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'event_details.dart';
 
 void main() {
   runApp(MaterialApp(
-    home: MyApp(),
+    routes: {
+      '/': (context) => MyApp(),
+      '/event_details': (context) => Test(),
+    },
   ));
 }
 
@@ -14,78 +18,124 @@ class MyApp extends StatelessWidget {
       appBar: AppBar(
         toolbarHeight: 0,
         ),
-      body: Container(
-        child: Column(
-          children: [
-            Expanded(
-              flex: 2,
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(20, 20, 0, 0),
-                child: Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 30.0,
-                      backgroundImage: AssetImage('images/flower2.jpg'),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(15, 15, 0, 0),
-                      child: Column(
+      body: GestureDetector(
+        onTap: () {
+          Navigator.pushNamed(context, '/event_details');
+        },
+        child: Stack(
+          children: [PageView(
+            children: [Container(
+              child: Column(
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(20, 15, 0, 10),
+                      child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            'Nicklas 23',
-                            style: TextStyle(
-                              color: Colors.white,
-                              letterSpacing: 1.0,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16
-                            ),
+                          CircleAvatar(
+                            radius: 25.0,
+                            backgroundImage: AssetImage('images/flower2.jpg'),
                           ),
-                          Text(
-                            'aktivitet 5km væk',
-                            style: TextStyle(
-                                color: Colors.white,
-                                letterSpacing: 0.7,
-                                fontWeight: FontWeight.w300,
-                                fontSize: 16
-                            ),
+                          Expanded(
+                            flex: 8,
+                            child: Padding(
+                              padding: EdgeInsets.fromLTRB(15, 5, 0, 10),
+                              child: Column(
 
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Nicklas 23',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      letterSpacing: 1.0,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16
+                                    ),
+                                  ),
+                                  Text(
+                                    'aktivitet 5km væk',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        letterSpacing: 0.7,
+                                        fontWeight: FontWeight.w300,
+                                        fontSize: 16
+                                    ),
+
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
+                          Expanded(
+                            flex: 3,
+                              child: Row(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      print("sharing!");
+                                    },
+                                    child: Icon(
+                                      Icons.share_sharp,
+                                    ),
+                                  ),
+                                  SizedBox(width: 15,),
+                                  GestureDetector(
+                                    onTap: () {
+                                      print("Favorit!");
+                                    },
+                                    child: Icon(
+                                      Icons.favorite_border
+                                    ),
+                                  )
+                                ],
+                              ),
+
+                              ),
                         ],
+
                       ),
                     ),
-                  ],
+                  ),
+                  Expanded(
+                      flex: 10,
+                      child: Container(
+                        child: Text("we"),
+                      ),
+                      ),
 
-                ),
+                ],
+              ),
+              decoration: BoxDecoration(
+              image: DecorationImage(
+                fit: BoxFit.fill,
+                image: AssetImage("images/flower.jpg"),
               ),
             ),
-            Expanded(
-                flex: 10,
-                child: Center(child: Container(
-                    padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                    decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      borderRadius: BorderRadius.circular(15)
-                    ),
-                    child: Draggable(
-                        axis: Axis.vertical,
-                        feedback: Drag(),
-                        child: Drag()
-
-                    ),
-                
-                  ),
+          ),
+            Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  fit: BoxFit.fill,
+                  image: AssetImage("images/sexy.jpg"),
                 ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Padding(
+              ),
+
+       ) ],
+          ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Padding(
                 padding: EdgeInsets.fromLTRB(5, 0, 5, 5),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     FloatingActionButton(
+                      heroTag: "btn1",
                       onPressed: () {
                         // Add your onPressed code here!
                       },
@@ -93,6 +143,7 @@ class MyApp extends StatelessWidget {
                       backgroundColor: Colors.lightBlue[300],
                     ),
                     FloatingActionButton(
+                      heroTag: "btn2",
                       onPressed: () {
                         print("Size W is ${MediaQuery.of(context).size.width}");
                         print("Size H is ${MediaQuery.of(context).size.height}");
@@ -102,6 +153,7 @@ class MyApp extends StatelessWidget {
                       backgroundColor: Colors.lightBlue[300],
                     ),
                     FloatingActionButton(
+                      heroTag: "btn3",
                       onPressed: () {
                         // Add your onPressed code here!
                       },
@@ -110,67 +162,16 @@ class MyApp extends StatelessWidget {
                     ),
                   ],
                 ),
-              ),
+              )],
             ),
-          ],
+
+            ]
         ),
-        decoration: BoxDecoration(
-        image: DecorationImage(
-          fit: BoxFit.fill,
-          image: AssetImage("images/flower.jpg"),
-        ),
+
       ),
-    ),
-        
+
     );
   }
 }
 
-class Drag extends StatefulWidget {
-  @override
-  _DragState createState() => _DragState();
-}
 
-class _DragState extends State<Drag> {
-  double top = 0;
-  double left = 0;
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: Container(
-        child: Draggable(
-          child: Container(
-            padding: EdgeInsets.only(top: top, left: left),
-            child: DragItem(),
-          ),
-          feedback: Container(
-            padding: EdgeInsets.only(top: top, left: left),
-            child: DragItem(),
-          ),
-          childWhenDragging: Container(
-            padding: EdgeInsets.only(top: top, left: left),
-            child: DragItem(),
-          ),
-          onDragCompleted: () {},
-          onDragEnd: (drag) {
-            setState(() {
-              top = top + drag.offset.dy < 0 ? 0 : top + drag.offset.dy;
-              left = left + drag.offset.dx < 0 ? 0 : left + drag.offset.dx;
-            });
-          },
-        ),
-      ),
-    );
-  }
-}
-
-class DragItem extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Icon(
-      IconData(57744, fontFamily: 'MaterialIcons'),
-      size: 36,
-    );
-  }
-}
