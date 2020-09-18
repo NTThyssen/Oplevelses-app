@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'event_details.dart';
+import 'profile.dart';
 
 void main() {
   runApp(MaterialApp(
     routes: {
       '/': (context) => MyApp(),
       '/event_details': (context) => Test(),
+      '/profile': (context) => Profile(),
     },
   ));
 }
@@ -78,7 +80,7 @@ class MyApp extends StatelessWidget {
                                         print("sharing!");
                                       },
                                       child: Icon(
-                                        Icons.share,
+                                        Icons.share, color: Colors.white
                                       ),
                                     ),
                                     SizedBox(
@@ -88,7 +90,7 @@ class MyApp extends StatelessWidget {
                                       onTap: () {
                                         print("Favorit!");
                                       },
-                                      child: Icon(Icons.favorite_border),
+                                      child: Icon(Icons.favorite_border, color: Colors.white),
                                     )
                                   ],
                                 ),
@@ -154,7 +156,7 @@ class MyApp extends StatelessWidget {
                       FloatingActionButton(
                         heroTag: "btn3",
                         onPressed: () {
-                          // Add your onPressed code here!
+                          Navigator.pushNamed(context, "/profile");
                         },
                         child: Icon(Icons.account_circle),
                         backgroundColor: Colors.lightBlue[300],
