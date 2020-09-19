@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1080200691631",
+    "firebase_url": "https://oplevelse-179d8.firebaseio.com",
+    "project_id": "oplevelse-179d8",
+    "storage_bucket": "oplevelse-179d8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1080200691631:android:67929286ae0f7f6ebdf95a",
+        "android_client_info": {
+          "package_name": "com.example.flutter_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1080200691631-g33se8buus7v8fi33aih34qsaunk35a8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjGFwguBEyRl34Y4PRCPMW0a2g-oekN8k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1080200691631-g33se8buus7v8fi33aih34qsaunk35a8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

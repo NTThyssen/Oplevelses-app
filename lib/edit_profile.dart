@@ -213,39 +213,6 @@ class _EditProfileState extends State<EditProfile> {
 }
 
 
-class ImageContainer extends StatefulWidget {
-  @override
-  _ImageContainerState createState() => _ImageContainerState();
-}
-
-class _ImageContainerState extends State<ImageContainer> {
-  File img;
-  @override
-  Widget build(BuildContext context) {
-    return DottedBorder(
-      child: Container(
-        width: SizeConfig.blockSizeHorizontal*24,
-        height: SizeConfig.blockSizeVertical*14,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Icon(CupertinoIcons.clear_circled_solid, color: Colors.red, )
-          ],
-        ),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(15.0)),
-          color: Colors.grey[400],
-        ),
-      ),
-      borderType: BorderType.RRect,
-      padding: EdgeInsets.all(0),
-      radius: Radius.circular(15.0),
-      dashPattern: [4, 2, 4, 2],
-    );
-  }
-}
-
 class CameraConnect extends StatefulWidget {
   @override
   _CameraConnectState createState() => _CameraConnectState();
@@ -264,8 +231,9 @@ class _CameraConnectState extends State<CameraConnect> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        child: Column(
+        child: Stack(
           children: [
+
             GestureDetector(
               onTap: () {
                 cameraConnect();
@@ -275,12 +243,11 @@ class _CameraConnectState extends State<CameraConnect> {
                   child: Container(
                     width: SizeConfig.blockSizeHorizontal*24,
                     height: SizeConfig.blockSizeVertical*16.66,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                    child: Stack(
+                      //mainAxisAlignment: MainAxisAlignment.end,
+                      //crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Icon(Icons.image),
-                        Icon(CupertinoIcons.clear_circled_solid, color: Colors.red, )
+                        Center(child: Icon(Icons.image, size: 50,)),
                       ],
                     ),
                     decoration: BoxDecoration(
@@ -292,6 +259,7 @@ class _CameraConnectState extends State<CameraConnect> {
                   padding: EdgeInsets.all(0),
                   radius: Radius.circular(15.0),
                   dashPattern: [4, 2, 4, 2],
+
                 ) : DottedBorder(
                                                                       child: Container(
                                                                       width: SizeConfig.blockSizeHorizontal*24,
@@ -329,8 +297,50 @@ class _CameraConnectState extends State<CameraConnect> {
 
               ),
             ),
+            Positioned(
+                bottom: 0.0,
+                right: 0.0,
+                child: Icon(CupertinoIcons.clear_circled_solid, color: Colors.red, )
+            ),
           ],
         ),
     );
   }
 }
+
+class GalleryContainer extends StatefulWidget {
+  final File img;
+  GalleryContainer(this.img);
+
+  @override
+  _GalleryContainerState createState() => _GalleryContainerState();
+}
+
+class _GalleryContainerState extends State<GalleryContainer> {
+  @override
+  Widget build(BuildContext context) {
+    return DottedBorder(
+      child: Container(
+        width: SizeConfig.blockSizeHorizontal*24,
+        height: SizeConfig.blockSizeVertical*16.66,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Icon(Icons.image),
+            Icon(CupertinoIcons.clear_circled_solid, color: Colors.red, )
+          ],
+        ),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(15.0)),
+          color: Colors.grey[400],
+        ),
+      ),
+      borderType: BorderType.RRect,
+      padding: EdgeInsets.all(0),
+      radius: Radius.circular(15.0),
+      dashPattern: [4, 2, 4, 2],
+    );
+  }
+}
+
