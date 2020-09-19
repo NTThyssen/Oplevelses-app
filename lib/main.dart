@@ -7,6 +7,7 @@ import 'size_config.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
+import 'authenticate/log_in_page.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -14,6 +15,7 @@ void main() {
       '/': (context) => MyApp(),
       '/event_details': (context) => Test(),
       '/profile': (context) => Profile(),
+      '/filter': (context) => Login(),
       '/showProfile': (context) => EditProfile(),
       '/editProfile': (context) => EditProfile(),
     },
@@ -203,7 +205,7 @@ class CustomFAB extends StatelessWidget {
           }else{
             routeName = "/profile";
           }
-         // Navigator.pushNamed(context, routeName);
+          Navigator.pushNamed(context, routeName);
         },
         child: Icon(iconMapping[iconImg], size: iconSize,),
         backgroundColor: Color.fromRGBO(30, 30, 60, 1),
