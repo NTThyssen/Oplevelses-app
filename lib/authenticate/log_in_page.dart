@@ -87,6 +87,20 @@ class Login extends StatelessWidget {
                       ),
                     ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 10 ,0 ,10),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, '/');
+                      },
+                      child: Text("Continue for now", style: TextStyle(
+                          color: Colors.white,
+                          letterSpacing: 0.8,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 12)
+                      ),
+                    ),
+                  ),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(0, 10, 0 ,0),
                         child: Divider(

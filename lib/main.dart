@@ -10,8 +10,10 @@ import 'authenticate/log_in_page.dart';
 
 void main() {
   runApp(MaterialApp(
+    initialRoute : '/login',
     routes: {
       '/': (context) => MyApp(),
+      '/login': (context) => Login(),
       '/event_details': (context) => Test(),
       '/profile': (context) => Profile(),
       '/filter': (context) => Login(),
