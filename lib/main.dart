@@ -5,7 +5,6 @@ import 'event_details.dart';
 import 'profile.dart';
 import 'size_config.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
-import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'authenticate/log_in_page.dart';
 
@@ -23,24 +22,6 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  // This widget is the root of your application.
-  void _facebookSignIn() async{
-    FacebookLogin facebookLogin = FacebookLogin();
-
-  final result = await facebookLogin.logIn(['email']);
-  final token = result.accessToken.token;
-  final graphResponse = await http.get(
-  'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email&access_token=$token');
-  final profile = graphResponse.body;
-  print(profile);
-    if(result.status == FacebookLoginStatus.loggedIn){
-      final creadentials = FacebookAuthProvider.getCredential(accessToken: token);
-      _auth.signInWithCredential(creadentials);
-    }
-}
-
-
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -105,7 +86,6 @@ class MyApp extends StatelessWidget {
                                   children: [
                                     GestureDetector(
                                       onTap: () {
-                                        _facebookSignIn();
                                       },
                                       child: Icon(
                                         Icons.share, color: Colors.white

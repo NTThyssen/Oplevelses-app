@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/size_config.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
+import 'package:flutter_app/service/auth.dart';
 
 class Login extends StatelessWidget {
+  AuthService signIn = AuthService();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,8 +105,15 @@ class Login extends StatelessWidget {
                             fontSize: 12)
                         ),
                       ),
-                      FacebookSignInButton(onPressed: () {
-                        // call authentication logic
+                      FacebookSignInButton(onPressed: () async {
+
+                          if (await signIn.facebookSignIn() != null) {
+                            Navigator.pushNamed(context, "/profile");
+                          } else {
+                            print("you have to sign in");
+                          }
+
+
                       }),
 
                 ],
