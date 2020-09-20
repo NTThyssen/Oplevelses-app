@@ -63,147 +63,10 @@ class _EditProfileState extends State<EditProfile> {
                       CameraConnect()
                   ]),
                 ),
-                Center(
-                  child: Container(
-                    width: SizeConfig.blockSizeHorizontal*75,
-                    padding: EdgeInsets.fromLTRB(0, 20, 0, 5),
-                    child: Text("Om Mig", style: TextStyle(
-                        color: Colors.black,
-                        letterSpacing: 0.8,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16)
-                    ),
-
-                  ),
-                ),
-                Center(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: Colors.white
-                    ),
-                    width: SizeConfig.blockSizeHorizontal*75,
-                    height: SizeConfig.blockSizeVertical*20,
-                    //padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(5, 0, 0, 10),
-                      child: TextField(
-                        keyboardType: TextInputType.multiline,
-                        maxLines: null,
-                        maxLength: 180,
-                        decoration: InputDecoration(
-
-                          border: InputBorder.none,
-                          hintText: 'Skriv lidt om dig selv'
-                      ),
-                      ),
-                    ),
-
-                  ),
-                ),
-                Center(
-                  child: Container(
-                    width: SizeConfig.blockSizeHorizontal*75,
-                    padding: EdgeInsets.fromLTRB(0, 20, 0, 5),
-                    child: Text("By", style: TextStyle(
-                        color: Colors.black,
-                        letterSpacing: 0.8,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16)
-                    ),
-
-                  ),
-                ),
-                Center(
-                  child: Container(
-                    height: SizeConfig.blockSizeHorizontal*11,
-                    width: SizeConfig.blockSizeHorizontal*75,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: Colors.white
-                    ),
-                    //padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(5, 0, 0, 10),
-                      child: TextField(
-                        decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: 'Skriv din by her'
-                        ),
-                      ),
-                    ),
-
-                  ),
-                ),
-                Center(
-                  child: Container(
-                    width: SizeConfig.blockSizeHorizontal*75,
-                    padding: EdgeInsets.fromLTRB(0, 20, 0, 5),
-                    child: Text("Job", style: TextStyle(
-                        color: Colors.black,
-                        letterSpacing: 0.8,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16)
-                    ),
-
-                  ),
-                ),
-                Center(
-                  child: Container(
-                    height: SizeConfig.blockSizeHorizontal*11,
-                    width: SizeConfig.blockSizeHorizontal*75,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: Colors.white
-                    ),
-                    //padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(5, 0, 0, 10),
-                      child: TextField(
-                        decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: 'Job'
-                        ),
-                      ),
-                    ),
-
-                  ),
-                ),
-                Center(
-                  child: Container(
-                    width: SizeConfig.blockSizeHorizontal*75,
-                    padding: EdgeInsets.fromLTRB(0, 20, 0, 5),
-                    child: Text("Uddannelse", style: TextStyle(
-                        color: Colors.black,
-                        letterSpacing: 0.8,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16)
-                    ),
-
-                  ),
-                ),
-                Center(
-                  child: Container(
-                    height: SizeConfig.blockSizeHorizontal*11,
-                    width: SizeConfig.blockSizeHorizontal*75,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: Colors.white
-                    ),
-                    //padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(5, 0, 0, 10),
-                      child: TextField(
-                        decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: 'Uddannelse'
-                        ),
-                      ),
-                    ),
-
-                  ),
-                ),
-
+                TitleAndTextField("Om Mig", "Skriv lidt om dig selv", 75, 20, true),
+                TitleAndTextField("By", "Skriv din by her", 75, 6,false),
+                TitleAndTextField("Job", "Skriv dit job her", 75 ,6,false),
+                TitleAndTextField("Udannelse", "Skriv din uddannelse her", 75 ,6,false),
             ],
       ),
           ),
@@ -247,7 +110,7 @@ class _CameraConnectState extends State<CameraConnect> {
                       //mainAxisAlignment: MainAxisAlignment.end,
                       //crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Center(child: Icon(Icons.image, size: 50,)),
+                        Center(child: Icon(Icons.image_outlined, size: 50,)),
                       ],
                     ),
                     decoration: BoxDecoration(
@@ -300,7 +163,7 @@ class _CameraConnectState extends State<CameraConnect> {
             Positioned(
                 bottom: 0.0,
                 right: 0.0,
-                child: Icon(CupertinoIcons.clear_circled_solid, color: Colors.red, )
+                child: Icon(CupertinoIcons.add_circled_solid, color: Colors.green, )
             ),
           ],
         ),
@@ -308,39 +171,66 @@ class _CameraConnectState extends State<CameraConnect> {
   }
 }
 
-class GalleryContainer extends StatefulWidget {
-  final File img;
-  GalleryContainer(this.img);
+
+class TitleAndTextField extends StatefulWidget {
+  final String text;
+  final String hintText;
+  final int height;
+  final int width;
+  final bool maxLines;
+
+  TitleAndTextField(this.text, this.hintText, this.width, this.height, this.maxLines);
 
   @override
-  _GalleryContainerState createState() => _GalleryContainerState();
+  _TitleAndTextFieldState createState() => _TitleAndTextFieldState();
 }
 
-class _GalleryContainerState extends State<GalleryContainer> {
+class _TitleAndTextFieldState extends State<TitleAndTextField> {
   @override
   Widget build(BuildContext context) {
-    return DottedBorder(
-      child: Container(
-        width: SizeConfig.blockSizeHorizontal*24,
-        height: SizeConfig.blockSizeVertical*16.66,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Icon(Icons.image),
-            Icon(CupertinoIcons.clear_circled_solid, color: Colors.red, )
-          ],
+    return Column(
+      children: [
+        Center(
+          child: Container(
+            width: SizeConfig.blockSizeHorizontal*widget.width,
+            padding: EdgeInsets.fromLTRB(0, 20, 0, 5),
+            child: Text(widget.text, style: TextStyle(
+                color: Colors.black,
+                letterSpacing: 0.8,
+                fontWeight: FontWeight.bold,
+                fontSize: 16)
+            ),
+
+          ),
         ),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(15.0)),
-          color: Colors.grey[400],
+        Center(
+          child: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                color: Colors.white
+            ),
+            width: SizeConfig.blockSizeHorizontal*widget.width,
+            height: SizeConfig.blockSizeVertical*widget.height,
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(5, 0, 0, 10),
+              child: widget.maxLines == true ? TextField(
+                keyboardType: TextInputType.multiline,
+                maxLines: null,
+                maxLength: 180,
+                decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: widget.hintText,
+                ),
+              ) : TextField(
+                      decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: widget.hintText,
+              ),
+            ),
+            ),
+          ),
         ),
-      ),
-      borderType: BorderType.RRect,
-      padding: EdgeInsets.all(0),
-      radius: Radius.circular(15.0),
-      dashPattern: [4, 2, 4, 2],
+      ],
     );
   }
 }
-

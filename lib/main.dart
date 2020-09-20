@@ -1,11 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/edit_profile.dart';
+import 'package:flutter_app/service/auth.dart';
 import 'event_details.dart';
 import 'profile.dart';
 import 'size_config.dart';
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'authenticate/log_in_page.dart';
 
 void main() {
@@ -24,10 +22,13 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+
+  AuthService _auth = AuthService();
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
+
       appBar: AppBar(
         toolbarHeight: 0,
       ),
@@ -120,6 +121,7 @@ class MyApp extends StatelessWidget {
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       fit: BoxFit.fill,
+
                       image: AssetImage("images/flower.jpg"),
                     ),
                   ),
@@ -128,7 +130,7 @@ class MyApp extends StatelessWidget {
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       fit: BoxFit.fill,
-                      image: AssetImage("images/sexy.jpg"),
+                      image: UserLoginState.instance.getProfilePicture() ?? AssetImage("images/sexy.jpg"),
                     ),
                   ),
                 )

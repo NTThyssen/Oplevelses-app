@@ -1,10 +1,44 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_app/service/auth.dart';
+import 'package:age/age.dart';
+import 'package:date_format/date_format.dart';
 
 class Profile extends StatelessWidget {
+
+  String CheckFbData(){
+    String name;
+    if(UserLoginState.instance.getProfile() != null){
+      name =  UserLoginState.instance.getProfile()['first_name'] + ", " + convertDateFromString(UserLoginState.instance.getProfile()['birthday']).toString();
+    }else{
+      name = "Name, Age";
+    }
+
+    return name;
+
+  }
+  int convertDateFromString(String strDate){
+    List<String> date = strDate.split("/");
+    print(date);
+    DateTime birthday = DateTime(int.tryParse(date[2]), int.tryParse(date[0]), int.tryParse(date[1]));
+    DateTime today = DateTime.now();
+    print(birthday);
+    AgeDuration age;
+    // Find out your age
+
+    age = Age.dateDifference(
+        fromDate: birthday, toDate: today, includeToDate: false);
+    print(age.years);
+    print('Your age is {$age}'); // Your ag
+    return age.years;
+  }
+
+  AuthService auth = AuthService();
+
+  String name;
   @override
   Widget build(BuildContext context) {
+    //convertDateFromString(UserLoginState.instance.getProfile()['birthday']);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -21,12 +55,12 @@ class Profile extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsets.fromLTRB(0, 30, 0, 16),
                 child: CircleAvatar(
-                  backgroundImage: AssetImage("images/flower2.jpg"),
+                  backgroundImage: UserLoginState.instance.getProfilePicture(),
                   radius: 90,
                 ),
               ),
             ),
-            Text("Nicklas, 23", style: TextStyle(
+            Text(name =  CheckFbData()  , style: TextStyle(
                 color: Colors.black,
                 letterSpacing: 0.8,
                 fontWeight: FontWeight.w600,
