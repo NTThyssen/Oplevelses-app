@@ -34,7 +34,7 @@ class _LoginState extends State<Login> {
             gradient: LinearGradient(
                 begin: Alignment.topRight,
                 end: Alignment.bottomLeft,
-                colors: [Colors.amber, Colors.deepOrange])),
+                colors: [Colors.transparent, Colors.purple])),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,

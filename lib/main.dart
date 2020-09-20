@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/edit_profile.dart';
+import 'package:flutter_app/my_events.dart';
 import 'package:flutter_app/service/auth.dart';
 import 'event_details.dart';
 import 'profile.dart';
@@ -17,6 +18,7 @@ void main() {
       '/filter': (context) => Login(),
       '/showProfile': (context) => EditProfile(),
       '/editProfile': (context) => EditProfile(),
+      '/myOverview': (context) => MyOverview()
     },
   ));
 }
@@ -139,16 +141,25 @@ class MyApp extends StatelessWidget {
             Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Padding(
-                  padding: EdgeInsets.fromLTRB(5, 0, 5, 5),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      CustomFAB(30.0, "left", 50.0, 50.0),
-                     CustomFAB(30.0, "middle", 50.0, 50.0),
-                      CustomFAB(30.0, "right", 50.0, 50.0)
-                    ],
+                Container(
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                          stops: [0.0, 1.0],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [Colors.transparent,  Color.fromRGBO(30, 30, 60, 1)])),
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(5, 0, 5, 5),
+                    child: Row(
+
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CustomFAB(30.0, "left", 50.0, 50.0),
+                       CustomFAB(30.0, "middle", 50.0, 50.0),
+                        CustomFAB(30.0, "right", 50.0, 50.0)
+                      ],
+                    ),
                   ),
                 )
               ],
@@ -185,7 +196,7 @@ class CustomFAB extends StatelessWidget {
           if(iconImg.contains("left")){
             routeName = "/filter";
           }else if(iconImg.contains("middle")){
-            routeName = "/add";
+            routeName = "/myOverview";
           }else{
             routeName = "/profile";
           }
