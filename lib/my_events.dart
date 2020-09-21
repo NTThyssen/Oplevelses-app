@@ -16,10 +16,6 @@ class _MyOverviewState extends State<MyOverview> {
         backgroundColor: Color.fromRGBO(30, 30, 60, 1),
         centerTitle: true,
         title: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(18.0)),
-              border: Border.all(color: Colors.blue)
-          ),
           width: SizeConfig.blockSizeHorizontal*40,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
