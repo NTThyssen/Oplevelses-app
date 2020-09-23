@@ -87,11 +87,17 @@ class _CameraConnectState extends State<CameraConnect> {
   //connect camera
   cameraConnect() async {
     print('Picker is Called');
-    File img = await ImagePicker.pickImage(source: ImageSource.gallery);
-    if (img != null) {
+    if(image == null) {
+      File img = await ImagePicker.pickImage(source: ImageSource.gallery);
+      if (img != null) {
       image = img;
       setState(() {});
+      }
+    }else{
+      image = null;
+        setState(() {});
     }
+
   }
 
   @override
@@ -101,7 +107,7 @@ class _CameraConnectState extends State<CameraConnect> {
         children: [
           GestureDetector(
             onTap: () {
-              cameraConnect();
+
             },
             child: Container(
               child: image == null
@@ -151,10 +157,6 @@ class _CameraConnectState extends State<CameraConnect> {
                                     fit: BoxFit.fill,
                                   )),
                                 ),
-                                Icon(
-                                  CupertinoIcons.clear_circled_solid,
-                                  color: Colors.red,
-                                )
                               ],
                             )
                           ],
@@ -174,10 +176,25 @@ class _CameraConnectState extends State<CameraConnect> {
           Positioned(
               bottom: 0.0,
               right: 0.0,
-              child: Icon(
-                CupertinoIcons.add_circled_solid,
-                color: Colors.green,
-              )),
+              child: image == null ? GestureDetector(
+                onTap: () {
+                  cameraConnect();
+                },
+                child: Icon(
+                  CupertinoIcons.add_circled_solid,
+                  color: Colors.green,
+                ),
+              ) : GestureDetector(
+                onTap: () {
+                  cameraConnect();
+                },
+
+                child: Icon(
+                  CupertinoIcons.clear_thick_circled,
+                  color: Colors.red,
+                ),
+              )
+          ),
         ],
       ),
     );
@@ -228,9 +245,12 @@ class _TitleAndTextFieldState extends State<TitleAndTextField> {
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
                       maxLength: 180,
+
+
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: widget.hintText,
+                        counterText: "",
                       ),
                     )
                   : TextField(

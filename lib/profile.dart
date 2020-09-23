@@ -74,7 +74,7 @@ class Profile extends StatelessWidget {
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-              child: MenuButton("Vis Profil"),
+              child: MenuButton(text:"Vis Profil", menuIcon: Icons.person),
             ),
             Divider(
               height: 1,
@@ -82,14 +82,14 @@ class Profile extends StatelessWidget {
               endIndent: 10.0,
               indent: 10,
             ),
-            MenuButton("Rediger"),
+            MenuButton(text:"Rediger", menuIcon: Icons.edit),
             Divider(
               height: 1,
               thickness: 1.0,
               endIndent: 10.0,
               indent: 10,
             ),
-            MenuButton("Indstillinger"),
+            MenuButton(text:"Indstillinger", menuIcon: Icons.settings),
           ],
         ),
         decoration: BoxDecoration(
@@ -102,7 +102,8 @@ class Profile extends StatelessWidget {
 
 class MenuButton extends StatefulWidget {
   final String text;
-  MenuButton(this.text);
+  final IconData menuIcon;
+  MenuButton({this.text, this.menuIcon});
 
   @override
   _MenuButtonState createState() => _MenuButtonState();
@@ -129,14 +130,15 @@ class _MenuButtonState extends State<MenuButton> {
           Navigator.pushNamed(context, route);
         },
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            Icon(widget.menuIcon),
             Padding(
-              padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+              padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
               child: Text(widget.text, style: TextStyle(color: Colors.black,
                   fontWeight: FontWeight.w600,
                   fontSize: 16)),
             ),
+            Spacer(),
             Icon(Icons.arrow_forward_ios, color: Colors.grey,),
           ],
         ),

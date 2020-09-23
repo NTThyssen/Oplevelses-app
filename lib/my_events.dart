@@ -1,5 +1,7 @@
 import 'package:date_format/date_format.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/profile.dart';
 import 'package:flutter_app/size_config.dart';
 
 class MyOverview extends StatefulWidget {
@@ -73,7 +75,13 @@ class _MyOverviewState extends State<MyOverview> {
                 height: SizeConfig.blockSizeVertical*9,
                 elevation: 0,
                 color: Colors.blue,
-                onPressed: () {  },
+                onPressed: () {
+
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => EventMainStep()),
+                  );
+                },
                 child: Text("NYT OPSLAG", style: TextStyle(
                   color: Colors.white,
                   fontSize: 24,
@@ -86,3 +94,41 @@ class _MyOverviewState extends State<MyOverview> {
     );
   }
 }
+
+class EventMainStep extends StatefulWidget {
+  @override
+  _EventMainStepState createState() => _EventMainStepState();
+}
+
+class _EventMainStepState extends State<EventMainStep> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Lav et opslag"),
+        centerTitle: true,
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          MenuButton(text: "Pris", menuIcon: CupertinoIcons.tags,),
+          Divider(
+            height: 1,
+            thickness: 1.0,
+            endIndent: 10.0,
+            indent: 10,
+          ),
+          MenuButton(text: "Pris", menuIcon: Icons.calendar_today_outlined,),
+          Divider(
+            height: 1,
+            thickness: 1.0,
+            endIndent: 10.0,
+            indent: 10,
+          ),
+          MenuButton(text: "Pris", menuIcon: CupertinoIcons.location,),
+        ],
+      ),
+    );
+  }
+}
+

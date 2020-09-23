@@ -12,6 +12,10 @@ void main() {
   runApp(StreamProvider.value(
 
     child: MaterialApp(
+      theme: ThemeData(
+        primaryColor: Color.fromRGBO(30, 30, 60, 1),
+      ),
+
       initialRoute : '/login',
       routes: {
         '/': (context) => MyApp(),
@@ -32,7 +36,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
-
       appBar: AppBar(
         toolbarHeight: 0,
       ),
