@@ -111,21 +111,21 @@ class _EventMainStepState extends State<EventMainStep> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          MenuButton(text: "Pris", menuIcon: CupertinoIcons.tags,),
+          MenuButton(text: "Pris", menuIcon: CupertinoIcons.tag_solid,),
           Divider(
             height: 1,
             thickness: 1.0,
             endIndent: 10.0,
             indent: 10,
           ),
-          MenuButton(text: "Pris", menuIcon: Icons.calendar_today_outlined,),
+          MenuButton(text: "Dato", menuIcon: Icons.date_range),
           Divider(
             height: 1,
             thickness: 1.0,
             endIndent: 10.0,
             indent: 10,
           ),
-          MenuButton(text: "Pris", menuIcon: CupertinoIcons.location,),
+          MenuButton(text: "By", menuIcon: CupertinoIcons.location_solid,),
         ],
       ),
     );
