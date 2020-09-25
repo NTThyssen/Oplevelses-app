@@ -3,7 +3,7 @@ name: Dart CI
 on:
   push:
     tags:
-      - '*'
+      - 'v*'
 
 jobs:
   build:
