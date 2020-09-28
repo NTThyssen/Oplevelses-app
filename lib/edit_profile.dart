@@ -245,8 +245,6 @@ class _TitleAndTextFieldState extends State<TitleAndTextField> {
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
                       maxLength: 180,
-
-
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: widget.hintText,
