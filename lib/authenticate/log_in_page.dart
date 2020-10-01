@@ -54,105 +54,113 @@ class _LoginState extends State<Login> {
                     ),
                     Padding(
                       padding: EdgeInsets.fromLTRB(
-                          0, SizeConfig.blockSizeVertical * 5, 0, 0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: Colors.white,
+                          0, SizeConfig.blockSizeVertical *5, 0, 0),
+                            child: Container(
+                                    decoration:BoxDecoration(
+                                        color: Colors.transparent,
+                                        border: Border(
+                                            bottom: BorderSide(width: 2.0, color: Colors.blueGrey)
+                                        )
+                                    ),
+                                    width: SizeConfig.blockSizeHorizontal * 80,
+                                    child: TextFormField(
+                                      textAlign: TextAlign.left,
+                                      decoration: InputDecoration(
+                                          prefixIcon: Icon(Icons.person_outline),
+                                          hintStyle: TextStyle(color: Colors.grey),
+                                          border: InputBorder.none, hintText: 'Username'),
+                                    ),
+                                  ),
+                              ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.transparent,
+                                border: Border(
+                                  bottom: BorderSide(width: 2.0, color: Colors.blueGrey)
+                                )
+                            ),
+                            width: SizeConfig.blockSizeHorizontal * 80,
+                            child: TextFormField(
+                              textAlign: TextAlign.left,
+                              obscureText: true,
+                              decoration: InputDecoration(
+                                  hintStyle: TextStyle(color: Colors.grey),
+                                  prefixIcon: Icon(Icons.vpn_key),
+                                  border: InputBorder.none, hintText: 'Password'),
+                            ),
+                          ),
                         ),
-                        width: SizeConfig.blockSizeHorizontal * 80,
-                        child: TextFormField(
-                          textAlign: TextAlign.center,
-                          decoration: InputDecoration(
-                              border: InputBorder.none, hintText: 'Username'),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                          child: Container(
+                            width: SizeConfig.blockSizeHorizontal * 80,
+                            child: RaisedButton(
+                              color: Color.fromRGBO(30, 30, 60, 1),
+                              onPressed: () {},
+                              child: Center(
+                                  child: Text("SIGN IN",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          letterSpacing: 0.8,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16))),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(5),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(context, '/');
+                            },
+                            child: Text("Continue for now",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    letterSpacing: 0.8,
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 12)),
+                          ),
                         ),
-                        width: SizeConfig.blockSizeHorizontal * 80,
-                        child: TextFormField(
-                          textAlign: TextAlign.center,
-                          obscureText: true,
-                          decoration: InputDecoration(
-                              border: InputBorder.none, hintText: 'Password'),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                          child: Divider(
+                            height: 10,
+                            indent: SizeConfig.blockSizeHorizontal * 5,
+                            endIndent: SizeConfig.blockSizeHorizontal * 5,
+                            thickness: 2,
+                          ),
                         ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                      child: Container(
-                        width: SizeConfig.blockSizeHorizontal * 80,
-                        child: RaisedButton(
-                          color: Color.fromRGBO(30, 30, 60, 1),
-                          onPressed: () {},
-                          child: Center(
-                              child: Text("SIGN IN",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      letterSpacing: 0.8,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16))),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                          child: Text("Or sign in with",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  letterSpacing: 0.8,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 12)),
                         ),
-                      ),
+                        FacebookSignInButton(onPressed: () async {
+                          setState(() {
+                            isLoggingIn = true;
+                          });
+                          if (await signIn.facebookSignIn() != null) {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) => MyApp()));
+                          } else {
+                            print("you have to sign in");
+                            setState(() {
+                              isLoggingIn = false;
+                            });
+                          }
+                        }),
+                      ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(context, '/');
-                        },
-                        child: Text("Continue for now",
-                            style: TextStyle(
-                                color: Colors.white,
-                                letterSpacing: 0.8,
-                                fontWeight: FontWeight.normal,
-                                fontSize: 12)),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                      child: Divider(
-                        height: 10,
-                        indent: SizeConfig.blockSizeHorizontal * 5,
-                        endIndent: SizeConfig.blockSizeHorizontal * 5,
-                        thickness: 2,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                      child: Text("Or sign in with",
-                          style: TextStyle(
-                              color: Colors.white,
-                              letterSpacing: 0.8,
-                              fontWeight: FontWeight.normal,
-                              fontSize: 12)),
-                    ),
-                    FacebookSignInButton(onPressed: () async {
-                      setState(() {
-                        isLoggingIn = true;
-                      });
-                      if (await signIn.facebookSignIn() != null) {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (BuildContext context) => MyApp()));
-                      } else {
-                        print("you have to sign in");
-                        setState(() {
-                          isLoggingIn = false;
-                        });
-                      }
-                    }),
-                  ],
+                  ),
                 ),
-              ),
-            ),
     );
   }
 }

@@ -6,31 +6,36 @@ import 'event_details.dart';
 import 'profile.dart';
 import 'size_config.dart';
 import 'authenticate/log_in_page.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(MaterialApp(
-    initialRoute : '/login',
-    routes: {
-      '/': (context) => MyApp(),
-      '/login': (context) => Login(),
-      '/event_details': (context) => Test(),
-      '/profile': (context) => Profile(),
-      '/filter': (context) => Login(),
-      '/showProfile': (context) => EditProfile(),
-      '/editProfile': (context) => EditProfile(),
-      '/myOverview': (context) => MyOverview()
-    },
+  runApp(StreamProvider.value(
+
+    child: MaterialApp(
+      theme: ThemeData(
+        primaryColor: Color.fromRGBO(30, 30, 60, 1),
+      ),
+
+      initialRoute : '/login',
+      routes: {
+        '/': (context) => MyApp(),
+        '/login': (context) => Login(),
+        '/event_details': (context) => Test(),
+        '/profile': (context) => Profile(),
+        '/filter': (context) => Login(),
+        '/showProfile': (context) => EditProfile(),
+        '/editProfile': (context) => EditProfile(),
+        '/myOverview': (context) => MyOverview()
+      },
+    ),
   ));
 }
 
 class MyApp extends StatelessWidget {
-
-  AuthService _auth = AuthService();
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
-
       appBar: AppBar(
         toolbarHeight: 0,
       ),
