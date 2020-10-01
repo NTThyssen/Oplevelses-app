@@ -8,15 +8,26 @@ class Test extends StatefulWidget {
 class _TestState extends State<Test> {
   @override
   Widget build(BuildContext context) {
-    return PageView(
-        children: [
-          Container(
-          color: Colors.pink,
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColor.withAlpha(80),
+        title: Text('Details'),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.share),
+            color: Colors.white,
+            onPressed: () {},
           ),
-          Container(
-            color: Colors.lightBlue
-          )
+          IconButton(
+            icon: Icon(
+              Icons.more_vert,
+              color: Colors.white,
+            ),
+            onPressed: () {},
+          ),
         ],
-      );
+      ),
+    );
   }
 }
