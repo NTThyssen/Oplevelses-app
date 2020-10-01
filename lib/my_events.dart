@@ -37,7 +37,7 @@ class _MyOverviewState extends State<MyOverview> {
                           border: Border.all(color: Colors.blue),
                           color: isFavorite == false ?  Colors.blue : Colors.transparent
                       ),
-                      child: Icon(Icons.messenger_outline)),
+                      child: Icon(Icons.message)),
                 ),
               ),
               Flexible(

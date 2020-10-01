@@ -87,7 +87,7 @@ class _LoginState extends State<Login> {
                               obscureText: true,
                               decoration: InputDecoration(
                                   hintStyle: TextStyle(color: Colors.grey),
-                                  prefixIcon: Icon(Icons.vpn_key_outlined),
+                                  prefixIcon: Icon(Icons.vpn_key),
                                   border: InputBorder.none, hintText: 'Password'),
                             ),
                           ),
