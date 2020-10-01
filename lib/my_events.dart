@@ -15,77 +15,82 @@ class _MyOverviewState extends State<MyOverview> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromRGBO(30, 30, 60, 1),
-        centerTitle: true,
-        title: Container(
-          width: SizeConfig.blockSizeHorizontal*40,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Flexible(
-                flex: 1,
-                child: GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      isFavorite = false;
-                    });
-                  },
-                  child: Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(9), topLeft: Radius.circular(9)),
-                          border: Border.all(color: Colors.blue),
-                          color: isFavorite == false ?  Colors.blue : Colors.transparent
-                      ),
-                      child: Icon(Icons.messenger_outline)),
+          backgroundColor: Color.fromRGBO(30, 30, 60, 1),
+          centerTitle: true,
+          title: Container(
+            width: SizeConfig.blockSizeHorizontal * 40,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  flex: 1,
+                  child: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        isFavorite = false;
+                      });
+                    },
+                    child: Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(9),
+                                topLeft: Radius.circular(9)),
+                            border: Border.all(color: Colors.blue),
+                            color: isFavorite == false
+                                ? Colors.blue
+                                : Colors.transparent),
+                        child: Icon(Icons.message)),
+                  ),
                 ),
-              ),
-              Flexible(
-                flex: 1,
-                child: GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      isFavorite = true;
-                    });
-                  },
-                  child: Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(topRight: Radius.circular(9), bottomRight: Radius.circular(9)),
-                          border: Border.all(color: Colors.blue),
-                          color: isFavorite == false ? Colors.transparent : Colors.blue
-                      ),
-                      child: Icon(Icons.favorite)),
+                Flexible(
+                  flex: 1,
+                  child: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        isFavorite = true;
+                      });
+                    },
+                    child: Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(9),
+                                bottomRight: Radius.circular(9)),
+                            border: Border.all(color: Colors.blue),
+                            color: isFavorite == false
+                                ? Colors.transparent
+                                : Colors.blue),
+                        child: Icon(Icons.favorite)),
+                  ),
                 ),
-              ),
-            ],
-          ),
-        )
-        ),
+              ],
+            ),
+          )),
       body: Stack(
         children: [
-          SingleChildScrollView(
-
-          ),
+          SingleChildScrollView(),
           Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               MaterialButton(
-                minWidth: SizeConfig.blockSizeHorizontal*100,
-                height: SizeConfig.blockSizeVertical*9,
+                minWidth: SizeConfig.blockSizeHorizontal * 100,
+                height: SizeConfig.blockSizeVertical * 9,
                 elevation: 0,
                 color: Colors.blue,
                 onPressed: () {
-
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => EventMainStep()),
                   );
                 },
-                child: Text("NYT OPSLAG", style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                ),),
+                child: Text(
+                  "NYT OPSLAG",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                  ),
+                ),
               ),
             ],
           )
@@ -111,7 +116,10 @@ class _EventMainStepState extends State<EventMainStep> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          MenuButton(text: "Pris", menuIcon: CupertinoIcons.tag_solid,),
+          MenuButton(
+            text: "Pris",
+            menuIcon: CupertinoIcons.tag_solid,
+          ),
           Divider(
             height: 1,
             thickness: 1.0,
@@ -125,10 +133,12 @@ class _EventMainStepState extends State<EventMainStep> {
             endIndent: 10.0,
             indent: 10,
           ),
-          MenuButton(text: "By", menuIcon: CupertinoIcons.location_solid,),
+          MenuButton(
+            text: "By",
+            menuIcon: CupertinoIcons.location_solid,
+          ),
         ],
       ),
     );
   }
 }
-
