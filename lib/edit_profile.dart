@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_app/size_config.dart';
@@ -78,6 +80,7 @@ class CameraConnect extends StatefulWidget {
 
 class _CameraConnectState extends State<CameraConnect> {
   File image;
+  String _uploadedFileURL;
   //connect camera
   cameraConnect() async {
     print('Picker is Called');
@@ -86,12 +89,26 @@ class _CameraConnectState extends State<CameraConnect> {
       if (img != null) {
       image = img;
       setState(() {});
+      uploadFile();
       }
     }else{
       image = null;
         setState(() {});
     }
 
+  }
+  Future uploadFile() async {
+    StorageReference storageReference = FirebaseStorage.instance
+        .ref()
+        .child('eventPicture/${basename(image.path)}}');
+    StorageUploadTask uploadTask = storageReference.putFile(image);
+    await uploadTask.onComplete;
+    print('File Uploaded');
+    storageReference.getDownloadURL().then((fileURL) {
+      setState(() {
+        _uploadedFileURL = fileURL;
+      });
+    });
   }
 
   @override

@@ -182,3 +182,4 @@ class SizeRoute extends PageRouteBuilder {
         ),
   );
 }
+
