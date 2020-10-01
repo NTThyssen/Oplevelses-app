@@ -9,6 +9,7 @@ class _TestState extends State<Test> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor.withAlpha(80),
         title: Text('Details'),
@@ -27,6 +28,14 @@ class _TestState extends State<Test> {
             onPressed: () {},
           ),
         ],
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            fit: BoxFit.cover,
+            image: AssetImage('images/pia-profile-pic.jpg'),
+          ),
+        ),
       ),
     );
   }
