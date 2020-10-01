@@ -18,6 +18,7 @@ class _MyFavoritesState extends State<MyFavorites> {
                 FavoriteCardView(),
                 FavoriteCardView(),
                 FavoriteCardView(),
+
               ],
               ),
             )
