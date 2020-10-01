@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_app/size_config.dart';
+import 'package:flutter_app/CustomWidgets/custom_scaffold_with_navBar.dart';
 
 class EditProfile extends StatefulWidget {
   @override
@@ -14,65 +15,58 @@ class EditProfile extends StatefulWidget {
 class _EditProfileState extends State<EditProfile> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Color.fromRGBO(30, 30, 60, 1),
-        toolbarHeight: 45,
-        title: Text("Rediger Profil"),
-        centerTitle: true,
+    return CustomScaffoldWithNavBar(
+        Container(
+      decoration: BoxDecoration(
+        color: Color.fromRGBO(239, 239, 244, 1),
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          color: Color.fromRGBO(239, 239, 244, 1),
-        ),
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CameraConnect(),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    CameraConnect(),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    CameraConnect(),
-                  ],
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CameraConnect(),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  CameraConnect(),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  CameraConnect(),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 5, 0, 10),
+              child:
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                CameraConnect(),
+                SizedBox(
+                  width: 5,
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 5, 0, 10),
-                child:
-                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  CameraConnect(),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  CameraConnect(),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  CameraConnect()
-                ]),
-              ),
-              TitleAndTextField(
-                  "Om Mig", "Skriv lidt om dig selv", 75, 20, true),
-              TitleAndTextField("By", "Skriv din by her", 75, 6, false),
-              TitleAndTextField("Job", "Skriv dit job her", 75, 6, false),
-              TitleAndTextField(
-                  "Udannelse", "Skriv din uddannelse her", 75, 6, false),
-            ],
-          ),
+                CameraConnect(),
+                SizedBox(
+                  width: 5,
+                ),
+                CameraConnect()
+              ]),
+            ),
+            TitleAndTextField(
+                "Om Mig", "Skriv lidt om dig selv", 75, 20, true),
+            TitleAndTextField("By", "Skriv din by her", 75, 6, false),
+            TitleAndTextField("Job", "Skriv dit job her", 75, 6, false),
+            TitleAndTextField(
+                "Udannelse", "Skriv din uddannelse her", 75, 6, false),
+          ],
         ),
       ),
+    ),
     );
   }
 }
