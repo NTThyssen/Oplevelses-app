@@ -41,6 +41,7 @@ dependencies:
   flutter_spinkit: ^4.1.2
   provider: ^4.3.2+2
   highlighter_coachmark: ^0.0.3
+  flutter_platform_widgets: ^0.50.0
 
 dev_dependencies:
   flutter_test:
