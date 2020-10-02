@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/about_text.dart';
 
 class Test extends StatefulWidget {
   @override
@@ -10,6 +11,7 @@ class _TestState extends State<Test> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).primaryColor,
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor.withAlpha(80),
@@ -119,7 +121,7 @@ class _TestState extends State<Test> {
             ),
             // Price info
             Padding(
-              padding: EdgeInsets.only(left: 11, bottom: 40),
+              padding: EdgeInsets.only(left: 11, bottom: 30),
               child: Row(
                 children: [
                   Padding(
@@ -136,60 +138,30 @@ class _TestState extends State<Test> {
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(11),
-              child: Text(
-                'Oplevelsen',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold),
-              ),
+            AboutText(
+              heading: 'Oplevelsen',
+              body:
+                  'Info tekst - om oplevelsen \n \"At flyve helikopter er en helt speciel fornemmelse. Lyden af propellen blandet med den betagende panorama udsigt...\"',
             ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(11, 0, 11, 40),
-              child: Text(
-                'Info tekst - om oplevelsen \n \"At flyve helikopter er en helt speciel fornemmelse. Lyden af propellen blandet med den betagende panorama udsigt...\"',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 17,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(11),
-              child: Text(
-                'Om Pia',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(11, 0, 11, 40),
-              child: Text(
-                'Typen der altid løber efter bussen, og altid ender med at komme i alt for god tid.',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 17,
-                ),
-              ),
+            AboutText(
+              heading: 'Om Pia',
+              body:
+                  'Typen der altid løber efter bussen, og altid ender med at komme i alt for god tid.',
             ),
             Padding(
               padding: const EdgeInsets.all(11),
               child: Text(
                 'Fælles venner',
                 style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold),
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ],
         ),
       ),
-      backgroundColor: Theme.of(context).primaryColor,
     );
   }
 }
