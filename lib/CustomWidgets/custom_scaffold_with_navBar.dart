@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/add_event.dart';
 import 'package:flutter_app/my_favorites.dart';
 import 'package:flutter_app/profile.dart';
 
@@ -27,6 +28,7 @@ class _CustomScaffoldWithNavBarState extends State<CustomScaffoldWithNavBar> {
 
   @override
   Widget build(BuildContext context) {
+    bool keyboardIsOpened = MediaQuery.of(context).viewInsets.bottom != 0.0;
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.title ?? ""),
@@ -49,9 +51,12 @@ class _CustomScaffoldWithNavBarState extends State<CustomScaffoldWithNavBar> {
           ],
         ),
         extendBody: widget.extendBody ?? false,
+
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: FloatingActionButton(
-          onPressed: () { },
+        floatingActionButton: keyboardIsOpened ? null : FloatingActionButton(
+          onPressed: () {
+            Navigator.pushReplacement(context, SlideLeftRoute( page: AddEvent()));
+          },
           child: Icon(Icons.add),
           elevation: 2.0,
         ),
