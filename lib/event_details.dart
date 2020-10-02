@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Test extends StatefulWidget {
@@ -12,11 +13,11 @@ class _TestState extends State<Test> {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor.withAlpha(80),
-        title: Text('Details'),
+        title: Text('Søndags-is'),
         centerTitle: true,
         actions: [
           IconButton(
-            icon: Icon(Icons.share),
+            icon: Icon(CupertinoIcons.share),
             color: Colors.white,
             onPressed: () {},
           ),
@@ -59,7 +60,7 @@ class _TestState extends State<Test> {
             ),
             // Event header
             Padding(
-              padding: EdgeInsets.all(8.0),
+              padding: EdgeInsets.all(11),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -71,7 +72,7 @@ class _TestState extends State<Test> {
                     ),
                   ),
                   Icon(
-                    Icons.favorite_border,
+                    CupertinoIcons.heart,
                     color: Colors.white,
                     size: 30,
                   ),
@@ -79,56 +80,110 @@ class _TestState extends State<Test> {
               ),
             ),
             // Place info
-            Row(
-              children: [
-                Icon(
-                  Icons.place,
-                  color: Colors.white,
-                ),
-                Text(
-                  'København NV',
-                  style: TextStyle(color: Colors.white, fontSize: 17),
-                ),
-              ],
+            Padding(
+              padding: EdgeInsets.only(left: 11, bottom: 12),
+              child: Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(right: 10),
+                    child: Icon(
+                      Icons.place,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Text(
+                    'København NV',
+                    style: TextStyle(color: Colors.white, fontSize: 17),
+                  ),
+                ],
+              ),
             ),
             // Date info
-            Row(
-              children: [
-                Icon(
-                  Icons.access_time,
-                  color: Colors.white,
-                ),
-                Text(
-                  'Lørdag 4. jul Kl. 10.00',
-                  style: TextStyle(color: Colors.white, fontSize: 17),
-                ),
-              ],
+            Padding(
+              padding: EdgeInsets.only(left: 11, bottom: 12),
+              child: Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(right: 10),
+                    child: Icon(
+                      Icons.access_time,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Text(
+                    'Lørdag 4. jul Kl. 10.00',
+                    style: TextStyle(color: Colors.white, fontSize: 17),
+                  ),
+                ],
+              ),
             ),
             // Price info
-            Row(
-              children: [
-                Icon(
-                  Icons.payment,
-                  color: Colors.white,
-                ),
-                Text(
-                  'Gratis',
-                  style: TextStyle(color: Colors.white, fontSize: 17),
-                ),
-              ],
+            Padding(
+              padding: EdgeInsets.only(left: 11, bottom: 40),
+              child: Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(right: 10),
+                    child: Icon(
+                      Icons.payment,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Text(
+                    'Gratis',
+                    style: TextStyle(color: Colors.white, fontSize: 17),
+                  ),
+                ],
+              ),
             ),
-            Text(
-              'Oplevelsen',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
+            Padding(
+              padding: const EdgeInsets.all(11),
+              child: Text(
+                'Oplevelsen',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
-            Text(
-              'Info tekst - om oplevelsen \n At flyve helikopter er en helt speciel fornemmelse. Lyden af propellen blandet med den betagende panorama udsigt...',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 17,
+            Padding(
+              padding: EdgeInsets.fromLTRB(11, 0, 11, 40),
+              child: Text(
+                'Info tekst - om oplevelsen \n \"At flyve helikopter er en helt speciel fornemmelse. Lyden af propellen blandet med den betagende panorama udsigt...\"',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 17,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(11),
+              child: Text(
+                'Om Pia',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(11, 0, 11, 40),
+              child: Text(
+                'Typen der altid løber efter bussen, og altid ender med at komme i alt for god tid.',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 17,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(11),
+              child: Text(
+                'Fælles venner',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
               ),
             ),
           ],
