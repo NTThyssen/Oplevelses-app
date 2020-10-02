@@ -41,7 +41,6 @@ dependencies:
   flutter_spinkit: ^4.1.2
   provider: ^4.3.2+2
   highlighter_coachmark: ^0.0.3
-  flutter_platform_widgets: ^0.50.0
 
 dev_dependencies:
   flutter_test:
@@ -66,10 +65,8 @@ flutter:
     - images/test.png
     - images/sexy.jpg
     - images/flower.jpg
-    - images/ice.png
     - images/flower2.jpg
     - images/pia-profile-pic.jpg
-    - images/big-ice.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
