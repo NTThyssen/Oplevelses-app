@@ -1,3 +1,4 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/CustomWidgets/custom_scaffold_with_navBar.dart';
@@ -9,8 +10,19 @@ class MyFavorites extends StatefulWidget {
 }
 
 class _MyFavoritesState extends State<MyFavorites> {
+
+  Future uploadFile() async {
+    StorageReference storageReference = FirebaseStorage.instance.ref().child("eventPicture/image_picker603815392078609585.jpg");
+    
+    String url = await storageReference.getDownloadURL();
+    print("this is download url : " + url);
+
+
+  }
+
   @override
   Widget build(BuildContext context) {
+    uploadFile();
     return CustomScaffoldWithNavBar(
         Container(
             child: SingleChildScrollView(
@@ -132,7 +144,7 @@ class _FavoriteCardViewState extends State<FavoriteCardView> {
                        image: new DecorationImage(
                          fit: BoxFit.fitWidth,
                          alignment: FractionalOffset.centerLeft,
-                         image: AssetImage('images/big-ice.png'),
+                         image: AssetImage("images/ice.png"),
                           ),
                        )
                    ),

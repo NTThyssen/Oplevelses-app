@@ -100,7 +100,7 @@ class _CameraConnectState extends State<CameraConnect> {
   Future uploadFile() async {
     StorageReference storageReference = FirebaseStorage.instance
         .ref()
-        .child('eventPicture/${basename(image.path)}}');
+        .child('eventPicture/${basename(image.path)}');
     StorageUploadTask uploadTask = storageReference.putFile(image);
     await uploadTask.onComplete;
     print('File Uploaded');
