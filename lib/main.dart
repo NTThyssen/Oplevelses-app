@@ -13,9 +13,9 @@ void main() {
   runApp(StreamProvider.value(
     child: MaterialApp(
       theme: ThemeData(
-          primaryColor: Color.fromRGBO(29, 33, 57, 1),
-          secondaryHeaderColor: Color.fromRGBO(131, 199, 242, 1),
-          accentColor: Color.fromRGBO(131, 199, 242, 1)),
+        primaryColor: Color.fromRGBO(29, 33, 57, 1),
+        secondaryHeaderColor: Color.fromRGBO(131, 199, 242, 1),
+      ),
       initialRoute: '/login',
       routes: {
         '/': (context) => MyApp(),

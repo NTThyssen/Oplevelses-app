@@ -22,88 +22,89 @@ class _CustomScaffoldWithNavBarState extends State<CustomScaffoldWithNavBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title ?? ""),
-          centerTitle: true,
-          backgroundColor: Color.fromRGBO(29, 33, 57, 0.7),
-          leading: IconButton(
+      appBar: AppBar(
+        title: Text(widget.title ?? ""),
+        centerTitle: true,
+        backgroundColor: Color.fromRGBO(29, 33, 57, 0.7),
+        leading: IconButton(
+          icon: Icon(
+            Icons.filter_list,
+          ),
+          onPressed: () {},
+        ),
+        actions: [
+          IconButton(
             icon: Icon(
-              Icons.filter_list,
+              Icons.share,
+              color: Colors.white,
             ),
             onPressed: () {},
           ),
-          actions: [
-            IconButton(
-              icon: Icon(
-                Icons.share,
-                color: Colors.white,
+        ],
+      ),
+      extendBody: widget.extendBody ?? false,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Icon(Icons.add),
+        elevation: 2.0,
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+          child: Row(
+            children: [
+              IconButton(
+                  icon: Icon(
+                    Icons.home,
+                    color: Colors.white,
+                  ),
+                  iconSize: 30,
+                  onPressed: () {
+                    Navigator.pushNamed(context, "/");
+                  }),
+              Spacer(
+                flex: 2,
               ),
-              onPressed: () {},
-            ),
-          ],
-        ),
-        extendBody: widget.extendBody ?? false,
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-          child: Icon(Icons.add),
-          elevation: 2.0,
-        ),
-        bottomNavigationBar: BottomAppBar(
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-            child: Row(
-              children: [
-                IconButton(
-                    icon: Icon(
-                      Icons.home,
-                      color: Colors.white,
-                    ),
-                    iconSize: 30,
-                    onPressed: () {
-                      Navigator.pushNamed(context, "/");
-                    }),
-                Spacer(
-                  flex: 2,
-                ),
-                IconButton(
-                    icon: Icon(
-                      Icons.message,
-                      color: Colors.white,
-                    ),
-                    iconSize: 30,
-                    onPressed: () {
-                      Navigator.pushNamed(context, "/profile");
-                    }),
-                Spacer(flex: 8),
-                IconButton(
-                    icon: Icon(
-                      Icons.favorite_border,
-                      color: Colors.white,
-                    ),
-                    iconSize: 30,
-                    onPressed: () {
-                      Navigator.pushNamed(context, "/favorites");
-                    }),
-                Spacer(
-                  flex: 2,
-                ),
-                IconButton(
-                    icon: Icon(
-                      Icons.person_outline,
-                      color: Colors.white,
-                    ),
-                    iconSize: 30,
-                    onPressed: () {
-                      Navigator.pushNamed(context, "/profile");
-                    }),
-              ],
-            ),
+              IconButton(
+                  icon: Icon(
+                    Icons.message,
+                    color: Colors.white,
+                  ),
+                  iconSize: 30,
+                  onPressed: () {
+                    Navigator.pushNamed(context, "/profile");
+                  }),
+              Spacer(flex: 8),
+              IconButton(
+                  icon: Icon(
+                    Icons.favorite_border,
+                    color: Colors.white,
+                  ),
+                  iconSize: 30,
+                  onPressed: () {
+                    Navigator.pushNamed(context, "/favorites");
+                  }),
+              Spacer(
+                flex: 2,
+              ),
+              IconButton(
+                  icon: Icon(
+                    Icons.person_outline,
+                    color: Colors.white,
+                  ),
+                  iconSize: 30,
+                  onPressed: () {
+                    Navigator.pushNamed(context, "/profile");
+                  }),
+            ],
           ),
-          shape: CircularNotchedRectangle(),
-          notchMargin: 4,
-          color: Theme.of(context).primaryColor,
         ),
-        body: widget.body);
+        shape: CircularNotchedRectangle(),
+        notchMargin: 4,
+        color: Theme.of(context).primaryColor,
+      ),
+      body: widget.body,
+    );
   }
 }

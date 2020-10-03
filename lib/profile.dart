@@ -2,11 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/service/auth.dart';
 import 'package:age/age.dart';
-import 'package:date_format/date_format.dart';
+import 'package:flutter_app/widgets/about_text.dart';
 import 'package:flutter_app/widgets/custom_scaffold_with_navBar.dart';
+import 'package:flutter_app/widgets/friends_widget.dart';
+import 'package:flutter_app/widgets/info_header_widget.dart';
+import 'package:flutter_app/widgets/instagram_images_widget.dart';
 
 class Profile extends StatelessWidget {
-  String CheckFbData() {
+  String checkFbData() {
     String name;
     if (UserLoginState.instance.getProfile() != null) {
       name = UserLoginState.instance.getProfile()['first_name'] +
@@ -15,7 +18,7 @@ class Profile extends StatelessWidget {
                   UserLoginState.instance.getProfile()['birthday'])
               .toString();
     } else {
-      name = "Name, Age";
+      name = "Pia, 22";
     }
 
     return name;
@@ -46,54 +49,99 @@ class Profile extends StatelessWidget {
     //convertDateFromString(UserLoginState.instance.getProfile()['birthday']);
     return CustomScaffoldWithNavBar(
       Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Center(
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(0, 30, 0, 16),
-                child: CircleAvatar(
-                  backgroundImage: UserLoginState.instance.getProfilePicture(),
-                  radius: 90,
+        color: Theme.of(context).primaryColor,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Profile image with gradient
+              Stack(
+                children: [
+                  Image(
+                    fit: BoxFit.cover,
+                    image: AssetImage('images/pia-profile-pic.jpg'),
+                    // UserLoginState.instance.getProfilePicture(),
+                  ),
+                  Container(
+                    height: MediaQuery.of(context).size.width * 1.471,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        stops: [0.5, 1.0],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.transparent,
+                          Theme.of(context).primaryColor,
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              // Profile name and age
+              Padding(
+                padding: EdgeInsets.all(11),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      name = checkFbData(),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 30,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ),
-            Text(
-              name = CheckFbData(),
-              style: TextStyle(
-                  color: Colors.black,
-                  letterSpacing: 0.8,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 20),
-            ),
-            Divider(
-              height: 80,
-              thickness: 1.0,
-              endIndent: 50.0,
-              indent: 50,
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-              child: MenuButton(text: "Vis Profil", menuIcon: Icons.person),
-            ),
-            Divider(
-              height: 1,
-              thickness: 1.0,
-              endIndent: 10.0,
-              indent: 10,
-            ),
-            MenuButton(text: "Rediger", menuIcon: Icons.edit),
-            Divider(
-              height: 1,
-              thickness: 1.0,
-              endIndent: 10.0,
-              indent: 10,
-            ),
-            MenuButton(text: "Indstillinger", menuIcon: Icons.settings),
-          ],
-        ),
-        decoration: BoxDecoration(
-          color: Color.fromRGBO(239, 239, 244, 1),
+              // Home town info
+              InfoHeaderWidget(
+                icon: Icons.place,
+                text: 'København NV',
+              ),
+              // Work info
+              InfoHeaderWidget(
+                icon: Icons.work,
+                text: 'Fotograf hos Hansens billeder',
+              ),
+              // School info
+              InfoHeaderWidget(
+                icon: Icons.school,
+                text: 'Dansk fotograf institut',
+              ),
+              // About person text
+              AboutText(
+                heading: 'Om Pia',
+                body:
+                    'Typen der altid løber efter bussen, og altid ender med at komme i alt for god tid.',
+              ),
+              // Common friends
+              FriendsWidget(
+                text: 'Venner',
+              ),
+              // Instagram
+              InstagramImagesWidget(),
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                child: MenuButton(text: "Vis Profil", menuIcon: Icons.person),
+              ),
+              Divider(
+                height: 1,
+                thickness: 1.0,
+                endIndent: 10.0,
+                indent: 10,
+              ),
+              MenuButton(text: "Rediger", menuIcon: Icons.edit),
+              Divider(
+                height: 1,
+                thickness: 1.0,
+                endIndent: 10.0,
+                indent: 10,
+              ),
+              MenuButton(text: "Indstillinger", menuIcon: Icons.settings),
+            ],
+          ),
         ),
       ),
     );
