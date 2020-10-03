@@ -3,28 +3,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/service/auth.dart';
 import 'package:age/age.dart';
 import 'package:date_format/date_format.dart';
-import 'package:flutter_app/CustomWidgets/custom_scaffold_with_navBar.dart';
 
 class Profile extends StatelessWidget {
 
-  String CheckFbData() {
+  String CheckFbData(){
     String name;
-    if (UserLoginState.instance.getProfile() != null) {
-      name = UserLoginState.instance.getProfile()['first_name'] + ", " +
-          convertDateFromString(
-              UserLoginState.instance.getProfile()['birthday']).toString();
-    } else {
+    if(UserLoginState.instance.getProfile() != null){
+      name =  UserLoginState.instance.getProfile()['first_name'] + ", " + convertDateFromString(UserLoginState.instance.getProfile()['birthday']).toString();
+    }else{
       name = "Name, Age";
     }
 
     return name;
-  }
 
-  int convertDateFromString(String strDate) {
+  }
+  int convertDateFromString(String strDate){
     List<String> date = strDate.split("/");
     print(date);
-    DateTime birthday = DateTime(
-        int.tryParse(date[2]), int.tryParse(date[0]), int.tryParse(date[1]));
+    DateTime birthday = DateTime(int.tryParse(date[2]), int.tryParse(date[0]), int.tryParse(date[1]));
     DateTime today = DateTime.now();
     print(birthday);
     AgeDuration age;
@@ -40,62 +36,67 @@ class Profile extends StatelessWidget {
   AuthService auth = AuthService();
 
   String name;
-
   @override
   Widget build(BuildContext context) {
     //convertDateFromString(UserLoginState.instance.getProfile()['birthday']);
-    return CustomScaffoldWithNavBar(
-        Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Center(
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(0, 30, 0, 16),
-                  child: CircleAvatar(
-                    backgroundImage: UserLoginState.instance
-                        .getProfilePicture(),
-                    radius: 90,
-                  ),
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Color.fromRGBO(30, 30, 60, 1),
+        toolbarHeight: 45,
+        title: Text("Profil"),
+        centerTitle: true,
+      ),
+      body: Container(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Center(
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(0, 30, 0, 16),
+                child: CircleAvatar(
+                  backgroundImage: UserLoginState.instance.getProfilePicture(),
+                  radius: 90,
                 ),
               ),
-              Text(name = CheckFbData(), style: TextStyle(
-                  color: Colors.black,
-                  letterSpacing: 0.8,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 20),),
+            ),
+            Text(name =  CheckFbData()  , style: TextStyle(
+                color: Colors.black,
+                letterSpacing: 0.8,
+                fontWeight: FontWeight.w600,
+                fontSize: 20),),
 
-              Divider(
-                height: 80,
-                thickness: 1.0,
-                endIndent: 50.0,
-                indent: 50,
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                child: MenuButton(text: "Vis Profil", menuIcon: Icons.person),
-              ),
-              Divider(
-                height: 1,
-                thickness: 1.0,
-                endIndent: 10.0,
-                indent: 10,
-              ),
-              MenuButton(text: "Rediger", menuIcon: Icons.edit),
-              Divider(
-                height: 1,
-                thickness: 1.0,
-                endIndent: 10.0,
-                indent: 10,
-              ),
-              MenuButton(text: "Indstillinger", menuIcon: Icons.settings),
-            ],
+            Divider(
+              height: 80,
+              thickness: 1.0,
+              endIndent: 50.0,
+              indent: 50,
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+              child: MenuButton(text:"Vis Profil", menuIcon: Icons.person),
+            ),
+            Divider(
+              height: 1,
+              thickness: 1.0,
+              endIndent: 10.0,
+              indent: 10,
+            ),
+            MenuButton(text:"Rediger", menuIcon: Icons.edit),
+            Divider(
+              height: 1,
+              thickness: 1.0,
+              endIndent: 10.0,
+              indent: 10,
+            ),
+            MenuButton(text:"Indstillinger", menuIcon: Icons.settings),
+          ],
+        ),
+        decoration: BoxDecoration(
+          color: Color.fromRGBO(239, 239, 244, 1),
           ),
-          decoration: BoxDecoration(
-            color: Color.fromRGBO(239, 239, 244, 1),
-          ),
-        )
-    );
+        ),
+      );
   }
 }
 
