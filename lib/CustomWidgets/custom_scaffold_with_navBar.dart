@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class CustomScaffoldWithNavBar extends StatefulWidget {
   final Container body;
   final bool extendBody;
@@ -8,11 +7,10 @@ class CustomScaffoldWithNavBar extends StatefulWidget {
 
   CustomScaffoldWithNavBar(this.body, {this.extendBody, this.title});
 
-
   @override
-  _CustomScaffoldWithNavBarState createState() => _CustomScaffoldWithNavBarState();
+  _CustomScaffoldWithNavBarState createState() =>
+      _CustomScaffoldWithNavBarState();
 }
-
 
 class _CustomScaffoldWithNavBarState extends State<CustomScaffoldWithNavBar> {
   final Map<String, IconData> iconMapping = {
@@ -47,7 +45,7 @@ class _CustomScaffoldWithNavBarState extends State<CustomScaffoldWithNavBar> {
         extendBody: widget.extendBody ?? false,
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: FloatingActionButton(
-          onPressed: () { },
+          onPressed: () {},
           child: Icon(Icons.add),
           elevation: 2.0,
         ),
@@ -55,14 +53,50 @@ class _CustomScaffoldWithNavBarState extends State<CustomScaffoldWithNavBar> {
           child: Padding(
             padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
             child: Row(
-              children:[
-                IconButton(icon: Icon(Icons.home_outlined, color: Colors.white,), iconSize: 30, onPressed: () {Navigator.pushNamed(context, "/"); }),
-                Spacer(flex: 2,),
-                IconButton(icon: Icon(Icons.message_outlined, color: Colors.white,), iconSize: 30, onPressed: () {Navigator.pushNamed(context, "/profile"); }),
+              children: [
+                IconButton(
+                    icon: Icon(
+                      Icons.home,
+                      color: Colors.white,
+                    ),
+                    iconSize: 30,
+                    onPressed: () {
+                      Navigator.pushNamed(context, "/");
+                    }),
+                Spacer(
+                  flex: 2,
+                ),
+                IconButton(
+                    icon: Icon(
+                      Icons.message,
+                      color: Colors.white,
+                    ),
+                    iconSize: 30,
+                    onPressed: () {
+                      Navigator.pushNamed(context, "/profile");
+                    }),
                 Spacer(flex: 8),
-                IconButton(icon: Icon(Icons.favorite_border, color: Colors.white,), iconSize: 30, onPressed: () {Navigator.pushNamed(context, "/favorites"); }),
-                Spacer(flex: 2,),
-                IconButton(icon: Icon(Icons.person_outline, color: Colors.white,), iconSize: 30, onPressed: () {Navigator.pushNamed(context, "/profile"); }),
+                IconButton(
+                    icon: Icon(
+                      Icons.favorite_border,
+                      color: Colors.white,
+                    ),
+                    iconSize: 30,
+                    onPressed: () {
+                      Navigator.pushNamed(context, "/favorites");
+                    }),
+                Spacer(
+                  flex: 2,
+                ),
+                IconButton(
+                    icon: Icon(
+                      Icons.person_outline,
+                      color: Colors.white,
+                    ),
+                    iconSize: 30,
+                    onPressed: () {
+                      Navigator.pushNamed(context, "/profile");
+                    }),
               ],
             ),
           ),
@@ -70,7 +104,6 @@ class _CustomScaffoldWithNavBarState extends State<CustomScaffoldWithNavBar> {
           notchMargin: 4,
           color: Theme.of(context).primaryColor,
         ),
-        body: widget.body
-    );
+        body: widget.body);
   }
 }
