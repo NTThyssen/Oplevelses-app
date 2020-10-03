@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/model/user.dart';
 
 class FriendsWidget extends StatelessWidget {
+  final String text;
+
+  FriendsWidget({this.text});
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -10,7 +14,7 @@ class FriendsWidget extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(11),
           child: Text(
-            'Fælles venner',
+            text,
             style: TextStyle(
               color: Colors.white,
               fontSize: 20,

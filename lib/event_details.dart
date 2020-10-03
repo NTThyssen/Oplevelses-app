@@ -112,7 +112,9 @@ class _TestState extends State<Test> {
                   'Typen der altid løber efter bussen, og altid ender med at komme i alt for god tid.',
             ),
             // Common friends
-            FriendsWidget(),
+            FriendsWidget(
+              text: 'Fælles venner',
+            ),
             // Instagram
             InstagramImagesWidget(),
             // Bottom icons
@@ -123,13 +125,13 @@ class _TestState extends State<Test> {
                 children: [
                   IconButton(
                     icon: Icon(Icons.repeat),
-                    color: Theme.of(context).accentColor,
+                    color: Theme.of(context).secondaryHeaderColor,
                     iconSize: 40.0,
                     onPressed: () {},
                   ),
                   IconButton(
                     icon: Icon(Icons.add_box),
-                    color: Theme.of(context).accentColor,
+                    color: Theme.of(context).secondaryHeaderColor,
                     iconSize: 40.0,
                     onPressed: () {},
                   ),
