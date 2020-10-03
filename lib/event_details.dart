@@ -117,7 +117,7 @@ class _TestState extends State<Test> {
             InstagramImagesWidget(),
             // Bottom icons
             Container(
-              padding: EdgeInsets.only(bottom: 40.0),
+              padding: EdgeInsets.only(bottom: 40.0, top: 20.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
