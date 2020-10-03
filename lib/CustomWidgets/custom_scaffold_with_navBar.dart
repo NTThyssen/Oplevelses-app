@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/add_event.dart';
+import 'package:flutter_app/authenticate/log_in_page.dart';
 import 'package:flutter_app/my_favorites.dart';
 import 'package:flutter_app/profile.dart';
 
@@ -69,7 +70,7 @@ class _CustomScaffoldWithNavBarState extends State<CustomScaffoldWithNavBar> {
                   Navigator.pushReplacement(context, FadeRoute( page: MyApp()));}),
                 Spacer(flex: 2,),
                 IconButton(icon: Icon(Icons.message_outlined, color: Colors.white,), iconSize: 30, onPressed: () {
-                  Navigator.pushReplacement(context, FadeRoute( page: Profile())); }),
+                  Navigator.pushReplacement(context, FadeRoute( page: Login())); }),
                 Spacer(flex: 8),
                 IconButton(icon: Icon(Icons.favorite_border, color: Colors.white,), iconSize: 30, onPressed: () {Navigator.pushReplacement(context, FadeRoute( page: MyFavorites())); }),
                 Spacer(flex: 2,),

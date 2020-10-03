@@ -1,6 +1,11 @@
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/CustomWidgets/custom_scaffold_with_navBar.dart';
 import 'package:flutter_app/size_config.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart';
 
 class AddEvent extends StatefulWidget {
   @override
@@ -8,6 +13,39 @@ class AddEvent extends StatefulWidget {
 }
 
 class _AddEventState extends State<AddEvent> {
+  File image;
+  String _uploadedFileURL;
+  //connect camera
+  cameraConnect() async {
+    print('Picker is Called');
+    if(image == null) {
+      File img = await ImagePicker.pickImage(source: ImageSource.gallery);
+      if (img != null) {
+        image = img;
+        setState(() {});
+        uploadFile();
+      }
+    }else{
+      image = null;
+      setState(() {});
+    }
+
+  }
+  Future uploadFile() async {
+    StorageReference storageReference = FirebaseStorage.instance
+        .ref()
+        .child('eventPicture/${basename(image.path)}');
+    StorageUploadTask uploadTask = storageReference.putFile(image);
+    await uploadTask.onComplete;
+    print('File Uploaded');
+    storageReference.getDownloadURL().then((fileURL) {
+      setState(() {
+        _uploadedFileURL = fileURL;
+      });
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return CustomScaffoldWithNavBar(
@@ -104,3 +142,5 @@ class _InoutBoxWithBottomShadowState extends State<InoutBoxWithBottomShadow> {
     );
   }
 }
+
+
