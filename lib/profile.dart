@@ -3,24 +3,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/service/auth.dart';
 import 'package:age/age.dart';
 import 'package:date_format/date_format.dart';
+import 'package:flutter_app/widgets/custom_scaffold_with_navBar.dart';
 
 class Profile extends StatelessWidget {
-
-  String CheckFbData(){
+  String CheckFbData() {
     String name;
-    if(UserLoginState.instance.getProfile() != null){
-      name =  UserLoginState.instance.getProfile()['first_name'] + ", " + convertDateFromString(UserLoginState.instance.getProfile()['birthday']).toString();
-    }else{
+    if (UserLoginState.instance.getProfile() != null) {
+      name = UserLoginState.instance.getProfile()['first_name'] +
+          ", " +
+          convertDateFromString(
+                  UserLoginState.instance.getProfile()['birthday'])
+              .toString();
+    } else {
       name = "Name, Age";
     }
 
     return name;
-
   }
-  int convertDateFromString(String strDate){
+
+  int convertDateFromString(String strDate) {
     List<String> date = strDate.split("/");
     print(date);
-    DateTime birthday = DateTime(int.tryParse(date[2]), int.tryParse(date[0]), int.tryParse(date[1]));
+    DateTime birthday = DateTime(
+        int.tryParse(date[2]), int.tryParse(date[0]), int.tryParse(date[1]));
     DateTime today = DateTime.now();
     print(birthday);
     AgeDuration age;
@@ -39,15 +44,8 @@ class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //convertDateFromString(UserLoginState.instance.getProfile()['birthday']);
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Color.fromRGBO(30, 30, 60, 1),
-        toolbarHeight: 45,
-        title: Text("Profil"),
-        centerTitle: true,
-      ),
-      body: Container(
+    return CustomScaffoldWithNavBar(
+      Container(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -60,12 +58,14 @@ class Profile extends StatelessWidget {
                 ),
               ),
             ),
-            Text(name =  CheckFbData()  , style: TextStyle(
-                color: Colors.black,
-                letterSpacing: 0.8,
-                fontWeight: FontWeight.w600,
-                fontSize: 20),),
-
+            Text(
+              name = CheckFbData(),
+              style: TextStyle(
+                  color: Colors.black,
+                  letterSpacing: 0.8,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 20),
+            ),
             Divider(
               height: 80,
               thickness: 1.0,
@@ -74,7 +74,7 @@ class Profile extends StatelessWidget {
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-              child: MenuButton(text:"Vis Profil", menuIcon: Icons.person),
+              child: MenuButton(text: "Vis Profil", menuIcon: Icons.person),
             ),
             Divider(
               height: 1,
@@ -82,21 +82,21 @@ class Profile extends StatelessWidget {
               endIndent: 10.0,
               indent: 10,
             ),
-            MenuButton(text:"Rediger", menuIcon: Icons.edit),
+            MenuButton(text: "Rediger", menuIcon: Icons.edit),
             Divider(
               height: 1,
               thickness: 1.0,
               endIndent: 10.0,
               indent: 10,
             ),
-            MenuButton(text:"Indstillinger", menuIcon: Icons.settings),
+            MenuButton(text: "Indstillinger", menuIcon: Icons.settings),
           ],
         ),
         decoration: BoxDecoration(
           color: Color.fromRGBO(239, 239, 244, 1),
-          ),
         ),
-      );
+      ),
+    );
   }
 }
 
@@ -113,15 +113,15 @@ class _MenuButtonState extends State<MenuButton> {
   String route;
   @override
   Widget build(BuildContext context) {
-    return  Container(
+    return Container(
       child: FlatButton(
         onPressed: () {
-          switch(widget.text){
+          switch (widget.text) {
             case "Vis Profil":
-              route="/showProfile";
+              route = "/showProfile";
               break;
             case "Rediger":
-              route="/editProfile";
+              route = "/editProfile";
               break;
             case "Indstillinger":
               route = "/settings";
@@ -134,20 +134,21 @@ class _MenuButtonState extends State<MenuButton> {
             Icon(widget.menuIcon),
             Padding(
               padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-              child: Text(widget.text, style: TextStyle(color: Colors.black,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16)),
+              child: Text(widget.text,
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16)),
             ),
             Spacer(),
-            Icon(Icons.arrow_forward_ios, color: Colors.grey,),
+            Icon(
+              Icons.arrow_forward_ios,
+              color: Colors.grey,
+            ),
           ],
         ),
       ),
-      decoration: BoxDecoration(
-          color: Colors.white
-      ),
+      decoration: BoxDecoration(color: Colors.white),
     );
   }
 }
-
-

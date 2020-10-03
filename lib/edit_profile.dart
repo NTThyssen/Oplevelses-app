@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_app/size_config.dart';
+import 'package:flutter_app/widgets/custom_scaffold_with_navBar.dart';
 
 class EditProfile extends StatefulWidget {
   @override
@@ -14,15 +15,8 @@ class EditProfile extends StatefulWidget {
 class _EditProfileState extends State<EditProfile> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Color.fromRGBO(30, 30, 60, 1),
-        toolbarHeight: 45,
-        title: Text("Rediger Profil"),
-        centerTitle: true,
-      ),
-      body: Container(
+    return CustomScaffoldWithNavBar(
+      Container(
         decoration: BoxDecoration(
           color: Color.fromRGBO(239, 239, 244, 1),
         ),
@@ -87,17 +81,16 @@ class _CameraConnectState extends State<CameraConnect> {
   //connect camera
   cameraConnect() async {
     print('Picker is Called');
-    if(image == null) {
+    if (image == null) {
       File img = await ImagePicker.pickImage(source: ImageSource.gallery);
       if (img != null) {
-      image = img;
-      setState(() {});
-      }
-    }else{
-      image = null;
+        image = img;
         setState(() {});
+      }
+    } else {
+      image = null;
+      setState(() {});
     }
-
   }
 
   @override
@@ -106,9 +99,7 @@ class _CameraConnectState extends State<CameraConnect> {
       child: Stack(
         children: [
           GestureDetector(
-            onTap: () {
-
-            },
+            onTap: () {},
             child: Container(
               child: image == null
                   ? DottedBorder(
@@ -176,25 +167,25 @@ class _CameraConnectState extends State<CameraConnect> {
           Positioned(
               bottom: 0.0,
               right: 0.0,
-              child: image == null ? GestureDetector(
-                onTap: () {
-                  cameraConnect();
-                },
-                child: Icon(
-                  CupertinoIcons.add_circled_solid,
-                  color: Colors.green,
-                ),
-              ) : GestureDetector(
-                onTap: () {
-                  cameraConnect();
-                },
-
-                child: Icon(
-                  CupertinoIcons.clear_thick_circled,
-                  color: Colors.red,
-                ),
-              )
-          ),
+              child: image == null
+                  ? GestureDetector(
+                      onTap: () {
+                        cameraConnect();
+                      },
+                      child: Icon(
+                        CupertinoIcons.add_circled_solid,
+                        color: Colors.green,
+                      ),
+                    )
+                  : GestureDetector(
+                      onTap: () {
+                        cameraConnect();
+                      },
+                      child: Icon(
+                        CupertinoIcons.clear_thick_circled,
+                        color: Colors.red,
+                      ),
+                    )),
         ],
       ),
     );
