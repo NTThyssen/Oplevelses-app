@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/about_text.dart';
+import 'package:flutter_app/info_header_widget.dart';
 
 class Test extends StatefulWidget {
   @override
@@ -82,72 +83,33 @@ class _TestState extends State<Test> {
               ),
             ),
             // Place info
-            Padding(
-              padding: EdgeInsets.only(left: 11, bottom: 12),
-              child: Row(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(right: 10),
-                    child: Icon(
-                      Icons.place,
-                      color: Colors.white,
-                    ),
-                  ),
-                  Text(
-                    'København NV',
-                    style: TextStyle(color: Colors.white, fontSize: 17),
-                  ),
-                ],
-              ),
+            InfoHeaderWidget(
+              icon: Icons.place,
+              text: 'København NV',
             ),
             // Date info
-            Padding(
-              padding: EdgeInsets.only(left: 11, bottom: 12),
-              child: Row(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(right: 10),
-                    child: Icon(
-                      Icons.access_time,
-                      color: Colors.white,
-                    ),
-                  ),
-                  Text(
-                    'Lørdag 4. jul Kl. 10.00',
-                    style: TextStyle(color: Colors.white, fontSize: 17),
-                  ),
-                ],
-              ),
+            InfoHeaderWidget(
+              icon: Icons.access_time,
+              text: 'Lørdag 4. jul Kl. 10.00',
             ),
             // Price info
-            Padding(
-              padding: EdgeInsets.only(left: 11, bottom: 30),
-              child: Row(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(right: 10),
-                    child: Icon(
-                      Icons.payment,
-                      color: Colors.white,
-                    ),
-                  ),
-                  Text(
-                    'Gratis',
-                    style: TextStyle(color: Colors.white, fontSize: 17),
-                  ),
-                ],
-              ),
+            InfoHeaderWidget(
+              icon: Icons.payment,
+              text: 'Gratis',
             ),
+            // Event description
             AboutText(
               heading: 'Oplevelsen',
               body:
                   'Info tekst - om oplevelsen \n \"At flyve helikopter er en helt speciel fornemmelse. Lyden af propellen blandet med den betagende panorama udsigt...\"',
             ),
+            // About event creator section
             AboutText(
               heading: 'Om Pia',
               body:
                   'Typen der altid løber efter bussen, og altid ender med at komme i alt for god tid.',
             ),
+            // Common friends
             Padding(
               padding: const EdgeInsets.all(11),
               child: Text(

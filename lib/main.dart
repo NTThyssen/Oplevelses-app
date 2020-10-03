@@ -10,13 +10,11 @@ import 'package:provider/provider.dart';
 
 void main() {
   runApp(StreamProvider.value(
-
     child: MaterialApp(
       theme: ThemeData(
-        primaryColor: Color.fromRGBO(30, 30, 60, 1),
-      ),
-
-      initialRoute : '/login',
+          primaryColor: Color.fromRGBO(29, 33, 57, 1),
+          accentColor: Color.fromRGBO(131, 199, 242, 1)),
+      initialRoute: '/login',
       routes: {
         '/': (context) => MyApp(),
         '/login': (context) => Login(),
@@ -95,11 +93,9 @@ class MyApp extends StatelessWidget {
                                 child: Row(
                                   children: [
                                     GestureDetector(
-                                      onTap: () {
-                                      },
-                                      child: Icon(
-                                        Icons.share, color: Colors.white
-                                      ),
+                                      onTap: () {},
+                                      child: Icon(Icons.share,
+                                          color: Colors.white),
                                     ),
                                     SizedBox(
                                       width: 15,
@@ -108,7 +104,8 @@ class MyApp extends StatelessWidget {
                                       onTap: () {
                                         print("Favorit!");
                                       },
-                                      child: Icon(Icons.favorite_border, color: Colors.white),
+                                      child: Icon(Icons.favorite_border,
+                                          color: Colors.white),
                                     )
                                   ],
                                 ),
@@ -128,7 +125,6 @@ class MyApp extends StatelessWidget {
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       fit: BoxFit.fill,
-
                       image: AssetImage("images/flower.jpg"),
                     ),
                   ),
@@ -137,7 +133,8 @@ class MyApp extends StatelessWidget {
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       fit: BoxFit.fill,
-                      image: UserLoginState.instance.getProfilePicture() ?? AssetImage("images/sexy.jpg"),
+                      image: UserLoginState.instance.getProfilePicture() ??
+                          AssetImage("images/sexy.jpg"),
                     ),
                   ),
                 )
@@ -152,16 +149,18 @@ class MyApp extends StatelessWidget {
                           stops: [0.0, 1.0],
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
-                          colors: [Colors.transparent,  Color.fromRGBO(30, 30, 60, 1)])),
+                          colors: [
+                            Colors.transparent,
+                            Color.fromRGBO(30, 30, 60, 1)
+                          ])),
                   child: Padding(
                     padding: EdgeInsets.fromLTRB(5, 0, 5, 5),
                     child: Row(
-
                       crossAxisAlignment: CrossAxisAlignment.end,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         CustomFAB(30.0, "left", 50.0, 50.0),
-                       CustomFAB(30.0, "middle", 50.0, 50.0),
+                        CustomFAB(30.0, "middle", 50.0, 50.0),
                         CustomFAB(30.0, "right", 50.0, 50.0)
                       ],
                     ),
@@ -183,9 +182,9 @@ class CustomFAB extends StatelessWidget {
   final double height;
 
   final Map<String, IconData> iconMapping = {
-    'left' : Icons.filter_list,
-    'middle' : Icons.add,
-    'right' : Icons.account_circle,
+    'left': Icons.filter_list,
+    'middle': Icons.add,
+    'right': Icons.account_circle,
   };
   CustomFAB(this.iconSize, this.iconImg, this.width, this.height);
 
@@ -198,19 +197,21 @@ class CustomFAB extends StatelessWidget {
         heroTag: iconImg,
         onPressed: () {
           String routeName;
-          if(iconImg.contains("left")){
+          if (iconImg.contains("left")) {
             routeName = "/filter";
-          }else if(iconImg.contains("middle")){
+          } else if (iconImg.contains("middle")) {
             routeName = "/myOverview";
-          }else{
+          } else {
             routeName = "/profile";
           }
           Navigator.pushNamed(context, routeName);
         },
-        child: Icon(iconMapping[iconImg], size: iconSize,),
+        child: Icon(
+          iconMapping[iconImg],
+          size: iconSize,
+        ),
         backgroundColor: Color.fromRGBO(30, 30, 60, 1),
       ),
     );
   }
 }
-
