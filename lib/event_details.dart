@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/about_text.dart';
+import 'package:flutter_app/friends_widget.dart';
 import 'package:flutter_app/info_header_widget.dart';
 
 class Test extends StatefulWidget {
@@ -110,17 +111,7 @@ class _TestState extends State<Test> {
                   'Typen der altid løber efter bussen, og altid ender med at komme i alt for god tid.',
             ),
             // Common friends
-            Padding(
-              padding: const EdgeInsets.all(11),
-              child: Text(
-                'Fælles venner',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
+            FriendsWidget(),
           ],
         ),
       ),

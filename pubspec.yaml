@@ -67,6 +67,11 @@ flutter:
     - images/flower.jpg
     - images/flower2.jpg
     - images/pia-profile-pic.jpg
+    - images/lasse.jpg
+    - images/christy.jpg
+    - images/peter.jpg
+    - images/tine.jpg
+    - images/andrea.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
