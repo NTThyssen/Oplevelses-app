@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/about_text.dart';
-import 'package:flutter_app/friends_widget.dart';
-import 'package:flutter_app/info_header_widget.dart';
+import 'package:flutter_app/widgets/about_text.dart';
+import 'package:flutter_app/widgets/friends_widget.dart';
+import 'package:flutter_app/widgets/info_header_widget.dart';
+import 'package:flutter_app/widgets/instagram_images_widget.dart';
 
 class Test extends StatefulWidget {
   @override
@@ -112,6 +113,8 @@ class _TestState extends State<Test> {
             ),
             // Common friends
             FriendsWidget(),
+            // Instagram
+            InstagramImagesWidget(),
           ],
         ),
       ),
