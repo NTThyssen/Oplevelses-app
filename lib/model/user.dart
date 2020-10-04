@@ -2,6 +2,13 @@ class User {
   int id;
   String name;
   String imageURL;
+  String uid;
+  String name;
+  int age;
+  String profilePicture;
+  String eventPicture;
+
+  User(this.uid, {this.name, this.age, this.profilePicture, this.eventPicture});
 
   User({this.id, this.name, this.imageURL});
 }

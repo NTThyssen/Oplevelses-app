@@ -1,3 +1,4 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/widgets/custom_scaffold_with_navBar.dart';
@@ -9,24 +10,37 @@ class MyFavorites extends StatefulWidget {
 }
 
 class _MyFavoritesState extends State<MyFavorites> {
+
+  Future uploadFile() async {
+    StorageReference storageReference = FirebaseStorage.instance.ref().child("eventPicture/image_picker603815392078609585.jpg");
+
+    String url = await storageReference.getDownloadURL();
+    print("this is download url : " + url);
+
+
+  }
+
   @override
   Widget build(BuildContext context) {
+    uploadFile();
     return CustomScaffoldWithNavBar(
-      Container(
-          child: SingleChildScrollView(
-        child: Column(
-          children: [
-            FavoriteCardView(),
-            FavoriteCardView(),
-            FavoriteCardView(),
-          ],
+        Container(
+            child: SingleChildScrollView(
+              child: Column(children: [
+                FavoriteCardView(),
+                FavoriteCardView(),
+                FavoriteCardView(),
+
+              ],
+              ),
+            )
         ),
-      )),
       title: "Favorites",
       extendBody: false,
     );
   }
 }
+
 
 class FavoriteCardView extends StatefulWidget {
   @override
@@ -136,14 +150,14 @@ class _FavoriteCardViewState extends State<FavoriteCardView> {
                             alignment: FractionalOffset.centerLeft,
                             image: AssetImage('images/big-ice.png'),
                           ),
-                        )),
-                  ),
-                ),
-              )
-            ],
-          ),
+                       )
+                   ),
+               ),
+             ),
+             )
+          ],
         ),
       ),
-    );
+    ),);
   }
 }
