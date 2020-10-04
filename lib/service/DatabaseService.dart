@@ -9,6 +9,7 @@ class DatabaseService {
 
 
   Future updateUserDate(String name, String eventPicture ) async {
+    print(uid);
     return await userCollection.document(uid).setData({
       'name': name,
       'eventPicture' : eventPicture
