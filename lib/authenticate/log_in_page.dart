@@ -1,8 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/CustomWidgets/custom_scaffold_with_navBar.dart';
+import 'package:flutter_app/model/user.dart';
+import 'package:flutter_app/service/DatabaseService.dart';
 import 'package:flutter_app/size_config.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:flutter_app/service/auth.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:provider/provider.dart';
 
 import '../main.dart';
 
@@ -12,10 +17,15 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  String email = '';
+  String password = '';
   bool isLoggingIn = false;
-  AuthService signIn = AuthService();
+  AuthService _auth = AuthService();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Colors.blue,
       appBar: AppBar(
@@ -52,63 +62,92 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(
-                          0, SizeConfig.blockSizeVertical * 5, 0, 0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: Colors.transparent,
-                            border: Border(
-                                bottom: BorderSide(
-                                    width: 2.0, color: Colors.blueGrey))),
-                        width: SizeConfig.blockSizeHorizontal * 80,
-                        child: TextFormField(
-                          textAlign: TextAlign.left,
-                          decoration: InputDecoration(
-                              prefixIcon: Icon(Icons.person_outline),
-                              hintStyle: TextStyle(color: Colors.grey),
-                              border: InputBorder.none,
-                              hintText: 'Username'),
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          Padding(
+                          padding: EdgeInsets.fromLTRB(
+                              0, SizeConfig.blockSizeVertical * 5, 0, 0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: Colors.transparent,
+                                border: Border(
+                                    bottom: BorderSide(
+                                        width: 2.0, color: Colors.blueGrey))),
+                            width: SizeConfig.blockSizeHorizontal * 80,
+                            child: TextFormField(
+                              textAlign: TextAlign.left,
+                                validator: (val) => val.isEmpty ? "enter email" : null,
+                              onChanged: (val) {
+                                setState(() {
+                                  email = val;
+                                  print(val);
+                                });
+                              },
+                              decoration: InputDecoration(
+                                  prefixIcon: Icon(Icons.person_outline),
+                                  hintStyle: TextStyle(color: Colors.grey),
+                                  border: InputBorder.none,
+                                  hintText: 'Email'),
+                            ),
+                          ),
                         ),
-                      ),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.transparent,
+                                  border: Border(
+                                      bottom: BorderSide(
+                                          width: 2.0, color: Colors.blueGrey))),
+                              width: SizeConfig.blockSizeHorizontal * 80,
+                              child: TextFormField(
+                                textAlign: TextAlign.left,
+                                obscureText: true,
+                                validator: (val) => val.length < 6 ? "must be greater than 6 chars" : null,
+                                onChanged: (val) {
+                                  setState(() {
+                                    password = val;
+                                    print(val);
+                                  });
+                                },
+                                decoration: InputDecoration(
+                                    hintStyle: TextStyle(color: Colors.grey),
+                                    prefixIcon: Icon(Icons.vpn_key),
+                                    border: InputBorder.none,
+                                    hintText: 'Password'),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                            child: Container(
+                              width: SizeConfig.blockSizeHorizontal * 80,
+                              child: RaisedButton(
+                                color: Color.fromRGBO(30, 30, 60, 1),
+                                onPressed: () async {
+                                  if(_formKey.currentState.validate()){
+                                    dynamic result = await _auth.registerWithEmail(email, password);
+                                    print(result);
+                                    StreamProvider<QuerySnapshot>.value(value: DatabaseService().users, child:  MainPage());
+                                    Navigator.pushReplacement(context, FadeRoute( page: MainPage()));
+                                  }
+                                },
+                                child: Center(
+                                    child: Text("SIGN IN",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            letterSpacing: 0.8,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16))),
+                              ),
+                            ),
+                          ),
+                        ],
+                          ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: Colors.transparent,
-                            border: Border(
-                                bottom: BorderSide(
-                                    width: 2.0, color: Colors.blueGrey))),
-                        width: SizeConfig.blockSizeHorizontal * 80,
-                        child: TextFormField(
-                          textAlign: TextAlign.left,
-                          obscureText: true,
-                          decoration: InputDecoration(
-                              hintStyle: TextStyle(color: Colors.grey),
-                              prefixIcon: Icon(Icons.vpn_key),
-                              border: InputBorder.none,
-                              hintText: 'Password'),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                      child: Container(
-                        width: SizeConfig.blockSizeHorizontal * 80,
-                        child: RaisedButton(
-                          color: Color.fromRGBO(30, 30, 60, 1),
-                          onPressed: () {},
-                          child: Center(
-                              child: Text("SIGN IN",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      letterSpacing: 0.8,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16))),
-                        ),
-                      ),
-                    ),
+
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                       child: GestureDetector(
@@ -145,11 +184,11 @@ class _LoginState extends State<Login> {
                       setState(() {
                         isLoggingIn = true;
                       });
-                      if (await signIn.facebookSignIn() != null) {
+                      if (await _auth.facebookSignIn() != null) {
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (BuildContext context) => MyApp()));
+                                builder: (BuildContext context) => MainPage()));
                       } else {
                         print("you have to sign in");
                         setState(() {

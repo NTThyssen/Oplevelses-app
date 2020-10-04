@@ -67,7 +67,7 @@ class _CustomScaffoldWithNavBarState extends State<CustomScaffoldWithNavBar> {
             child: Row(
               children:[
                 IconButton(icon: Icon(Icons.home_outlined, color: Colors.white,), iconSize: 30, onPressed: () {
-                  Navigator.pushReplacement(context, FadeRoute( page: MyApp()));}),
+                  Navigator.pushReplacement(context, FadeRoute( page: MainPage()));}),
                 Spacer(flex: 2,),
                 IconButton(icon: Icon(Icons.message_outlined, color: Colors.white,), iconSize: 30, onPressed: () {
                   Navigator.pushReplacement(context, FadeRoute( page: Login())); }),

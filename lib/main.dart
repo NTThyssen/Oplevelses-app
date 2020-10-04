@@ -1,42 +1,58 @@
-import 'dart:io';
 
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/edit_profile.dart';
-import 'package:flutter_app/my_favorites.dart';
-import 'event_details.dart';
-import 'model/user.dart';
-import 'profile.dart';
-import 'size_config.dart';
-import 'authenticate/log_in_page.dart';
+import 'package:flutter_app/service/DatabaseService.dart';
+import 'package:flutter_app/service/auth.dart';
+import 'package:flutter_app/wrapper.dart';
 import 'package:provider/provider.dart';
-import 'CustomWidgets/custom_scaffold_with_navBar.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:image_picker/image_picker.dart';
+import 'authenticate/log_in_page.dart';
+import 'model/user.dart';
+import 'size_config.dart';
+import 'package:flutter_app/CustomWidgets/custom_scaffold_with_navBar.dart';
+
 void main() {
-  runApp(StreamProvider.value(
-    child: MaterialApp(
-      theme: ThemeData(
-        primaryColor: Color.fromRGBO(29, 33, 57, 1),
-        secondaryHeaderColor: Color.fromRGBO(131, 199, 242, 1),
-      ),
-      routes: {
-        '/': (context) => MyApp(),
-        '/login': (context) => Login(),
-        '/event_details': (context) => Test(),
-        '/profile': (context) => Profile(),
-        '/filter': (context) => Login(),
-        '/showProfile': (context) => EditProfile(),
-        '/editProfile': (context) => EditProfile(),
-        '/favorites': (context) => MyFavorites()
-      },
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(StreamProvider<QuerySnapshot>.value(value: DatabaseService().users, child: MaterialApp(
+    theme: ThemeData(
+      primaryColor: Color.fromRGBO(29, 33, 57, 1),
+      secondaryHeaderColor: Color.fromRGBO(131, 199, 242, 1),
     ),
-  ));
+
+      home: MyApp()
+  )));
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
+    return  MainPage();
+  }
+}
+
+class MainPage extends StatefulWidget {
+  @override
+  _MainPageState createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+  @override
+  Widget build(BuildContext context) {
+    dynamic users = Provider.of<QuerySnapshot>(context);
+    List count = new List();
+    var cnt = 0;
+    for(var doc in users.documents){
+      count.add(doc.data["eventPicture"]);
+
+    }
+
+    count.forEach((element) {
+      print(element);
+    });
+
+
+
     return CustomScaffoldWithNavBar(
       Container(
         child: GestureDetector(
@@ -48,22 +64,30 @@ class MyApp extends StatelessWidget {
           },
           child: Stack(
             children: [
-              PageView(
-                children: [
-                  EventDisplay(User("Nicklas", 23, "images/flower2.jpg","images/big-ice.png")),
-                  EventDisplay(User("Caroline", 23, "images/flower2.jpg", "images/scater-boi.png"))
-                  
-                ],
-              ),
+              PageView.builder(
+                itemBuilder: (context, position) {
+
+                  return  EventDisplay(User("id", name: "nicklas", age:position, profilePicture:"images/flower2.jpg", eventPicture: count.elementAt(position) != null ? count.elementAt(position) : "images/big-ice.png"));
+                },
+                itemCount: users.documents.length,
+
+              )
+
+
+
+                   // EventDisplay(User("id", name:"Caroline", age:23, profilePicture:"images/flower2.jpg", eventPicture:"images/scater-boi.png"))
+
+
+
             ],
           ),
         ),
       ),
       extendBody: true,
-
     );
   }
 }
+
 
 class EventDisplay extends StatefulWidget {
 
@@ -81,7 +105,7 @@ class _EventDisplayState extends State<EventDisplay> {
       decoration: BoxDecoration(
         image: DecorationImage(
           fit: BoxFit.fill,
-          image: AssetImage(widget.user.eventPicture),
+          image: widget.user.eventPicture == "images/big-ice.png" ? AssetImage(widget.user.eventPicture) : NetworkImage(widget.user.eventPicture),
         ),
       ),
       child: Column(

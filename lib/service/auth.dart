@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_app/model/user.dart';
+import 'package:flutter_app/service/DatabaseService.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -17,7 +18,6 @@ class AuthService {
    //auth change user stream
   Stream<User> get user {
     return _auth.onAuthStateChanged
-    //.map((FirebaseUser user) => _userFromFirebaseUser(user));
         .map(_userFromFirebaseUser);
   }
   Future facebookSignIn() async{
@@ -47,6 +47,21 @@ class AuthService {
       case FacebookLoginStatus.error:
         return null;
     }
+  }
+
+  Future registerWithEmail(String email, String password) async {
+    try{
+      AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      FirebaseUser user = result.user;
+
+      await DatabaseService(uid:user.uid).updateUserDate('name', null);
+      return _userFromFirebaseUser(user);
+    }catch(e){
+      print(e.toString());
+      return null;
+    }
+
+
   }
 
   Future signInAnon() async {
