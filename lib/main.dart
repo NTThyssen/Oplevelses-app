@@ -2,10 +2,12 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/add_event.dart';
 import 'package:flutter_app/service/DatabaseService.dart';
 import 'package:flutter_app/service/auth.dart';
 import 'package:flutter_app/size_config.dart';
 import 'package:flutter_app/wrapper.dart';
+import 'package:preload_page_view/preload_page_view.dart';
 import 'package:provider/provider.dart';
 import 'authenticate/log_in_page.dart';
 import 'package:provider/provider.dart';
@@ -15,14 +17,22 @@ import 'widgets/custom_scaffold_with_navBar.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(StreamProvider<QuerySnapshot>.value(value: DatabaseService().users, child: MaterialApp(
-    theme: ThemeData(
-      primaryColor: Color.fromRGBO(29, 33, 57, 1),
-      secondaryHeaderColor: Color.fromRGBO(131, 199, 242, 1),
-    ),
+  runApp(
+      MultiProvider(
+        providers: [
+          StreamProvider<QuerySnapshot>.value(value: DatabaseService().users, child: MyApp(),),
+          StreamProvider<User>.value(value: AuthService().user, child: AddEvent()),
+        ],
+        child:  MaterialApp(
+            theme: ThemeData(
+              primaryColor: Color.fromRGBO(29, 33, 57, 1),
+              secondaryHeaderColor: Color.fromRGBO(131, 199, 242, 1),
+            ),
 
-      home: MyApp()
-  )));
+            home: MyApp()
+        )
+      ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -41,20 +51,13 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
-    dynamic users = Provider.of<QuerySnapshot>(context);
+    dynamic users = Provider.of<QuerySnapshot>(context ?? []);
     List count = new List();
     var cnt = 0;
     for(var doc in users.documents){
       count.add(doc.data["eventPicture"]);
 
     }
-
-    count.forEach((element) {
-      print(element);
-    });
-
-
-
     return CustomScaffoldWithNavBar(
       Container(
         child: GestureDetector(
@@ -66,21 +69,13 @@ class _MainPageState extends State<MainPage> {
           },
           child: Stack(
             children: [
-              PageView.builder(
-                itemBuilder: (context, position) {
-
-                  return  EventDisplay(User(uid: 'id', name: "nicklas",  profilePicture:"images/flower2.jpg", imageURL: count.elementAt(position) != null ? count.elementAt(position) : "images/big-ice.png"));
-                },
+              PreloadPageView.builder(
                 itemCount: users.documents.length,
+                preloadPagesCount: 5,
+                itemBuilder: (BuildContext context, int position) =>  EventDisplay(User(uid: 'id', name: "nicklas",  profilePicture:"images/flower2.jpg", imageURL: count.elementAt(position) != null ? count.elementAt(position) : "images/big-ice.png")),
 
-              )
-
-
-
-                   // EventDisplay(User("id", name:"Caroline", age:23, profilePicture:"images/flower2.jpg", eventPicture:"images/scater-boi.png"))
-
-
-
+              controller: PreloadPageController(),
+             )
             ],
           ),
         ),
