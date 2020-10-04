@@ -24,6 +24,7 @@ class _AddEventState extends State<AddEvent> {
     if(image == null) {
       File img = await ImagePicker.pickImage(source: ImageSource.gallery);
       if (img != null) {
+        print("hello");
         image = img;
         setState(() {});
         uploadFile();

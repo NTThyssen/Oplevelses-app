@@ -49,11 +49,6 @@ class _MainPageState extends State<MainPage> {
 
     }
 
-    count.forEach((element) {
-      print(element);
-    });
-
-
 
     return CustomScaffoldWithNavBar(
       Container(
@@ -72,15 +67,7 @@ class _MainPageState extends State<MainPage> {
                   return  EventDisplay(User(uid: 'id', name: "nicklas",  profilePicture:"images/flower2.jpg", imageURL: count.elementAt(position) != null ? count.elementAt(position) : "images/big-ice.png"));
                 },
                 itemCount: users.documents.length,
-
               )
-
-
-
-                   // EventDisplay(User("id", name:"Caroline", age:23, profilePicture:"images/flower2.jpg", eventPicture:"images/scater-boi.png"))
-
-
-
             ],
           ),
         ),

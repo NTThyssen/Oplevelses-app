@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/authenticate/sing_up.dart';
 import 'package:flutter_app/model/user.dart';
 import 'package:flutter_app/service/DatabaseService.dart';
 import 'package:flutter_app/size_config.dart';
@@ -128,9 +129,8 @@ class _LoginState extends State<Login> {
                                 color: Color.fromRGBO(30, 30, 60, 1),
                                 onPressed: () async {
                                   if(_formKey.currentState.validate()){
-                                    dynamic result = await _auth.registerWithEmail(email, password);
+                                    dynamic result = await _auth.singInWithEmail(email, password);
                                     print(result);
-                                    StreamProvider<QuerySnapshot>.value(value: DatabaseService().users, child:  MainPage());
                                     Navigator.pushReplacement(context, FadeRoute( page: MainPage()));
                                   }
                                 },
@@ -171,14 +171,22 @@ class _LoginState extends State<Login> {
                         thickness: 2,
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                      child: Text("Or sign in with",
-                          style: TextStyle(
-                              color: Colors.white,
-                              letterSpacing: 0.8,
-                              fontWeight: FontWeight.normal,
-                              fontSize: 12)),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) => SignUp()));
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                        child: Text("Or sign in with",
+                            style: TextStyle(
+                                color: Colors.white,
+                                letterSpacing: 0.8,
+                                fontWeight: FontWeight.normal,
+                                fontSize: 12)),
+                      ),
                     ),
                     FacebookSignInButton(onPressed: () async {
                       setState(() {
