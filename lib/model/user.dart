@@ -1,45 +1,41 @@
 class User {
-  int id;
   String name;
   String imageURL;
   String uid;
-  String name;
   int age;
   String profilePicture;
-  String eventPicture;
 
-  User(this.uid, {this.name, this.age, this.profilePicture, this.eventPicture});
 
-  User({this.id, this.name, this.imageURL});
+  User({this.uid, this.name, this.profilePicture, this.imageURL});
 }
 
 // Friends
 final User lasse = User(
-  id: 1,
+  uid: '1',
   name: 'Lasse',
   imageURL: 'images/lasse.jpg',
 );
 
 final User christy = User(
-  id: 2,
+  uid: '2',
   name: 'Christy',
   imageURL: 'images/christy.jpg',
 );
 
 final User peter = User(
-  id: 3,
+  uid: '3',
   name: 'Peter',
   imageURL: 'images/peter.jpg',
 );
 
 final User tine = User(
-  id: 4,
+  uid: '4',
   name: 'Tine',
   imageURL: 'images/tine.jpg',
 );
 
 final User andrea = User(
-  id: 5,
+  uid: '5',
   name: 'Andrea',
   imageURL: 'images/andrea.jpg',
 );

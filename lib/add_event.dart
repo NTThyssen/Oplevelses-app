@@ -2,12 +2,13 @@ import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/CustomWidgets/custom_scaffold_with_navBar.dart';
 import 'package:flutter_app/service/DatabaseService.dart';
 import 'package:flutter_app/service/auth.dart';
 import 'package:flutter_app/size_config.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
+
+import 'widgets/custom_scaffold_with_navBar.dart';
 
 class AddEvent extends StatefulWidget {
   @override

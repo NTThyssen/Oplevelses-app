@@ -4,11 +4,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/service/DatabaseService.dart';
 import 'package:flutter_app/service/auth.dart';
+import 'package:flutter_app/size_config.dart';
 import 'package:flutter_app/wrapper.dart';
 import 'package:provider/provider.dart';
 import 'authenticate/log_in_page.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_app/my_favorites.dart';
+import 'model/user.dart';
 import 'widgets/custom_scaffold_with_navBar.dart';
 
 void main() {
@@ -67,7 +69,7 @@ class _MainPageState extends State<MainPage> {
               PageView.builder(
                 itemBuilder: (context, position) {
 
-                  return  EventDisplay(User("id", name: "nicklas", age:position, profilePicture:"images/flower2.jpg", eventPicture: count.elementAt(position) != null ? count.elementAt(position) : "images/big-ice.png"));
+                  return  EventDisplay(User(uid: 'id', name: "nicklas",  profilePicture:"images/flower2.jpg", imageURL: count.elementAt(position) != null ? count.elementAt(position) : "images/big-ice.png"));
                 },
                 itemCount: users.documents.length,
 
@@ -105,7 +107,7 @@ class _EventDisplayState extends State<EventDisplay> {
       decoration: BoxDecoration(
         image: DecorationImage(
           fit: BoxFit.fill,
-          image: widget.user.eventPicture == "images/big-ice.png" ? AssetImage(widget.user.eventPicture) : NetworkImage(widget.user.eventPicture),
+          image: widget.user.imageURL == "images/big-ice.png" ? AssetImage(widget.user.imageURL) : NetworkImage(widget.user.imageURL),
         ),
       ),
       child: Column(
@@ -131,7 +133,7 @@ class _EventDisplayState extends State<EventDisplay> {
                       CrossAxisAlignment.start,
                       children: [
                         Text(
-                          widget.user.name + " " + widget.user.age.toString(),
+                          widget.user.name + " " + (widget.user.age?.toString()  ?? "23" ),
                           style: TextStyle(
                               color: Colors.white,
                               letterSpacing: 1.0,

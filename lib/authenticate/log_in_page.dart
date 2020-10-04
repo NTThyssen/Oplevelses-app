@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/CustomWidgets/custom_scaffold_with_navBar.dart';
 import 'package:flutter_app/model/user.dart';
 import 'package:flutter_app/service/DatabaseService.dart';
 import 'package:flutter_app/size_config.dart';
+import 'package:flutter_app/widgets/custom_scaffold_with_navBar.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:flutter_app/service/auth.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';

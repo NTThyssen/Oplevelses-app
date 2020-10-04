@@ -12,7 +12,7 @@ class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   // This widget is the root of your application.
   User _userFromFirebaseUser(FirebaseUser user) {
-    return user != null ? User(user.uid) : null;
+    return user != null ? User(uid: user.uid) : null;
   }
 
    //auth change user stream
