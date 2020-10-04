@@ -55,6 +55,7 @@ class _CustomScaffoldWithNavBarState extends State<CustomScaffoldWithNavBar> {
 
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: keyboardIsOpened ? null : FloatingActionButton(
+          backgroundColor: Theme.of(context).secondaryHeaderColor,
           onPressed: () {
             Navigator.pushReplacement(context, SlideLeftRoute( page: AddEvent()));
           },

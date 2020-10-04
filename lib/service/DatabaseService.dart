@@ -4,7 +4,7 @@ class DatabaseService {
   final String uid;
   
   final CollectionReference userCollection = Firestore.instance.collection("users");
-
+  final CollectionReference userEventsCollection = Firestore.instance.collection("users/events");
   DatabaseService({this.uid});
 
 
