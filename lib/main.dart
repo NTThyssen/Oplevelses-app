@@ -56,29 +56,6 @@ class _MainPageState extends State<MainPage> {
 
   var isLoading = true;
   var items = 5;
-  List<Widget> _pages = <Widget>[EventDisplay
-  (User(uid: 'id',
-  name: "nicklas",
-  profilePicture: "images/flower2.jpg",
-  imageURL:  "images/big-ice.png")), EventDisplay
-    (User(uid: 'id',
-      name: "nicklas",
-      profilePicture: "images/flower2.jpg",
-      imageURL:  "images/big-ice.png")), EventDisplay
-    (User(uid: 'id',
-      name: "nicklas",
-      profilePicture: "images/flower2.jpg",
-      imageURL:  "images/big-ice.png")), EventDisplay
-    (User(uid: 'id',
-      name: "nicklas",
-      profilePicture: "images/flower2.jpg",
-      imageURL:  "images/big-ice.png")), EventDisplay
-    (User(uid: 'id',
-      name: "nicklas",
-      profilePicture: "images/flower2.jpg",
-      imageURL:  "images/big-ice.png"))];
-
-  @override
   Widget build(BuildContext context) {
 
     void preload(BuildContext context, String path) {
@@ -116,7 +93,16 @@ class _MainPageState extends State<MainPage> {
 
 
     }
-    return CustomScaffoldWithNavBar(
+    return isLoading ?  Container(
+        width: SizeConfig.blockSizeHorizontal*100,
+        height: SizeConfig.blockSizeVertical*100,
+        color: Theme.of(context).secondaryHeaderColor,
+    child: Center(
+    child: SpinKitCubeGrid(
+    color: Colors.white,
+    size: 80.0,
+    ),
+    )) :  CustomScaffoldWithNavBar(
       Container(
         child: GestureDetector(
           onDoubleTap: () {
@@ -125,17 +111,7 @@ class _MainPageState extends State<MainPage> {
           onTap: () {
             Navigator.pushNamed(context, '/event_details');
           },
-          child: isLoading ?  Container(
-            width: SizeConfig.blockSizeHorizontal*100,
-            height: SizeConfig.blockSizeVertical*100,
-            color: Theme.of(context).secondaryHeaderColor,
-            child: Center(
-              child: SpinKitCubeGrid(
-                color: Colors.white,
-                size: 80.0,
-              ),
-            ),
-          ) : Stack(
+          child: Stack(
             children: [
               PreloadPageView.builder(
                 itemCount: items,

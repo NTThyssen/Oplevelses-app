@@ -48,15 +48,15 @@ class _EditProfileState extends State<EditProfile> {
                 padding: const EdgeInsets.fromLTRB(0, 5, 0, 10),
                 child:
                     Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  CameraConnect(),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  CameraConnect(),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  CameraConnect()
+                      CameraConnect(),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      CameraConnect(),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      CameraConnect()
                 ]),
               ),
               TitleAndTextField(
