@@ -7,6 +7,7 @@ import 'package:flutter_app/service/DatabaseService.dart';
 import 'package:flutter_app/service/auth.dart';
 import 'package:flutter_app/size_config.dart';
 import 'package:flutter_app/wrapper.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:preload_page_view/preload_page_view.dart';
 import 'package:provider/provider.dart';
 import 'authenticate/log_in_page.dart';
@@ -44,18 +45,75 @@ class MyApp extends StatelessWidget {
 }
 
 class MainPage extends StatefulWidget {
+
   @override
   _MainPageState createState() => _MainPageState();
 }
 
 class _MainPageState extends State<MainPage> {
+
+
+
+  var isLoading = true;
+  var items = 5;
+  List<Widget> _pages = <Widget>[EventDisplay
+  (User(uid: 'id',
+  name: "nicklas",
+  profilePicture: "images/flower2.jpg",
+  imageURL:  "images/big-ice.png")), EventDisplay
+    (User(uid: 'id',
+      name: "nicklas",
+      profilePicture: "images/flower2.jpg",
+      imageURL:  "images/big-ice.png")), EventDisplay
+    (User(uid: 'id',
+      name: "nicklas",
+      profilePicture: "images/flower2.jpg",
+      imageURL:  "images/big-ice.png")), EventDisplay
+    (User(uid: 'id',
+      name: "nicklas",
+      profilePicture: "images/flower2.jpg",
+      imageURL:  "images/big-ice.png")), EventDisplay
+    (User(uid: 'id',
+      name: "nicklas",
+      profilePicture: "images/flower2.jpg",
+      imageURL:  "images/big-ice.png"))];
+
   @override
   Widget build(BuildContext context) {
+
+    void preload(BuildContext context, String path) {
+      if(path != null){
+        print(path);
+        var configuration = createLocalImageConfiguration(context);
+        var _image = new NetworkImage(path)..resolve(configuration);
+        _image.resolve(ImageConfiguration()).addListener(
+          ImageStreamListener(
+                (info, call) {
+                  isLoading = false;
+                  setState(() {
+
+                  });
+              print('Networkimage is fully loaded and saved');
+              // do something
+            },
+          ),
+        );
+      }
+
+    }
+
+
+
     dynamic users = Provider.of<QuerySnapshot>(context ?? []);
     List count = new List();
     var cnt = 0;
     for(var doc in users.documents){
-      count.add(doc.data["eventPicture"]);
+      if(cnt < 5){
+        count.add(doc.data["eventPicture"]);
+        preload(context, doc.data["eventPicture"]);
+        cnt++;
+      }
+
 
     }
     return CustomScaffoldWithNavBar(
@@ -67,13 +125,34 @@ class _MainPageState extends State<MainPage> {
           onTap: () {
             Navigator.pushNamed(context, '/event_details');
           },
-          child: Stack(
+          child: isLoading ?  Container(
+            width: SizeConfig.blockSizeHorizontal*100,
+            height: SizeConfig.blockSizeVertical*100,
+            color: Theme.of(context).secondaryHeaderColor,
+            child: Center(
+              child: SpinKitCubeGrid(
+                color: Colors.white,
+                size: 80.0,
+              ),
+            ),
+          ) : Stack(
             children: [
               PreloadPageView.builder(
-                itemCount: users.documents.length,
+                itemCount: items,
                 preloadPagesCount: 5,
-                itemBuilder: (BuildContext context, int position) =>  EventDisplay(User(uid: 'id', name: "nicklas",  profilePicture:"images/flower2.jpg", imageURL: count.elementAt(position) != null ? count.elementAt(position) : "images/big-ice.png")),
-
+                onPageChanged: (index) {
+                  if(index == items-1){
+                    print("last page");
+                    setState(() {
+                    });
+                    print(index);
+                  }
+                },
+                itemBuilder: (BuildContext context, int position) {
+                for(var i=0; i< items; i++){
+                  return EventDisplay(User(uid: 'id', name: "nicklas",  profilePicture:"images/flower2.jpg", imageURL: count.elementAt(position) != null ? count.elementAt(position) : "images/big-ice.png"));
+                };
+                },
               controller: PreloadPageController(),
              )
             ],

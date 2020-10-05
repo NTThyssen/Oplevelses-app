@@ -4,6 +4,7 @@ class User {
   String uid;
   int age;
   String profilePicture;
+  String eventPicture;
 
 
   User({this.uid, this.name, this.profilePicture, this.imageURL});
