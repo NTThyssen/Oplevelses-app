@@ -144,6 +144,15 @@ class Profile extends StatelessWidget {
           ),
         ),
       ),
+      title: 'Profile',
+      rightNavIcons: [
+        IconButton(
+          icon: Icon(
+            Icons.more_vert,
+          ),
+          onPressed: () {},
+        ),
+      ],
     );
   }
 }
