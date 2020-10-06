@@ -8,8 +8,27 @@ import 'package:flutter_app/widgets/custom_scaffold_with_navBar.dart';
 import 'package:flutter_app/widgets/friends_widget.dart';
 import 'package:flutter_app/widgets/info_header_widget.dart';
 import 'package:flutter_app/widgets/instagram_images_widget.dart';
+import 'package:flutter_app/widgets/pop_up_menu.dart';
 
-class Profile extends StatelessWidget {
+class Profile extends StatefulWidget {
+  @override
+  _ProfileState createState() => _ProfileState();
+}
+
+List<PopUpItem> choices = <PopUpItem>[
+  PopUpItem(title: 'Rediger'),
+  PopUpItem(title: 'Indstillinger'),
+];
+
+class _ProfileState extends State<Profile> {
+  PopUpItem selectedItem = choices[0];
+
+  void _select(PopUpItem item) {
+    setState(() {
+      selectedItem = item;
+    });
+  }
+
   String checkFbData() {
     String name;
     if (UserLoginState.instance.getProfile() != null) {
@@ -45,11 +64,12 @@ class Profile extends StatelessWidget {
   AuthService auth = AuthService();
 
   String name;
+
   @override
   Widget build(BuildContext context) {
     //convertDateFromString(UserLoginState.instance.getProfile()['birthday']);
     return CustomScaffoldWithNavBar(
-     body: Container(
+      body: Container(
         color: Theme.of(context).primaryColor,
         child: SingleChildScrollView(
           child: Column(
@@ -122,43 +142,32 @@ class Profile extends StatelessWidget {
                 text: 'Venner',
               ),
               // Instagram
-              InstagramImagesWidget(),
               Padding(
-                padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                child: MenuButton(text: "Vis Profil", menuIcon: Icons.person),
+                padding: const EdgeInsets.only(bottom: 100),
+                child: InstagramImagesWidget(),
               ),
-              Divider(
-                height: 1,
-                thickness: 1.0,
-                endIndent: 10.0,
-                indent: 10,
-              ),
-              MenuButton(text: "Rediger", menuIcon: Icons.edit),
-              Divider(
-                height: 1,
-                thickness: 1.0,
-                endIndent: 10.0,
-                indent: 10,
-              ),
-              MenuButton(text: "Indstillinger", menuIcon: Icons.settings),
-              Container(
-                color: Colors.transparent,
-                height: SizeConfig.blockSizeVertical*7,
-              )
             ],
           ),
         ),
       ),
       title: 'Profile',
-      rightNavIcons: [
-        IconButton(
-          icon: Icon(
-            Icons.more_vert,
-          ),
-          onPressed: () {},
+      extendBody: true,
+      icons: [
+        PopupMenuButton<PopUpItem>(
+          onCanceled: () {
+            print('On cancelled was called');
+          },
+          onSelected: _select,
+          itemBuilder: (BuildContext context) {
+            return choices.map((PopUpItem choice) {
+              return PopupMenuItem<PopUpItem>(
+                value: choice,
+                child: Text(choice.title),
+              );
+            }).toList();
+          },
         ),
       ],
-      extendBody: true,
     );
   }
 }

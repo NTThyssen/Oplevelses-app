@@ -21,11 +21,24 @@ void main() {
   runApp(
     MultiProvider(
         providers: [
-          StreamProvider<List<User>>.value(value: DatabaseService().users, child: MyApp(),),
-          StreamProvider<List<User>>.value(value: DatabaseService().users, child: Test(pictureUrl: null,),),
-          StreamProvider<List<User>>.value(value: DatabaseService().users, child: AddEvent(),),
-          StreamProvider<User>.value(value: AuthService().user, child: AddEvent()),
-          StreamProvider<User>.value(value: AuthService().user, child: CustomScaffoldWithNavBar()),
+          StreamProvider<List<User>>.value(
+            value: DatabaseService().users,
+            child: MyApp(),
+          ),
+          StreamProvider<List<User>>.value(
+            value: DatabaseService().users,
+            child: Test(
+              pictureUrl: null,
+            ),
+          ),
+          StreamProvider<List<User>>.value(
+            value: DatabaseService().users,
+            child: AddEvent(),
+          ),
+          StreamProvider<User>.value(
+              value: AuthService().user, child: AddEvent()),
+          StreamProvider<User>.value(
+              value: AuthService().user, child: CustomScaffoldWithNavBar()),
         ],
         child: MaterialApp(
             theme: ThemeData(
@@ -71,109 +84,91 @@ class _MainPageState extends State<MainPage> {
       }
     }
 
-
-
     final users = Provider.of<List<User>>(context);
     List count = new List();
     var cnt = 0;
-    if(users != null){
-      for(var doc in users){
+    if (users != null) {
+      for (var doc in users) {
         print(doc.name);
         print(doc.event.pictureUrl);
-        if(cnt < 5){
+        if (cnt < 5) {
           count.add(doc.event.pictureUrl);
           preload(context, doc.event.pictureUrl);
           cnt++;
         }
       }
-
     }
 
-    return isLoading ?  Container(
-        width: SizeConfig.blockSizeHorizontal*100,
-        height: SizeConfig.blockSizeVertical*100,
-        color: Theme.of(context).secondaryHeaderColor,
-    child: Center(
-    child: SpinKitCubeGrid(
-    color: Colors.white,
-    size: 80.0,
-    ),
-    )) :  CustomScaffoldWithNavBar(
-     body: Container(
-          child: Stack(
-            children: [
-              PreloadPageView.builder(
-                itemCount: users.length,
-                preloadPagesCount: 5,
-                onPageChanged: (index) {
-                  if(index == items-1){
-                    print("last page");
-                    setState(() {
-                    });
-                    print(index);
-                  }
-                },
-                itemBuilder: (BuildContext context, int position) {
-                for(var i=0; i< users.length; i++){
-                 return GestureDetector(
-                      onDoubleTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (e) => SingInAlertBox(alertTitle: "FAVORIT ANIMATION", alertContent: "an animation will apper", actions: [FlatButton(onPressed: () {Navigator.pop(context);}, child: Text("ok"))],),
-                        );
-                      },
-                      onTap: () {
-                        Navigator.push(context, FadeRoute( page: Test(pictureUrl: count.elementAt(position))));
-                      },
-                    child:EventDisplay(User(uid: 'id', name: "nicklas",  profilePicture:"images/flower2.jpg", imageURL: count.elementAt(position) != null ? count.elementAt(position) : "images/big-ice.png")),
-                  );
-
-                };
-                },
-                child: Stack(
-                  children: [
-                    PreloadPageView.builder(
-                      itemCount: items,
-                      preloadPagesCount: 5,
-                      onPageChanged: (index) {
-                        if (index == items - 1) {
-                          print("last page");
-                          setState(() {});
-                          print(index);
-                        }
-                      },
-                      itemBuilder: (BuildContext context, int position) {
-                        for (var i = 0; i < items; i++) {
-                          return EventDisplay(User(
+    return isLoading
+        ? Container(
+            width: SizeConfig.blockSizeHorizontal * 100,
+            height: SizeConfig.blockSizeVertical * 100,
+            color: Theme.of(context).secondaryHeaderColor,
+            child: Center(
+              child: SpinKitCubeGrid(
+                color: Colors.white,
+                size: 80.0,
+              ),
+            ))
+        : CustomScaffoldWithNavBar(
+            body: Container(
+              child: Stack(
+                children: [
+                  PreloadPageView.builder(
+                    itemCount: users.length,
+                    preloadPagesCount: 5,
+                    onPageChanged: (index) {
+                      if (index == items - 1) {
+                        print("last page");
+                        setState(() {});
+                        print(index);
+                      }
+                    },
+                    itemBuilder: (BuildContext context, int position) {
+                      for (var i = 0; i < users.length; i++) {
+                        return GestureDetector(
+                          onDoubleTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (e) => SingInAlertBox(
+                                alertTitle: "FAVORIT ANIMATION",
+                                alertContent: "an animation will apper",
+                                actions: [
+                                  FlatButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text("ok"))
+                                ],
+                              ),
+                            );
+                          },
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                FadeRoute(
+                                    page: Test(
+                                        pictureUrl:
+                                            count.elementAt(position))));
+                          },
+                          child: EventDisplay(User(
                               uid: 'id',
                               name: "nicklas",
                               profilePicture: "images/flower2.jpg",
                               imageURL: count.elementAt(position) != null
                                   ? count.elementAt(position)
-                                  : "images/big-ice.png"));
-                        }
-                        ;
-                      },
-                      controller: PreloadPageController(),
-                    )
-                  ],
-                ),
+                                  : "images/big-ice.png")),
+                        );
+                      }
+                      ;
+                    },
+                    controller: PreloadPageController(),
+                  )
+                ],
               ),
             ),
-            leftNavIcon: Icons.filter_list,
-            rightNavIcons: [
-              IconButton(
-                icon: Icon(
-                  Icons.share,
-                  color: Colors.white,
-                ),
-                onPressed: () {},
-              ),
-            ],
-          ),
-      ),
-      extendBody: true,
-    );
+            extendBody: true,
+          );
   }
 }
 
