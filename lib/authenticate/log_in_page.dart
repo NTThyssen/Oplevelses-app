@@ -144,6 +144,26 @@ class _LoginState extends State<Login> {
                               ),
                             ),
                           ),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                            child: Container(
+                              width: SizeConfig.blockSizeHorizontal * 80,
+                              child: RaisedButton(
+                                color: Color.fromRGBO(30, 30, 60, 1),
+                                onPressed: () async {
+                                  _auth.signInAnon();
+                                    Navigator.pushReplacement(context, FadeRoute( page: MyApp()));
+                                },
+                                child: Center(
+                                    child: Text("SIGN IN ANONYMOUSLY",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            letterSpacing: 0.8,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16))),
+                              ),
+                            ),
+                          ),
                         ],
                           ),
                     ),

@@ -41,7 +41,7 @@ class _TestState extends State<Test> {
     });
 
     return CustomScaffoldWithNavBar(
-      Container(
+     body: Container(
         color: Theme.of(context).primaryColor,
         child: SingleChildScrollView(
           child: Column(

@@ -24,7 +24,7 @@ class _MyFavoritesState extends State<MyFavorites> {
   Widget build(BuildContext context) {
     uploadFile();
     return CustomScaffoldWithNavBar(
-        Container(
+        body : Container(
             child: SingleChildScrollView(
               child: Column(children: [
                 FavoriteCardView(),

@@ -18,7 +18,7 @@ class _EditProfileState extends State<EditProfile> {
   @override
   Widget build(BuildContext context) {
     return CustomScaffoldWithNavBar(
-      Container(
+     body: Container(
         decoration: BoxDecoration(
           color: Color.fromRGBO(239, 239, 244, 1),
         ),

@@ -73,7 +73,7 @@ class _AddEventState extends State<AddEvent> {
 
 
     return CustomScaffoldWithNavBar(
-        Container(
+        body : Container(
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/add_event.dart';
 import 'package:flutter_app/authenticate/log_in_page.dart';
+import 'package:flutter_app/model/user.dart';
 import 'package:flutter_app/my_favorites.dart';
 import 'package:flutter_app/profile.dart';
+import 'package:flutter_app/service/auth.dart';
+import 'package:flutter_app/widgets/sing_in_alert_box.dart';
+import 'package:provider/provider.dart';
 
 import '../main.dart';
 
@@ -14,7 +18,7 @@ class CustomScaffoldWithNavBar extends StatefulWidget {
   final List<IconButton> icons;
   final Color backgroundColor;
 
-  CustomScaffoldWithNavBar(this.body, {this.extendBody, this.title, this.extendUp, this.icons, this.backgroundColor});
+  CustomScaffoldWithNavBar({ @required this.body, this.extendBody, this.title, this.extendUp, this.icons, this.backgroundColor});
 
   @override
   _CustomScaffoldWithNavBarState createState() =>
@@ -31,6 +35,9 @@ class _CustomScaffoldWithNavBarState extends State<CustomScaffoldWithNavBar> {
   @override
   Widget build(BuildContext context) {
     bool keyboardIsOpened = MediaQuery.of(context).viewInsets.bottom != 0.0;
+    final authUser = Provider.of<User>(context);
+    final AuthService _auth = new AuthService();
+
     return Scaffold(
       extendBodyBehindAppBar: widget.extendUp ?? false,
         appBar: AppBar(
@@ -41,7 +48,9 @@ class _CustomScaffoldWithNavBarState extends State<CustomScaffoldWithNavBar> {
             icon: Icon(
               Icons.filter_list,
             ),
-            onPressed: () {},
+            onPressed: () async {
+              await _auth.signOut();
+            },
           ),
           actions: widget.icons
         ),
@@ -50,7 +59,15 @@ class _CustomScaffoldWithNavBarState extends State<CustomScaffoldWithNavBar> {
         floatingActionButton: keyboardIsOpened ? null : FloatingActionButton(
           backgroundColor: Theme.of(context).secondaryHeaderColor,
           onPressed: () {
-            Navigator.pushReplacement(context, SlideLeftRoute( page: AddEvent()));
+            if(authUser != null){
+              Navigator.pushReplacement(context, SlideLeftRoute( page: AddEvent()));
+            }else{
+              showDialog(
+                context: context,
+                builder: (e) => SingInAlertBox(),
+              );
+            }
+
           },
           child: Icon(Icons.add, size: 40),
           elevation: 2.0,
@@ -59,54 +76,38 @@ class _CustomScaffoldWithNavBarState extends State<CustomScaffoldWithNavBar> {
           child: Padding(
             padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
             child: Row(
-              children: [
-                IconButton(
-                    icon: Icon(
-                      Icons.home,
-                      color: Colors.white,
-                    ),
-                    iconSize: 30,
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                          context, FadeRoute(page: MainPage()));
-                    }),
-                Spacer(
-                  flex: 2,
-                ),
-                IconButton(
-                    icon: Icon(
-                      Icons.message,
-                      color: Colors.white,
-                    ),
-                    iconSize: 30,
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                          context, FadeRoute(page: Login()));
-                    }),
+              children:[
+                IconButton(icon: Icon(Icons.home_outlined, color: Colors.white,), iconSize: 30, onPressed: () {
+
+                  Navigator.pushReplacement(context, FadeRoute( page: MainPage()));}),
+                Spacer(flex: 2,),
+                IconButton(icon: Icon(Icons.message_outlined, color: Colors.white,), iconSize: 30, onPressed: () {
+                  //Navigator.pushReplacement(context, FadeRoute( page: Login()));
+                }),
                 Spacer(flex: 8),
-                IconButton(
-                    icon: Icon(
-                      Icons.favorite_border,
-                      color: Colors.white,
-                    ),
-                    iconSize: 30,
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                          context, FadeRoute(page: MyFavorites()));
-                    }),
-                Spacer(
-                  flex: 2,
+                IconButton(icon: Icon(Icons.favorite_border, color: Colors.white,), iconSize: 30, onPressed: () {
+                  if(authUser != null){
+                    Navigator.pushReplacement(context, FadeRoute( page: MyFavorites()));
+                  }else{
+                    showDialog(
+                      context: context,
+                      builder: (e) => SingInAlertBox(),
+                    );
+                  }
+
+                }),
+                Spacer(flex: 2,),
+                IconButton(icon: Icon(Icons.person_outline, color: Colors.white,), iconSize: 30, onPressed: () {
+                  if(authUser != null){
+                    Navigator.pushReplacement(context, FadeRoute( page: Profile()));
+                  }else{
+                    showDialog(
+                      context: context,
+                      builder: (e) => SingInAlertBox(),
+                    );
+                  }
+                }
                 ),
-                IconButton(
-                    icon: Icon(
-                      Icons.person_outline,
-                      color: Colors.white,
-                    ),
-                    iconSize: 30,
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                          context, FadeRoute(page: Profile()));
-                    }),
               ],
             ),
           ),
