@@ -78,12 +78,23 @@ class AuthService {
     try {
       AuthResult result = await _auth.signInAnonymously();
       FirebaseUser user = result.user;
-      return user;
+      print(user.displayName);
+      return _userFromFirebaseUser(user);
     }catch(e){
       print(e.toString());
       return null;
     }
   }
+
+  Future signOut() async {
+    try{
+      return await _auth.signOut();
+    }catch(e){
+      print(e.toString());
+      return null;
+    }
+  }
+
 }
 
 class UserLoginState {

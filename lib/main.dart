@@ -6,6 +6,7 @@ import 'package:flutter_app/add_event.dart';
 import 'package:flutter_app/service/DatabaseService.dart';
 import 'package:flutter_app/service/auth.dart';
 import 'package:flutter_app/size_config.dart';
+import 'package:flutter_app/widgets/sing_in_alert_box.dart';
 import 'package:flutter_app/wrapper.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:preload_page_view/preload_page_view.dart';
@@ -26,6 +27,7 @@ void main() {
           StreamProvider<List<User>>.value(value: DatabaseService().users, child: Test(pictureUrl: null,),),
           StreamProvider<List<User>>.value(value: DatabaseService().users, child: AddEvent(),),
           StreamProvider<User>.value(value: AuthService().user, child: AddEvent()),
+          StreamProvider<User>.value(value: AuthService().user, child: CustomScaffoldWithNavBar()),
         ],
         child:  MaterialApp(
             theme: ThemeData(
@@ -110,7 +112,7 @@ class _MainPageState extends State<MainPage> {
     size: 80.0,
     ),
     )) :  CustomScaffoldWithNavBar(
-      Container(
+     body: Container(
           child: Stack(
             children: [
               PreloadPageView.builder(
@@ -128,7 +130,10 @@ class _MainPageState extends State<MainPage> {
                 for(var i=0; i< users.length; i++){
                  return GestureDetector(
                       onDoubleTap: () {
-                        Navigator.pushNamed(context, '/favorites');
+                        showDialog(
+                          context: context,
+                          builder: (e) => SingInAlertBox(alertTitle: "FAVORIT ANIMATION", alertContent: "an animation will apper", actions: [FlatButton(onPressed: () {Navigator.pop(context);}, child: Text("ok"))],),
+                        );
                       },
                       onTap: () {
                         Navigator.push(context, FadeRoute( page: Test(pictureUrl: count.elementAt(position))));

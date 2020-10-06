@@ -49,7 +49,7 @@ class Profile extends StatelessWidget {
   Widget build(BuildContext context) {
     //convertDateFromString(UserLoginState.instance.getProfile()['birthday']);
     return CustomScaffoldWithNavBar(
-      Container(
+     body: Container(
         color: Theme.of(context).primaryColor,
         child: SingleChildScrollView(
           child: Column(
