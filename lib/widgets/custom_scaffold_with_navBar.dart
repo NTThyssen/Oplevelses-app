@@ -10,11 +10,11 @@ class CustomScaffoldWithNavBar extends StatefulWidget {
   final Container body;
   final bool extendBody;
   final String title;
-  final IconData leftNavIcon;
-  final List<Widget> rightNavIcons;
+  final bool extendUp;
+  final List<IconButton> icons;
+  final Color backgroundColor;
 
-  CustomScaffoldWithNavBar(this.body,
-      {this.extendBody, this.title, this.leftNavIcon, this.rightNavIcons});
+  CustomScaffoldWithNavBar(this.body, {this.extendBody, this.title, this.extendUp, this.icons, this.backgroundColor});
 
   @override
   _CustomScaffoldWithNavBarState createState() =>
@@ -32,30 +32,29 @@ class _CustomScaffoldWithNavBarState extends State<CustomScaffoldWithNavBar> {
   Widget build(BuildContext context) {
     bool keyboardIsOpened = MediaQuery.of(context).viewInsets.bottom != 0.0;
     return Scaffold(
+      extendBodyBehindAppBar: widget.extendUp ?? false,
         appBar: AppBar(
-            title: Text(widget.title ?? ""),
-            centerTitle: true,
-            backgroundColor: Color.fromRGBO(29, 33, 57, 0.7),
-            leading: IconButton(
-              icon: Icon(
-                widget.leftNavIcon,
-              ),
-              onPressed: () {},
+          title: Text(widget.title ?? ""),
+          centerTitle: true,
+          backgroundColor: widget.backgroundColor,
+          leading: IconButton(
+            icon: Icon(
+              Icons.filter_list,
             ),
-            actions: widget.rightNavIcons),
+            onPressed: () {},
+          ),
+          actions: widget.icons
+        ),
         extendBody: widget.extendBody ?? false,
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: keyboardIsOpened
-            ? null
-            : FloatingActionButton(
-                backgroundColor: Theme.of(context).secondaryHeaderColor,
-                onPressed: () {
-                  Navigator.pushReplacement(
-                      context, SlideLeftRoute(page: AddEvent()));
-                },
-                child: Icon(Icons.add),
-                elevation: 2.0,
-              ),
+        floatingActionButton: keyboardIsOpened ? null : FloatingActionButton(
+          backgroundColor: Theme.of(context).secondaryHeaderColor,
+          onPressed: () {
+            Navigator.pushReplacement(context, SlideLeftRoute( page: AddEvent()));
+          },
+          child: Icon(Icons.add, size: 40),
+          elevation: 2.0,
+        ),
         bottomNavigationBar: BottomAppBar(
           child: Padding(
             padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
