@@ -47,6 +47,7 @@ class AuthService {
       case FacebookLoginStatus.error:
         return null;
     }
+
   }
 
   Future registerWithEmail(String email, String password) async {
