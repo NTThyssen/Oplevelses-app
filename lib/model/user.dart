@@ -4,10 +4,21 @@ class User {
   String uid;
   int age;
   String profilePicture;
-  String eventPicture;
+  Event event;
 
+  User({this.uid, this.name, this.profilePicture, this.imageURL, this.event});
 
-  User({this.uid, this.name, this.profilePicture, this.imageURL});
+}
+
+class Event {
+  String pictureUrl;
+  String title;
+  String description;
+  String price;
+  String date;
+  String city;
+
+  Event({this.pictureUrl, this.title, this.description, this.price, this.date, this.city});
 }
 
 // Friends

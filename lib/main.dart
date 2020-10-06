@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 import 'authenticate/log_in_page.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_app/my_favorites.dart';
+import 'event_details.dart';
 import 'model/user.dart';
 import 'widgets/custom_scaffold_with_navBar.dart';
 
@@ -21,7 +22,9 @@ void main() {
   runApp(
       MultiProvider(
         providers: [
-          StreamProvider<QuerySnapshot>.value(value: DatabaseService().users, child: MyApp(),),
+          StreamProvider<List<User>>.value(value: DatabaseService().users, child: MyApp(),),
+          StreamProvider<List<User>>.value(value: DatabaseService().users, child: Test(pictureUrl: null,),),
+          StreamProvider<List<User>>.value(value: DatabaseService().users, child: AddEvent(),),
           StreamProvider<User>.value(value: AuthService().user, child: AddEvent()),
         ],
         child:  MaterialApp(
@@ -81,18 +84,22 @@ class _MainPageState extends State<MainPage> {
 
 
 
-    dynamic users = Provider.of<QuerySnapshot>(context ?? []);
+    final users = Provider.of<List<User>>(context);
     List count = new List();
     var cnt = 0;
-    for(var doc in users.documents){
-      if(cnt < 5){
-        count.add(doc.data["eventPicture"]);
-        preload(context, doc.data["eventPicture"]);
-        cnt++;
+    if(users != null){
+      for(var doc in users){
+        print(doc.name);
+        print(doc.event.pictureUrl);
+        if(cnt < 5){
+          count.add(doc.event.pictureUrl);
+          preload(context, doc.event.pictureUrl);
+          cnt++;
+        }
       }
 
-
     }
+
     return isLoading ?  Container(
         width: SizeConfig.blockSizeHorizontal*100,
         height: SizeConfig.blockSizeVertical*100,
@@ -104,17 +111,10 @@ class _MainPageState extends State<MainPage> {
     ),
     )) :  CustomScaffoldWithNavBar(
       Container(
-        child: GestureDetector(
-          onDoubleTap: () {
-            Navigator.pushNamed(context, '/favorites');
-          },
-          onTap: () {
-            Navigator.pushNamed(context, '/event_details');
-          },
           child: Stack(
             children: [
               PreloadPageView.builder(
-                itemCount: items,
+                itemCount: users.length,
                 preloadPagesCount: 5,
                 onPageChanged: (index) {
                   if(index == items-1){
@@ -125,15 +125,23 @@ class _MainPageState extends State<MainPage> {
                   }
                 },
                 itemBuilder: (BuildContext context, int position) {
-                for(var i=0; i< items; i++){
-                  return EventDisplay(User(uid: 'id', name: "nicklas",  profilePicture:"images/flower2.jpg", imageURL: count.elementAt(position) != null ? count.elementAt(position) : "images/big-ice.png"));
+                for(var i=0; i< users.length; i++){
+                 return GestureDetector(
+                      onDoubleTap: () {
+                        Navigator.pushNamed(context, '/favorites');
+                      },
+                      onTap: () {
+                        Navigator.push(context, FadeRoute( page: Test(pictureUrl: count.elementAt(position))));
+                      },
+                    child:EventDisplay(User(uid: 'id', name: "nicklas",  profilePicture:"images/flower2.jpg", imageURL: count.elementAt(position) != null ? count.elementAt(position) : "images/big-ice.png")),
+                  );
+
                 };
                 },
               controller: PreloadPageController(),
              )
             ],
           ),
-        ),
       ),
       extendBody: true,
     );

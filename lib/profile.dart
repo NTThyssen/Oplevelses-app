@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/service/auth.dart';
 import 'package:age/age.dart';
+import 'package:flutter_app/size_config.dart';
 import 'package:flutter_app/widgets/about_text.dart';
 import 'package:flutter_app/widgets/custom_scaffold_with_navBar.dart';
 import 'package:flutter_app/widgets/friends_widget.dart';
@@ -140,10 +141,15 @@ class Profile extends StatelessWidget {
                 indent: 10,
               ),
               MenuButton(text: "Indstillinger", menuIcon: Icons.settings),
+              Container(
+                color: Colors.transparent,
+                height: SizeConfig.blockSizeVertical*7,
+              )
             ],
           ),
         ),
       ),
+      extendBody: true,
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:date_format/date_format.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/service/DatabaseService.dart';
@@ -13,21 +14,31 @@ import 'model/user.dart';
 import 'widgets/custom_scaffold_with_navBar.dart';
 
 class AddEvent extends StatefulWidget {
+  String title = "";
+  String description = "";
+  String price = "";
+  String date = "";
+  String city = "";
+  String _uploadedFileURL = "";
+  String uid = "";
+  User currentUser;
   @override
   _AddEventState createState() => _AddEventState();
 }
 
 class _AddEventState extends State<AddEvent> {
 
-  File image;
-  String _uploadedFileURL;
-
-
-
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<User>(context);
+    final users = Provider.of<List<User>>(context);
+    final authUser = Provider.of<User>(context);
+    File image;
+
+
+    users.forEach((user) {
+      widget.currentUser = User(uid: authUser.uid, event: Event(title: widget.title, description: widget.description, date: widget.date, price: widget.price, pictureUrl: widget._uploadedFileURL));
+    });
 
     Future uploadFile() async {
       StorageReference storageReference = FirebaseStorage.instance
@@ -38,8 +49,7 @@ class _AddEventState extends State<AddEvent> {
       print('File Uploaded');
       storageReference.getDownloadURL().then((fileURL) {
         setState(() {
-          _uploadedFileURL = fileURL;
-          DatabaseService(uid: user.uid).updateUserDate("name", _uploadedFileURL);
+          widget._uploadedFileURL = fileURL;
         });
       });
     }
@@ -88,11 +98,236 @@ class _AddEventState extends State<AddEvent> {
                   child: Text("Tilføj billede"),
                 ),
                 SizedBox(height: SizeConfig.blockSizeVertical*3,),
-                InoutBoxWithBottomShadow("Overskrift"),
-                InoutBoxWithBottomShadow("Beskrivelse", bigBox: true,),
-                InoutBoxWithBottomShadow("Pris"),
-                InoutBoxWithBottomShadow("Dato"),
-                InoutBoxWithBottomShadow("By"),
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
+                child: Center(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8.0),
+                    child: Container(
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
+                        child: TextFormField(
+                          onChanged: (input) {
+                            setState(() {
+                                widget.title = input;
+                            });
+                          },
+                          keyboardType: TextInputType.multiline,
+                          maxLines: null,
+                          maxLength: 180,
+                          decoration: InputDecoration(
+                            hintStyle: TextStyle(color: Colors.grey),
+                            border: InputBorder.none,
+                            labelText: "Overskrift",
+                            counterText: "",
+                          ),
+
+                        ),
+                      ),
+                      width: SizeConfig.blockSizeHorizontal*90,
+                      height: SizeConfig.blockSizeHorizontal*14,
+                      margin: const EdgeInsets.only(bottom: 6.0), //Same as `blurRadius` i guess
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5.0),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey,
+                            offset: Offset(0.0, 1.0), //(x,y)
+                            blurRadius: 6.0,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
+                  child: Center(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8.0),
+                      child: Container(
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
+                          child: TextFormField(
+                            onChanged: (input) {
+                              setState(() {
+                                widget.description = input;
+                              });
+                            },
+                            keyboardType: TextInputType.multiline,
+                            maxLines: null,
+                            maxLength: 180,
+                            decoration: InputDecoration(
+                              hintStyle: TextStyle(color: Colors.grey),
+                              border: InputBorder.none,
+                              labelText: "Beskrivelse",
+                              counterText: "",
+                            ),
+
+                          ),
+                        ),
+                        width: SizeConfig.blockSizeHorizontal*90,
+                        height: SizeConfig.blockSizeHorizontal*35,
+                        margin: const EdgeInsets.only(bottom: 6.0), //Same as `blurRadius` i guess
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5.0),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey,
+                              offset: Offset(0.0, 1.0), //(x,y)
+                              blurRadius: 6.0,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
+                  child: Center(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8.0),
+                      child: Container(
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
+                          child: TextFormField(
+                            onChanged: (input) {
+                              setState(() {
+                                  widget.price = input;
+                              });
+                            },
+                            keyboardType: TextInputType.multiline,
+                            maxLines: null,
+                            maxLength: 180,
+                            decoration: InputDecoration(
+                              hintStyle: TextStyle(color: Colors.grey),
+                              border: InputBorder.none,
+                              labelText: "Pris",
+                              counterText: "",
+                            ),
+
+                          ),
+                        ),
+                        width: SizeConfig.blockSizeHorizontal*90,
+                        height: SizeConfig.blockSizeHorizontal*14,
+                        margin: const EdgeInsets.only(bottom: 6.0), //Same as `blurRadius` i guess
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5.0),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey,
+                              offset: Offset(0.0, 1.0), //(x,y)
+                              blurRadius: 6.0,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
+                  child: Center(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8.0),
+                      child: Container(
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
+                          child: TextFormField(
+                            onChanged: (input) {
+                              setState(() {
+                                    widget.date = input;
+                              });
+                            },
+                            keyboardType: TextInputType.multiline,
+                            maxLines: null,
+                            maxLength: 180,
+                            decoration: InputDecoration(
+                              hintStyle: TextStyle(color: Colors.grey),
+                              border: InputBorder.none,
+                              labelText: "Dato",
+                              counterText: "",
+                            ),
+
+                          ),
+                        ),
+                        width: SizeConfig.blockSizeHorizontal*90,
+                        height: SizeConfig.blockSizeHorizontal*14,
+                        margin: const EdgeInsets.only(bottom: 6.0), //Same as `blurRadius` i guess
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5.0),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey,
+                              offset: Offset(0.0, 1.0), //(x,y)
+                              blurRadius: 6.0,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
+                  child: Center(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8.0),
+                      child: Container(
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
+                          child: TextFormField(
+                            onChanged: (input) {
+                              setState(() {
+                                  widget.city = input;
+                              });
+                            },
+                            keyboardType: TextInputType.multiline,
+                            maxLines: null,
+                            maxLength: 180,
+                            decoration: InputDecoration(
+                              hintStyle: TextStyle(color: Colors.grey),
+                              border: InputBorder.none,
+                              labelText: "by",
+                              counterText: "",
+                            ),
+
+                          ),
+                        ),
+                        width: SizeConfig.blockSizeHorizontal*90,
+                        height: SizeConfig.blockSizeHorizontal*14,
+                        margin: const EdgeInsets.only(bottom: 6.0), //Same as `blurRadius` i guess
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5.0),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey,
+                              offset: Offset(0.0, 1.0), //(x,y)
+                              blurRadius: 6.0,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                RaisedButton(onPressed: () {
+                  widget.currentUser.event.title =   widget.title;
+                  widget.currentUser.event.pictureUrl =  widget._uploadedFileURL;
+                  widget.currentUser.event.price =  widget.price;
+                  widget.currentUser.event.date =  widget.date;
+                  widget.currentUser.event.city =  widget.city;
+                  widget.currentUser .event.description =  widget.description;
+                      DatabaseService(uid: widget.currentUser.uid).updateUserDate(widget.currentUser);
+
+                })
               ],
             ),
           ),
@@ -104,15 +339,17 @@ class _AddEventState extends State<AddEvent> {
 
 
 class InoutBoxWithBottomShadow extends StatefulWidget {
-  final String hintText;
+  final String labelText;
   final bool bigBox;
-  InoutBoxWithBottomShadow(this.hintText, {this.bigBox});
+  InoutBoxWithBottomShadow(this.labelText, {this.bigBox});
 
   @override
   _InoutBoxWithBottomShadowState createState() => _InoutBoxWithBottomShadowState();
 }
 
 class _InoutBoxWithBottomShadowState extends State<InoutBoxWithBottomShadow> {
+  String textInput;
+
   @override
   Widget build(BuildContext context) {
     return  Padding(
@@ -124,13 +361,18 @@ class _InoutBoxWithBottomShadowState extends State<InoutBoxWithBottomShadow> {
             child: Padding(
               padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
               child: TextFormField(
+                    onChanged: (input) {
+                      setState(() {
+
+                      });
+                      },
                     keyboardType: TextInputType.multiline,
                     maxLines: null,
                     maxLength: 180,
                 decoration: InputDecoration(
                     hintStyle: TextStyle(color: Colors.grey),
                     border: InputBorder.none,
-                    labelText: widget.hintText,
+                    labelText: widget.labelText,
                     counterText: "",
                 ),
 
