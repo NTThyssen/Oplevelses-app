@@ -9,22 +9,23 @@ import 'package:flutter_app/widgets/sing_in_alert_box.dart';
 import 'package:provider/provider.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import '../main.dart';
+import '../wrapper.dart';
 
 class CustomScaffoldWithNavBar extends StatefulWidget {
-  bool extendBody;
+
   final String title;
   final bool extendUp;
   final List<Widget> icons;
   final Color backgroundColor;
-  bool isTransparent;
+
 
   CustomScaffoldWithNavBar(
-      {this.extendBody,
+      {
       this.title,
       this.extendUp,
       this.icons,
       this.backgroundColor,
-      this.isTransparent});
+      });
 
   @override
   _CustomScaffoldWithNavBarState createState() =>
@@ -33,9 +34,9 @@ class CustomScaffoldWithNavBar extends StatefulWidget {
 
 class _CustomScaffoldWithNavBarState extends State<CustomScaffoldWithNavBar> {
   final AuthService _auth = new AuthService();
-  final _pageOptions = [MainPage(), Profile(), AddEvent(), MyFavorites(), Profile()];
   int selectedPage = 0;
-
+  bool extendBody = true;
+  bool isTransparent = true;
   @override
   Widget build(BuildContext context) {
     bool keyboardIsOpened = MediaQuery.of(context).viewInsets.bottom != 0.0;
@@ -56,13 +57,13 @@ class _CustomScaffoldWithNavBarState extends State<CustomScaffoldWithNavBar> {
               },
             ),
             actions: widget.icons),
-        extendBody: widget.extendBody ?? false,
+        extendBody: extendBody ?? false,
         bottomNavigationBar: ConvexAppBar(
           color: Colors.white,
           activeColor:  Colors.indigo,
           style: TabStyle.fixedCircle,
           initialActiveIndex:  selectedPage,
-          backgroundColor: widget.isTransparent != false ? Colors.transparent : Theme.of(context).primaryColor,
+          backgroundColor: isTransparent != false ? Colors.transparent : Theme.of(context).primaryColor,
           items: [
             TabItem(icon: Icons.home, title: 'Home',),
             TabItem(icon: Icons.message, title: 'Beskeder'),
@@ -74,31 +75,31 @@ class _CustomScaffoldWithNavBarState extends State<CustomScaffoldWithNavBar> {
             setState(() {
               switch(index){
                 case 0:
-                  widget.isTransparent = true;
-                  widget.extendBody = true;
+                  isTransparent = true;
+                  extendBody = true;
                   break;
                 case 1:
-                  widget.isTransparent = true;
-                  widget.extendBody = true;
+                  isTransparent = true;
+                  extendBody = true;
                   break;
                 case 2:
-                  widget.isTransparent = false;
-                  widget.extendBody = false;
+                  isTransparent = false;
+                  extendBody = false;
                   break;
                 case 3:
-                  widget.isTransparent = false;
-                  widget.extendBody = false;
+                  isTransparent = false;
+                  extendBody = false;
                   break;
                 case 4:
-                  widget.isTransparent = true;
-                  widget.extendBody = true;
+                  isTransparent = true;
+                  extendBody = true;
                   break;
               }
               selectedPage = index;
             });
           },
         ),
-        body: _pageOptions[selectedPage]
+        body: Wrapper(index: selectedPage)
 
     );
   }

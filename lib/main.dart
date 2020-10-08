@@ -27,20 +27,8 @@ void main() {
             value: DatabaseService().users,
             child: MyApp(),
           ),
-          StreamProvider<List<User>>.value(
-            value: DatabaseService().users,
-            child: Test(
-              pictureUrl: null,
-            ),
-          ),
-          StreamProvider<List<User>>.value(
-            value: DatabaseService().users,
-            child: AddEvent(),
-          ),
           StreamProvider<User>.value(
-              value: AuthService().user, child: AddEvent()),
-          StreamProvider<User>.value(
-              value: AuthService().user, child: CustomScaffoldWithNavBar()),
+              value: AuthService().user, child: MyApp()),
         ],
         child: MaterialApp(
             theme: ThemeData(
@@ -77,8 +65,6 @@ class _MyAppState extends State<MyApp> {
 
     SizeConfig().init(context);
     return CustomScaffoldWithNavBar(
-      isTransparent: true,
-      extendBody: true,
       title: "Title",
       icons: [
       PopupMenuButton<PopUpItem>(

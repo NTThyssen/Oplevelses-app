@@ -129,7 +129,26 @@ class _TestState extends State<Test> {
                 // Instagram
                 InstagramImagesWidget(),
                 // Bottom icons
-
+                Container(
+                  padding: EdgeInsets.only(bottom: 40.0, top: 20.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.repeat),
+                        color: Theme.of(context).secondaryHeaderColor,
+                        iconSize: 40.0,
+                        onPressed: () {},
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.add_box),
+                        color: Theme.of(context).secondaryHeaderColor,
+                        iconSize: 40.0,
+                        onPressed: () {},
+                      ),
+                    ],
+                  ),
+                ),
                 Container(
                   height: SizeConfig.blockSizeVertical*7,
                 )
