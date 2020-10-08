@@ -274,7 +274,7 @@ class _AddEventState extends State<AddEvent> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
+                  padding: EdgeInsets.fromLTRB(0, 8, 0, 15),
                   child: Center(
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8.0),
@@ -317,7 +317,14 @@ class _AddEventState extends State<AddEvent> {
                     ),
                   ),
                 ),
-                RaisedButton(onPressed: () {
+                RaisedButton(
+
+                  child: Text("Opret Event", style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                  ),),
+                  color: Theme.of(context).secondaryHeaderColor,
+                    onPressed: () {
                   widget.currentUser.event.title =   widget.title;
                   widget.currentUser.event.pictureUrl =  widget._uploadedFileURL;
                   widget.currentUser.event.price =  widget.price;
@@ -326,7 +333,10 @@ class _AddEventState extends State<AddEvent> {
                   widget.currentUser .event.description =  widget.description;
                       DatabaseService(uid: widget.currentUser.uid).updateUserDate(widget.currentUser);
 
-                })
+                }),
+                SizedBox(
+                  height: SizeConfig.blockSizeVertical*12,
+                )
               ],
             ),
           ),

@@ -44,10 +44,8 @@ class _LoginState extends State<Login> {
               width: SizeConfig.screenWidth,
               height: SizeConfig.screenHeight,
               decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.topRight,
-                      end: Alignment.bottomLeft,
-                      colors: [Colors.transparent, Colors.purple])),
+                color: Theme.of(context).primaryColor,
+              ),
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -77,20 +75,24 @@ class _LoginState extends State<Login> {
                                     bottom: BorderSide(
                                         width: 2.0, color: Colors.blueGrey))),
                             width: SizeConfig.blockSizeHorizontal * 80,
-                            child: TextFormField(
-                              textAlign: TextAlign.left,
-                                validator: (val) => val.isEmpty ? "enter email" : null,
-                              onChanged: (val) {
-                                setState(() {
-                                  email = val;
-                                  print(val);
-                                });
-                              },
-                              decoration: InputDecoration(
-                                  prefixIcon: Icon(Icons.person_outline),
-                                  hintStyle: TextStyle(color: Colors.grey),
-                                  border: InputBorder.none,
-                                  hintText: 'Email'),
+                            child: Theme(
+                              data: Theme.of(context)
+                                  .copyWith(primaryColor: Theme.of(context).secondaryHeaderColor,),
+                              child: TextFormField(
+                                textAlign: TextAlign.left,
+                                  validator: (val) => val.isEmpty ? "enter email" : null,
+                                onChanged: (val) {
+                                  setState(() {
+                                    email = val;
+                                    print(val);
+                                  });
+                                },
+                                decoration: InputDecoration(
+                                    prefixIcon: Icon(Icons.person_outline),
+                                    hintStyle: TextStyle(color: Colors.grey),
+                                    border: InputBorder.none,
+                                    hintText: 'Email'),
+                              ),
                             ),
                           ),
                         ),
@@ -103,21 +105,25 @@ class _LoginState extends State<Login> {
                                       bottom: BorderSide(
                                           width: 2.0, color: Colors.blueGrey))),
                               width: SizeConfig.blockSizeHorizontal * 80,
-                              child: TextFormField(
-                                textAlign: TextAlign.left,
-                                obscureText: true,
-                                validator: (val) => val.length < 6 ? "must be greater than 6 chars" : null,
-                                onChanged: (val) {
-                                  setState(() {
-                                    password = val;
-                                    print(val);
-                                  });
-                                },
-                                decoration: InputDecoration(
-                                    hintStyle: TextStyle(color: Colors.grey),
-                                    prefixIcon: Icon(Icons.vpn_key),
-                                    border: InputBorder.none,
-                                    hintText: 'Password'),
+                              child: Theme(
+                                data: Theme.of(context)
+                                    .copyWith(primaryColor: Theme.of(context).secondaryHeaderColor,),
+                                child: TextFormField(
+                                  textAlign: TextAlign.left,
+                                  obscureText: true,
+                                  validator: (val) => val.length < 6 ? "must be greater than 6 chars" : null,
+                                  onChanged: (val) {
+                                    setState(() {
+                                      password = val;
+                                      print(val);
+                                    });
+                                  },
+                                  decoration: InputDecoration(
+                                      hintStyle: TextStyle(color: Colors.grey),
+                                      prefixIcon: Icon(Icons.vpn_key),
+                                      border: InputBorder.none,
+                                      hintText: 'Password'),
+                                ),
                               ),
                             ),
                           ),
@@ -126,7 +132,7 @@ class _LoginState extends State<Login> {
                             child: Container(
                               width: SizeConfig.blockSizeHorizontal * 80,
                               child: RaisedButton(
-                                color: Color.fromRGBO(30, 30, 60, 1),
+                                color: Theme.of(context).secondaryHeaderColor,
                                 onPressed: () async {
                                   if(_formKey.currentState.validate()){
                                     dynamic result = await _auth.singInWithEmail(email, password);
@@ -137,7 +143,7 @@ class _LoginState extends State<Login> {
                                 child: Center(
                                     child: Text("SIGN IN",
                                         style: TextStyle(
-                                            color: Colors.white,
+                                            color: Colors.black,
                                             letterSpacing: 0.8,
                                             fontWeight: FontWeight.bold,
                                             fontSize: 16))),
@@ -149,7 +155,7 @@ class _LoginState extends State<Login> {
                             child: Container(
                               width: SizeConfig.blockSizeHorizontal * 80,
                               child: RaisedButton(
-                                color: Color.fromRGBO(30, 30, 60, 1),
+                                color: Theme.of(context).secondaryHeaderColor,
                                 onPressed: () async {
                                  await _auth.signInAnon();
                                     Navigator.pop(context);
@@ -157,7 +163,7 @@ class _LoginState extends State<Login> {
                                 child: Center(
                                     child: Text("SIGN IN ANONYMOUSLY",
                                         style: TextStyle(
-                                            color: Colors.white,
+                                            color: Colors.black,
                                             letterSpacing: 0.8,
                                             fontWeight: FontWeight.bold,
                                             fontSize: 16))),
@@ -212,11 +218,10 @@ class _LoginState extends State<Login> {
                       setState(() {
                         isLoggingIn = true;
                       });
-                      if (await _auth.facebookSignIn() != null) {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (BuildContext context) => MainPage()));
+                      var result = await _auth.facebookSignIn();
+                      print(result);
+                      if (result != null) {
+                            Navigator.pop(context);
                       } else {
                         print("you have to sign in");
                         setState(() {

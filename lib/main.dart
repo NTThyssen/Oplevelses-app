@@ -65,6 +65,7 @@ class _MyAppState extends State<MyApp> {
 
     SizeConfig().init(context);
     return CustomScaffoldWithNavBar(
+      backgroundColor: Theme.of(context).primaryColor,
       title: "Title",
       icons: [
       PopupMenuButton<PopUpItem>(
@@ -118,9 +119,10 @@ class _MainPageState extends State<MainPage> {
     var cnt = 0;
     if (users != null) {
       for (var doc in users) {
-        if (cnt < 5) {
+        print(doc.uid);
+        if (cnt <2) {
           count.add("images/big-ice.png");
-          //count.add(doc.event.pictureUrl);
+          count.add(doc.event.pictureUrl);
           //preload(context, doc.event.pictureUrl);
           cnt++;
         }

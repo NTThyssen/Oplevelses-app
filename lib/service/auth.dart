@@ -40,7 +40,7 @@ class AuthService {
         UserLoginState.instance.setProfilePicture(profilePic: profilepic2['data']['url']);
         UserLoginState.instance.setProfile(profile: profile);
         final creadentials = FacebookAuthProvider.getCredential(accessToken: token);
-        _auth.signInWithCredential(creadentials);
+        await _auth.signInWithCredential(creadentials);
         return true;
       case FacebookLoginStatus.cancelledByUser:
         return null;
