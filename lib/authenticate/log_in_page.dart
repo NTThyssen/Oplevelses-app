@@ -151,8 +151,8 @@ class _LoginState extends State<Login> {
                               child: RaisedButton(
                                 color: Color.fromRGBO(30, 30, 60, 1),
                                 onPressed: () async {
-                                  _auth.signInAnon();
-                                    Navigator.pushReplacement(context, FadeRoute( page: MyApp()));
+                                 await _auth.signInAnon();
+                                    Navigator.pop(context);
                                 },
                                 child: Center(
                                     child: Text("SIGN IN ANONYMOUSLY",

@@ -1,9 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/add_event.dart';
 import 'package:flutter_app/main.dart';
+import 'package:flutter_app/my_favorites.dart';
+import 'package:flutter_app/profile.dart';
+import 'package:provider/provider.dart';
+
+import 'authenticate/not_signed_in.dart';
+import 'model/user.dart';
 
 class Wrapper extends StatelessWidget {
+  final int index;
+  Wrapper({this.index});
+
   @override
   Widget build(BuildContext context) {
-    return MainPage();
+    final authUser = Provider.of<User>(context);
+    Widget widget;
+    switch(index){
+      case 0:
+        widget = MainPage();
+        break;
+      case 1:
+        widget = authUser != null ? Profile() : NotSignedIn();
+        break;
+      case 2:
+        widget =authUser != null ? AddEvent() : NotSignedIn();
+        break;
+      case 3:
+        widget =authUser != null ? MyFavorites() : NotSignedIn();
+        break;
+      case 4:
+        widget =authUser != null ? Profile() : NotSignedIn();
+        break;
+      default:
+        return widget;
+    }
+      return widget;
   }
 }

@@ -23,8 +23,7 @@ class _MyFavoritesState extends State<MyFavorites> {
   @override
   Widget build(BuildContext context) {
     uploadFile();
-    return CustomScaffoldWithNavBar(
-        body : Container(
+    return  Container(
             child: SingleChildScrollView(
               child: Column(children: [
                 FavoriteCardView(),
@@ -34,9 +33,6 @@ class _MyFavoritesState extends State<MyFavorites> {
               ],
               ),
             )
-        ),
-      title: "Favorites",
-      extendBody: false,
     );
   }
 }
