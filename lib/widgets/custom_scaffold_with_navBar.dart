@@ -35,8 +35,6 @@ class CustomScaffoldWithNavBar extends StatefulWidget {
 class _CustomScaffoldWithNavBarState extends State<CustomScaffoldWithNavBar> {
   final AuthService _auth = new AuthService();
   int selectedPage = 0;
-  bool extendBody = true;
-  bool isTransparent = true;
   @override
   Widget build(BuildContext context) {
     bool keyboardIsOpened = MediaQuery.of(context).viewInsets.bottom != 0.0;
@@ -47,7 +45,7 @@ class _CustomScaffoldWithNavBarState extends State<CustomScaffoldWithNavBar> {
         appBar: AppBar(
             title: Text(widget.title ?? ""),
             centerTitle: true,
-            backgroundColor: widget.backgroundColor,
+            backgroundColor: widget.backgroundColor.withOpacity(0.50),
             leading: IconButton(
               icon: Icon(
                 Icons.filter_list,
@@ -57,13 +55,13 @@ class _CustomScaffoldWithNavBarState extends State<CustomScaffoldWithNavBar> {
               },
             ),
             actions: widget.icons),
-        extendBody: extendBody ?? false,
+        extendBody: true,
         bottomNavigationBar: ConvexAppBar(
-          color: Colors.white,
-          activeColor:  Colors.indigo,
+          color: Theme.of(context).secondaryHeaderColor,
+          activeColor:  Colors.white,
           style: TabStyle.fixedCircle,
           initialActiveIndex:  selectedPage,
-          backgroundColor: isTransparent != false ? Colors.transparent : Theme.of(context).primaryColor,
+          backgroundColor: Theme.of(context).primaryColor.withOpacity(0.7),
           items: [
             TabItem(icon: Icons.home, title: 'Home',),
             TabItem(icon: Icons.message, title: 'Beskeder'),
@@ -75,24 +73,14 @@ class _CustomScaffoldWithNavBarState extends State<CustomScaffoldWithNavBar> {
             setState(() {
               switch(index){
                 case 0:
-                  isTransparent = true;
-                  extendBody = true;
                   break;
                 case 1:
-                  isTransparent = true;
-                  extendBody = true;
                   break;
                 case 2:
-                  isTransparent = false;
-                  extendBody = false;
                   break;
                 case 3:
-                  isTransparent = false;
-                  extendBody = false;
                   break;
                 case 4:
-                  isTransparent = true;
-                  extendBody = true;
                   break;
               }
               selectedPage = index;

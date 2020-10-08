@@ -50,7 +50,7 @@ class _ProfileState extends State<Profile> {
     return age.years;
   }
 
-  AuthService auth = AuthService();
+
 
   String name;
 
