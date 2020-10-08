@@ -50,9 +50,13 @@ class _TestState extends State<Test> {
               // Profile image with gradient
               Stack(
                 children: [
-                  Image(
-                    fit: BoxFit.fill,
-                    image: NetworkImage(widget.pictureUrl),
+                  Container(
+                    height: SizeConfig.blockSizeVertical*60,
+                    width: SizeConfig.blockSizeVertical*100,
+                    child: Image(
+                      fit: BoxFit.cover,
+                      image: NetworkImage(widget.pictureUrl),
+                    ),
                   ),
                   Container(
                     width: MediaQuery.of(context).size.width,
