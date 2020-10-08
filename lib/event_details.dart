@@ -21,9 +21,6 @@ class Test extends StatefulWidget {
 
 class _TestState extends State<Test> {
 
-
-
-
   @override
   Widget build(BuildContext context) {
     final users = Provider.of<List<User>>(context);
@@ -40,139 +37,106 @@ class _TestState extends State<Test> {
       }
     });
 
-    return CustomScaffoldWithNavBar(
-     body: Container(
-        color: Theme.of(context).primaryColor,
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Profile image with gradient
-              Stack(
-                children: [
-                  Container(
-                    height: SizeConfig.blockSizeVertical*60,
-                    width: SizeConfig.blockSizeVertical*100,
-                    child: Image(
-                      fit: BoxFit.cover,
-                      image: NetworkImage(widget.pictureUrl),
-                    ),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        stops: [0.5, 1.0],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Colors.transparent,
-                          Theme.of(context).secondaryHeaderColor,
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              // Event header
-              Padding(
-                padding: EdgeInsets.all(11),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      currentUser.event.title.toString(),
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 30,
-                      ),
-                    ),
-                    Icon(
-                      CupertinoIcons.heart,
-                      color: Colors.white,
-                      size: 30,
-                    ),
-                  ],
-                ),
-              ),
-              // Place info
-              InfoHeaderWidget(
-                icon: Icons.place,
-                text: currentUser.event.city.toString(),
-              ),
-              // Date info
-              InfoHeaderWidget(
-                icon: Icons.access_time,
-                text: currentUser.event.date.toString(),
-              ),
-              // Price info
-              InfoHeaderWidget(
-                icon: Icons.payment,
-                text: currentUser.event.price.toString(),
-              ),
-              // Event description
-              AboutText(
-                heading: 'Oplevelsen',
-                body: currentUser.event.description.toString()
-              ),
-              // About event creator section
-              AboutText(
-                heading: 'Om Pia',
-                body:
-                    'Typen der altid løber efter bussen, og altid ender med at komme i alt for god tid.',
-              ),
-              // Common friends
-              FriendsWidget(
-                text: 'Fælles venner',
-              ),
-              // Instagram
-              InstagramImagesWidget(),
-              // Bottom icons
-              Container(
-                padding: EdgeInsets.only(bottom: 40.0, top: 20.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    IconButton(
-                      icon: Icon(Icons.repeat),
-                      color: Theme.of(context).secondaryHeaderColor,
-                      iconSize: 40.0,
-                      onPressed: () {},
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.add_box),
-                      color: Theme.of(context).secondaryHeaderColor,
-                      iconSize: 40.0,
-                      onPressed: () {},
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                height: SizeConfig.blockSizeVertical*7,
-              )
-            ],
-          ),
-        ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(currentUser.event.title),
+        centerTitle: true,
       ),
-      extendUp: true,
-      extendBody: true,
-      backgroundColor: Theme.of(context).primaryColor.withAlpha(80),
-      title: currentUser.event.title.toString(),
-      icons: [
-        IconButton(
-          icon: Icon(CupertinoIcons.share),
-          color: Colors.white,
-          onPressed: () {},
-        ),
-        IconButton(
-          icon: Icon(
-            Icons.more_vert,
-            color: Colors.white,
+      body: Container(
+          color: Theme.of(context).primaryColor,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Profile image with gradient
+                Stack(
+                  children: [
+                    Container(
+                      height: SizeConfig.blockSizeVertical*60,
+                      width: SizeConfig.blockSizeVertical*100,
+                      child: Image(
+                        fit: BoxFit.cover,
+                        image: NetworkImage(widget.pictureUrl),
+                      ),
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          stops: [0.5, 1.0],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Colors.transparent,
+                            Theme.of(context).secondaryHeaderColor,
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                // Event header
+                Padding(
+                  padding: EdgeInsets.all(11),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        currentUser.event.title.toString(),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 30,
+                        ),
+                      ),
+                      Icon(
+                        CupertinoIcons.heart,
+                        color: Colors.white,
+                        size: 30,
+                      ),
+                    ],
+                  ),
+                ),
+                // Place info
+                InfoHeaderWidget(
+                  icon: Icons.place,
+                  text: currentUser.event.city.toString(),
+                ),
+                // Date info
+                InfoHeaderWidget(
+                  icon: Icons.access_time,
+                  text: currentUser.event.date.toString(),
+                ),
+                // Price info
+                InfoHeaderWidget(
+                  icon: Icons.payment,
+                  text: currentUser.event.price.toString(),
+                ),
+                // Event description
+                AboutText(
+                  heading: 'Oplevelsen',
+                  body: currentUser.event.description.toString()
+                ),
+                // About event creator section
+                AboutText(
+                  heading: 'Om Pia',
+                  body:
+                      'Typen der altid løber efter bussen, og altid ender med at komme i alt for god tid.',
+                ),
+                // Common friends
+                FriendsWidget(
+                  text: 'Fælles venner',
+                ),
+                // Instagram
+                InstagramImagesWidget(),
+                // Bottom icons
+
+                Container(
+                  height: SizeConfig.blockSizeVertical*7,
+                )
+              ],
+            ),
           ),
-          onPressed: () {},
-        ),
-      ],
+      ),
     );
   }
 }

@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/add_event.dart';
+import 'package:flutter_app/profile.dart';
 import 'package:flutter_app/service/DatabaseService.dart';
 import 'package:flutter_app/service/auth.dart';
 import 'package:flutter_app/size_config.dart';
+import 'package:flutter_app/widgets/pop_up_menu.dart';
 import 'package:flutter_app/widgets/sing_in_alert_box.dart';
 import 'package:flutter_app/wrapper.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -49,11 +51,51 @@ void main() {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+
+}
+
+List<PopUpItem> choices = <PopUpItem>[
+  PopUpItem(title: 'Rediger'),
+  PopUpItem(title: 'Indstillinger'),
+];
+
+class _MyAppState extends State<MyApp> {
+
+
+  PopUpItem selectedItem = choices[0];
+
+  void _select(PopUpItem item) {
+    setState(() {
+      selectedItem = item;
+    });
+  }
   @override
   Widget build(BuildContext context) {
+
     SizeConfig().init(context);
-    return MainPage();
+    return CustomScaffoldWithNavBar(
+      isTransparent: true,
+      extendBody: true,
+      title: "Title",
+      icons: [
+      PopupMenuButton<PopUpItem>(
+        onCanceled: () {
+          print('On cancelled was called');
+        },
+        onSelected: _select,
+        itemBuilder: (BuildContext context) {
+          return choices.map((PopUpItem choice) {
+            return PopupMenuItem<PopUpItem>(
+              value: choice,
+              child: Text(choice.title),
+            );
+          }).toList();
+        },
+      ),
+    ],);
   }
 }
 
@@ -63,20 +105,21 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  var isLoading = true;
+  var isLoading = false;
   var items = 5;
   Widget build(BuildContext context) {
     void preload(BuildContext context, String path) {
       if (path != null) {
         print(path);
         var configuration = createLocalImageConfiguration(context);
-        var _image = new NetworkImage(path)..resolve(configuration);
+        var _image = NetworkImage(path)..resolve(configuration);
         _image.resolve(ImageConfiguration()).addListener(
           ImageStreamListener(
             (info, call) {
-              isLoading = false;
+              print(info.image);
               setState(() {});
               print('Networkimage is fully loaded and saved');
+              isLoading = false;
               // do something
             },
           ),
@@ -84,16 +127,15 @@ class _MainPageState extends State<MainPage> {
       }
     }
 
-    final users = Provider.of<List<User>>(context);
+    final users = Provider.of<List<User>>(context ) ?? [];
     List count = new List();
     var cnt = 0;
     if (users != null) {
       for (var doc in users) {
-        print(doc.name);
-        print(doc.event.pictureUrl);
         if (cnt < 5) {
-          count.add(doc.event.pictureUrl);
-          preload(context, doc.event.pictureUrl);
+          count.add("images/big-ice.png");
+          //count.add(doc.event.pictureUrl);
+          //preload(context, doc.event.pictureUrl);
           cnt++;
         }
       }
@@ -110,8 +152,7 @@ class _MainPageState extends State<MainPage> {
                 size: 80.0,
               ),
             ))
-        : CustomScaffoldWithNavBar(
-            body: Container(
+        : Container(
               child: Stack(
                 children: [
                   PreloadPageView.builder(
@@ -166,9 +207,7 @@ class _MainPageState extends State<MainPage> {
                   )
                 ],
               ),
-            ),
-            extendBody: true,
-          );
+            );
   }
 }
 

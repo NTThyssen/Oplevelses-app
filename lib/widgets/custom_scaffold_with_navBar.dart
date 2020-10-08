@@ -7,24 +7,24 @@ import 'package:flutter_app/profile.dart';
 import 'package:flutter_app/service/auth.dart';
 import 'package:flutter_app/widgets/sing_in_alert_box.dart';
 import 'package:provider/provider.dart';
-
+import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import '../main.dart';
 
 class CustomScaffoldWithNavBar extends StatefulWidget {
-  final Container body;
-  final bool extendBody;
+  bool extendBody;
   final String title;
   final bool extendUp;
   final List<Widget> icons;
   final Color backgroundColor;
+  bool isTransparent;
 
   CustomScaffoldWithNavBar(
-      {@required this.body,
-      this.extendBody,
+      {this.extendBody,
       this.title,
       this.extendUp,
       this.icons,
-      this.backgroundColor});
+      this.backgroundColor,
+      this.isTransparent});
 
   @override
   _CustomScaffoldWithNavBarState createState() =>
@@ -32,17 +32,14 @@ class CustomScaffoldWithNavBar extends StatefulWidget {
 }
 
 class _CustomScaffoldWithNavBarState extends State<CustomScaffoldWithNavBar> {
-  final Map<String, IconData> iconMapping = {
-    'left': Icons.filter_list,
-    'middle': Icons.add,
-    'right': Icons.account_circle,
-  };
+  final AuthService _auth = new AuthService();
+  final _pageOptions = [MainPage(), Profile(), AddEvent(), MyFavorites(), Profile()];
+  int selectedPage = 0;
 
   @override
   Widget build(BuildContext context) {
     bool keyboardIsOpened = MediaQuery.of(context).viewInsets.bottom != 0.0;
     final authUser = Provider.of<User>(context);
-    final AuthService _auth = new AuthService();
 
     return Scaffold(
         extendBodyBehindAppBar: widget.extendUp ?? false,
@@ -60,100 +57,137 @@ class _CustomScaffoldWithNavBarState extends State<CustomScaffoldWithNavBar> {
             ),
             actions: widget.icons),
         extendBody: widget.extendBody ?? false,
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: keyboardIsOpened
-            ? null
-            : FloatingActionButton(
-                backgroundColor: Theme.of(context).secondaryHeaderColor,
+        bottomNavigationBar: ConvexAppBar(
+          color: Colors.white,
+          activeColor:  Colors.indigo,
+          style: TabStyle.fixedCircle,
+          initialActiveIndex:  selectedPage,
+          backgroundColor: widget.isTransparent != false ? Colors.transparent : Theme.of(context).primaryColor,
+          items: [
+            TabItem(icon: Icons.home, title: 'Home',),
+            TabItem(icon: Icons.message, title: 'Beskeder'),
+            TabItem(icon: Icon(Icons.add, color:Theme.of(context).primaryColor, size:  50,), title: 'Add'),
+            TabItem(icon: Icons.favorite_border , title: 'Favoritter'),
+            TabItem(icon: Icons.person_outline, title: 'Profil'),
+          ],
+          onTap: (int index ){
+            setState(() {
+              switch(index){
+                case 0:
+                  widget.isTransparent = true;
+                  widget.extendBody = true;
+                  break;
+                case 1:
+                  widget.isTransparent = true;
+                  widget.extendBody = true;
+                  break;
+                case 2:
+                  widget.isTransparent = false;
+                  widget.extendBody = false;
+                  break;
+                case 3:
+                  widget.isTransparent = false;
+                  widget.extendBody = false;
+                  break;
+                case 4:
+                  widget.isTransparent = true;
+                  widget.extendBody = true;
+                  break;
+              }
+              selectedPage = index;
+            });
+          },
+        ),
+        body: _pageOptions[selectedPage]
+
+    );
+  }
+}
+
+class BottomAppBarCustom extends StatefulWidget {
+  @override
+  _BottomAppBarCustomState createState() => _BottomAppBarCustomState();
+}
+
+class _BottomAppBarCustomState extends State<BottomAppBarCustom> {
+  @override
+  Widget build(BuildContext context) {
+    return BottomAppBar(
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+        child: Row(
+          children: [
+            IconButton(
+                icon: Icon(
+                  Icons.home,
+                  color: Colors.white,
+                ),
+                iconSize: 30,
                 onPressed: () {
-                  if (authUser != null) {
+                  Navigator.pushReplacement(
+                      context, FadeRoute(page: MainPage()));
+                }),
+            Spacer(
+              flex: 2,
+            ),
+            IconButton(
+                icon: Icon(
+                  Icons.message,
+                  color: Colors.white,
+                ),
+                iconSize: 30,
+                onPressed: () {
+                  //Navigator.pushReplacement(context, FadeRoute( page: Login()));
+                }),
+            Spacer(flex: 8),
+            IconButton(
+                icon: Icon(
+                  Icons.favorite_border,
+                  color: Colors.white,
+                ),
+                iconSize: 30,
+                onPressed: () {
+                  /*if (authUser != null) {
                     Navigator.pushReplacement(
-                        context, SlideLeftRoute(page: AddEvent()));
+                        context, FadeRoute(page: MyFavorites()));
                   } else {
                     showDialog(
                       context: context,
                       builder: (e) => SingInAlertBox(),
                     );
-                  }
-                },
-                child: Icon(Icons.add, size: 40),
-                elevation: 2.0,
-              ),
-        bottomNavigationBar: BottomAppBar(
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-            child: Row(
-              children: [
-                IconButton(
-                    icon: Icon(
-                      Icons.home,
-                      color: Colors.white,
-                    ),
-                    iconSize: 30,
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                          context, FadeRoute(page: MainPage()));
-                    }),
-                Spacer(
-                  flex: 2,
-                ),
-                IconButton(
-                    icon: Icon(
-                      Icons.message,
-                      color: Colors.white,
-                    ),
-                    iconSize: 30,
-                    onPressed: () {
-                      //Navigator.pushReplacement(context, FadeRoute( page: Login()));
-                    }),
-                Spacer(flex: 8),
-                IconButton(
-                    icon: Icon(
-                      Icons.favorite_border,
-                      color: Colors.white,
-                    ),
-                    iconSize: 30,
-                    onPressed: () {
-                      if (authUser != null) {
-                        Navigator.pushReplacement(
-                            context, FadeRoute(page: MyFavorites()));
-                      } else {
-                        showDialog(
-                          context: context,
-                          builder: (e) => SingInAlertBox(),
-                        );
-                      }
-                    }),
-                Spacer(
-                  flex: 2,
-                ),
-                IconButton(
-                    icon: Icon(
-                      Icons.person_outline,
-                      color: Colors.white,
-                    ),
-                    iconSize: 30,
-                    onPressed: () {
-                      if (authUser != null) {
-                        Navigator.pushReplacement(
-                            context, FadeRoute(page: Profile()));
-                      } else {
-                        showDialog(
-                          context: context,
-                          builder: (e) => SingInAlertBox(),
-                        );
-                      }
-                    }),
-              ],
+                  }*/
+                }),
+            Spacer(
+              flex: 2,
             ),
-          ),
-          shape: CircularNotchedRectangle(),
-          notchMargin: 4,
-          color: Theme.of(context).primaryColor,
+            IconButton(
+                icon: Icon(
+                  Icons.person_outline,
+                  color: Colors.white,
+                ),
+                iconSize: 30,
+                onPressed: () {
+                  /*if (authUser != null) {
+                    Navigator.pushReplacement(
+                        context, FadeRoute(page: Profile()));
+                  } else {
+                    showDialog(
+                      context: context,
+                      builder: (e) => SingInAlertBox(),
+                    );
+                  }*/
+                }),
+          ],
         ),
-        body: widget.body);
+      ),
+      shape: CircularNotchedRectangle(),
+      notchMargin: 4,
+      color: Theme.of(context).primaryColor,
+    );
   }
 }
+
+
 
 class FadeRoute extends PageRouteBuilder {
   final Widget page;
@@ -172,8 +206,8 @@ class FadeRoute extends PageRouteBuilder {
             Widget child,
           ) =>
               FadeTransition(
-            opacity: animation,
-            child: child,
+                opacity: animation,
+                child: child,
           ),
         );
 }

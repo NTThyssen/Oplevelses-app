@@ -15,19 +15,8 @@ class Profile extends StatefulWidget {
   _ProfileState createState() => _ProfileState();
 }
 
-List<PopUpItem> choices = <PopUpItem>[
-  PopUpItem(title: 'Rediger'),
-  PopUpItem(title: 'Indstillinger'),
-];
 
 class _ProfileState extends State<Profile> {
-  PopUpItem selectedItem = choices[0];
-
-  void _select(PopUpItem item) {
-    setState(() {
-      selectedItem = item;
-    });
-  }
 
   String checkFbData() {
     String name;
@@ -68,8 +57,7 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     //convertDateFromString(UserLoginState.instance.getProfile()['birthday']);
-    return CustomScaffoldWithNavBar(
-      body: Container(
+    return Container(
         color: Theme.of(context).primaryColor,
         child: SingleChildScrollView(
           child: Column(
@@ -149,25 +137,8 @@ class _ProfileState extends State<Profile> {
             ],
           ),
         ),
-      ),
-      title: 'Profile',
-      extendBody: true,
-      icons: [
-        PopupMenuButton<PopUpItem>(
-          onCanceled: () {
-            print('On cancelled was called');
-          },
-          onSelected: _select,
-          itemBuilder: (BuildContext context) {
-            return choices.map((PopUpItem choice) {
-              return PopupMenuItem<PopUpItem>(
-                value: choice,
-                child: Text(choice.title),
-              );
-            }).toList();
-          },
-        ),
-      ],
+
+
     );
   }
 }
