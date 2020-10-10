@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/add_event.dart';
 import 'package:flutter_app/profile.dart';
@@ -120,7 +121,7 @@ class _MainPageState extends State<MainPage> {
     if (users != null) {
       for (var doc in users) {
         print(doc.uid);
-        if (cnt <2) {
+        if (cnt <1) {
           count.add("images/big-ice.png");
           count.add(doc.event.pictureUrl);
           //preload(context, doc.event.pictureUrl);
@@ -201,7 +202,7 @@ class _MainPageState extends State<MainPage> {
 
 class EventDisplay extends StatefulWidget {
   final User user;
-  EventDisplay(this.user);
+  EventDisplay(this.user, );
 
   @override
   _EventDisplayState createState() => _EventDisplayState();
@@ -210,83 +211,86 @@ class EventDisplay extends StatefulWidget {
 class _EventDisplayState extends State<EventDisplay> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          fit: BoxFit.fill,
-          image: widget.user.imageURL == "images/big-ice.png"
-              ? AssetImage(widget.user.imageURL)
-              : NetworkImage(widget.user.imageURL),
+    return Hero(
+      tag: widget.user.imageURL,
+      child: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            fit: BoxFit.cover,
+            image: widget.user.imageURL == "images/big-ice.png"
+                ? AssetImage(widget.user.imageURL)
+                : NetworkImage(widget.user.imageURL),
+          ),
         ),
-      ),
-      child: Column(
-        children: [
-          Expanded(
-            flex: 2,
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(20, 15, 0, 10),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CircleAvatar(
-                    radius: 25.0,
-                    backgroundImage: AssetImage(widget.user.profilePicture),
-                  ),
-                  Expanded(
-                    flex: 8,
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(15, 5, 0, 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            widget.user.name +
-                                " " +
-                                (widget.user.age?.toString() ?? "23"),
-                            style: TextStyle(
-                                color: Colors.white,
-                                letterSpacing: 1.0,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16),
-                          ),
-                          Text(
-                            'aktivitet 5km væk',
-                            style: TextStyle(
-                                color: Colors.white,
-                                letterSpacing: 0.7,
-                                fontWeight: FontWeight.w300,
-                                fontSize: 16),
-                          ),
-                        ],
-                      ),
+        child: Column(
+          children: [
+            Expanded(
+              flex: 2,
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(20, 15, 0, 10),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CircleAvatar(
+                      radius: 25.0,
+                      backgroundImage: AssetImage(widget.user.profilePicture),
                     ),
-                  ),
-                  Expanded(
-                    flex: 3,
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(0, 0, 15, 0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              print("Favorit!");
-                            },
-                            child: Icon(
-                              Icons.favorite_border,
-                              color: Colors.white,
-                              size: 30,
+                    Expanded(
+                      flex: 8,
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(15, 5, 0, 10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              widget.user.name +
+                                  " " +
+                                  (widget.user.age?.toString() ?? "23"),
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  letterSpacing: 1.0,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16),
                             ),
-                          )
-                        ],
+                            Text(
+                              'aktivitet 5km væk',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  letterSpacing: 0.7,
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 16),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                    Expanded(
+                      flex: 3,
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(0, 0, 15, 0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                print("Favorit!");
+                              },
+                              child: Icon(
+                                Icons.favorite_border,
+                                color: Colors.white,
+                                size: 30,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

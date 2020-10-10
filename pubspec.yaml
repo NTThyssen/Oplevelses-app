@@ -33,6 +33,7 @@ dependencies:
   dotted_border: ^1.0.6
   image_picker: ^0.6.7+8
   firebase_storage: ^3.0.3
+  badges: ^1.1.3
   firebase_auth: ^0.14.0+5
   cloud_firestore: ^0.13.0+1
   firebase_core: ^0.4.2+1
@@ -45,6 +46,8 @@ dependencies:
   provider: ^4.3.2+2
   highlighter_coachmark: ^0.0.3
   flutter_platform_widgets: ^0.50.0
+  datetime_picker_formfield: ^1.0.0
+  loading_overlay: ^0.2.1
 
 dev_dependencies:
   flutter_test:
