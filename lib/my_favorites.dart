@@ -3,9 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/widgets/custom_scaffold_with_navBar.dart';
 import 'package:flutter_app/size_config.dart';
+import 'package:provider/provider.dart';
 import 'package:simple_animations/simple_animations.dart';
 import 'package:simple_animations/simple_animations.dart';
 import 'package:supercharged/supercharged.dart';
+
+import 'model/user.dart';
 
 class MyFavorites extends StatefulWidget {
   @override
@@ -14,25 +17,14 @@ class MyFavorites extends StatefulWidget {
 
 class _MyFavoritesState extends State<MyFavorites> {
 
-  Future uploadFile() async {
-    StorageReference storageReference = FirebaseStorage.instance.ref().child("eventPicture/image_picker603815392078609585.jpg");
-
-    String url = await storageReference.getDownloadURL();
-    print("this is download url : " + url);
-
-
-  }
-
   @override
   Widget build(BuildContext context) {
-    uploadFile();
+    final authUser = Provider.of<User>(context);
+
     return  Container(
             child: SingleChildScrollView(
               child: Column(children: [
-                FadeIn(0.5, FavoriteCardView()),
-                FadeIn(1.2,FavoriteCardView()),
-                FadeIn(1.80, FavoriteCardView()),
-
+                FadeIn(0.5, FavoriteCardView(eventUrl: authUser.favorite.event.pictureUrl,)),
               ],
               ),
             )
@@ -71,6 +63,10 @@ class FadeIn extends StatelessWidget {
 
 
 class FavoriteCardView extends StatefulWidget {
+  String eventUrl;
+
+  FavoriteCardView({this.eventUrl});
+
   @override
   _FavoriteCardViewState createState() => _FavoriteCardViewState();
 }
@@ -176,7 +172,7 @@ class _FavoriteCardViewState extends State<FavoriteCardView> {
                           image: new DecorationImage(
                             fit: BoxFit.fitWidth,
                             alignment: FractionalOffset.centerLeft,
-                            image: AssetImage('images/big-ice.png'),
+                            image: widget.eventUrl != null ? NetworkImage(widget.eventUrl) : AssetImage('images/big-ice.png'),
                           ),
                        )
                    ),

@@ -113,17 +113,20 @@ class _MainPageState extends State<MainPage> {
 
 
     final users = Provider.of<List<User>>(context ) ?? [];
+    final authUser = Provider.of<User>(context);
 
     List count = new List();
     var cnt = 0;
     if (users != null) {
       for (var doc in users) {
-        print(doc.uid);
-        if (cnt <1) {
-          count.add("images/big-ice.png");
-          count.add(doc.event.pictureUrl);
-          //preload(context, doc.event.pictureUrl);
-          cnt++;
+        if(doc.uid != authUser.uid){
+          print(doc.uid);
+          if (cnt <1) {
+            count.add("images/big-ice.png");
+            count.add(doc.event.pictureUrl);
+            //preload(context, doc.event.pictureUrl);
+            cnt++;
+          }
         }
       }
     }
@@ -159,6 +162,9 @@ class _MainPageState extends State<MainPage> {
                             setState(() {
                               isLiked = true;
                               flareControls.play("like");
+                              authUser.favorite = Favorite();
+                              authUser.favorite.event = users.elementAt(position).event;
+                              DatabaseService(uid: authUser.uid).updateUserData(authUser);
                             });
 
                           },

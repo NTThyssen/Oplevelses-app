@@ -24,6 +24,24 @@ class DatabaseService {
     });
   }
 
+  Future updateUserData(User user) async {
+    print(uid);
+    return await userCollection.document(uid).updateData({
+      'name': user.name,
+      'favorite': {
+        'event' : {
+          'pictureUrl': user.favorite.event.pictureUrl,
+          'city': user.favorite.event.city,
+          'price': user.favorite.event.price,
+          'title': user.favorite.event.title,
+          'date': user.favorite.event.date,
+          'description': user.favorite.event.description
+        }
+      }
+    });
+  }
+
+
   List<User> _userListFromSnapshot(QuerySnapshot snapshot){
     return snapshot.documents.map((doc) {
       return User(
