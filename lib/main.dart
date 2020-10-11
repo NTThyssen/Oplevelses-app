@@ -1,20 +1,14 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:date_format/date_format.dart';
+
+import 'package:flare_flutter/flare_actor.dart';
+import 'package:flare_flutter/flare_controls.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/add_event.dart';
-import 'package:flutter_app/profile.dart';
 import 'package:flutter_app/service/DatabaseService.dart';
 import 'package:flutter_app/service/auth.dart';
 import 'package:flutter_app/size_config.dart';
 import 'package:flutter_app/widgets/pop_up_menu.dart';
-import 'package:flutter_app/widgets/sing_in_alert_box.dart';
-import 'package:flutter_app/wrapper.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:preload_page_view/preload_page_view.dart';
 import 'package:provider/provider.dart';
-import 'authenticate/log_in_page.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter_app/my_favorites.dart';
 import 'event_details.dart';
 import 'model/user.dart';
 import 'widgets/custom_scaffold_with_navBar.dart';
@@ -95,6 +89,8 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   var isLoading = false;
   var items = 5;
+  bool isLiked = false;
+  final FlareControls flareControls = FlareControls();
   Widget build(BuildContext context) {
     void preload(BuildContext context, String path) {
       if (path != null) {
@@ -115,7 +111,9 @@ class _MainPageState extends State<MainPage> {
       }
     }
 
+
     final users = Provider.of<List<User>>(context ) ?? [];
+
     List count = new List();
     var cnt = 0;
     if (users != null) {
@@ -158,20 +156,11 @@ class _MainPageState extends State<MainPage> {
                       for (var i = 0; i < users.length; i++) {
                         return GestureDetector(
                           onDoubleTap: () {
-                            showDialog(
-                              context: context,
-                              builder: (e) => SingInAlertBox(
-                                alertTitle: "FAVORIT ANIMATION",
-                                alertContent: "an animation will apper",
-                                actions: [
-                                  FlatButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: Text("ok"))
-                                ],
-                              ),
-                            );
+                            setState(() {
+                              isLiked = true;
+                              flareControls.play("like");
+                            });
+
                           },
                           onTap: () {
                             Navigator.push(
@@ -187,13 +176,26 @@ class _MainPageState extends State<MainPage> {
                               profilePicture: "images/flower2.jpg",
                               imageURL: count.elementAt(position) != null
                                   ? count.elementAt(position)
-                                  : "images/big-ice.png")),
+                                  : "images/big-ice.png"), flareControls),
                         );
                       }
                       ;
                     },
                     controller: PreloadPageController(),
-                  )
+                  ),
+                  IgnorePointer(
+                    child: Center(
+                        child: SizedBox(
+                          width: 180,
+                          height: 180,
+                          child: FlareActor(
+                            'images/instagram_like.flr',
+                            controller: flareControls,
+                            animation: 'idle',
+                          ),
+                        ),
+                      ),
+                  ) ,
                 ],
               ),
             );
@@ -202,7 +204,8 @@ class _MainPageState extends State<MainPage> {
 
 class EventDisplay extends StatefulWidget {
   final User user;
-  EventDisplay(this.user, );
+  final  FlareControls flareControls;
+  EventDisplay(this.user,  this.flareControls);
 
   @override
   _EventDisplayState createState() => _EventDisplayState();
@@ -274,6 +277,7 @@ class _EventDisplayState extends State<EventDisplay> {
                             GestureDetector(
                               onTap: () {
                                 print("Favorit!");
+                                widget.flareControls.play("like");
                               },
                               child: Icon(
                                 Icons.favorite_border,

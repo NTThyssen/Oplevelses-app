@@ -3,7 +3,7 @@ import 'package:flutter_app/model/user.dart';
 
 class DatabaseService {
   final String uid;
-  
+
   final CollectionReference userCollection = Firestore.instance.collection("users");
   DatabaseService({this.uid});
 
@@ -25,19 +25,19 @@ class DatabaseService {
   }
 
   List<User> _userListFromSnapshot(QuerySnapshot snapshot){
-      return snapshot.documents.map((doc) {
-        return User(
+    return snapshot.documents.map((doc) {
+      return User(
           name: doc.data['name'],
           event: Event(pictureUrl: doc.data['event']['pictureUrl'], title: doc.data['event']['title'],
               price: doc.data['event']['price'],
               date: doc.data['event']['date'],
               description: doc.data['event']['description'],
 
-            city: doc.data['event']['city']
-          )
+              city: doc.data['event']['city']
+          ),
 
-        );
-      }).toList();
+      );
+    }).toList();
   }
 
 

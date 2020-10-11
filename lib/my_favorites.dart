@@ -3,6 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/widgets/custom_scaffold_with_navBar.dart';
 import 'package:flutter_app/size_config.dart';
+import 'package:simple_animations/simple_animations.dart';
+import 'package:simple_animations/simple_animations.dart';
+import 'package:supercharged/supercharged.dart';
 
 class MyFavorites extends StatefulWidget {
   @override
@@ -26,13 +29,42 @@ class _MyFavoritesState extends State<MyFavorites> {
     return  Container(
             child: SingleChildScrollView(
               child: Column(children: [
-                FavoriteCardView(),
-                FavoriteCardView(),
-                FavoriteCardView(),
+                FadeIn(0.5, FavoriteCardView()),
+                FadeIn(1.2,FavoriteCardView()),
+                FadeIn(1.80, FavoriteCardView()),
 
               ],
               ),
             )
+    );
+  }
+}
+enum _AniProps { opacity, translateX }
+
+class FadeIn extends StatelessWidget {
+  final double delay;
+  final Widget child;
+
+  FadeIn(this.delay, this.child);
+
+  @override
+  Widget build(BuildContext context) {
+    final tween = MultiTween<_AniProps>()
+      ..add(_AniProps.opacity, 0.0.tweenTo(1.0))
+      ..add(_AniProps.translateX, 130.0.tweenTo(0.0));
+
+    return PlayAnimation<MultiTweenValues<_AniProps>>(
+      delay: (300 * delay).round().milliseconds,
+      duration: 500.milliseconds,
+      tween: tween,
+      child: child,
+      builder: (context, child, value) => Opacity(
+        opacity: value.get(_AniProps.opacity),
+        child: Transform.translate(
+          offset: Offset(value.get(_AniProps.translateX), 0),
+          child: child,
+        ),
+      ),
     );
   }
 }
