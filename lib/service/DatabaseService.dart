@@ -29,14 +29,12 @@ class DatabaseService {
     return await userCollection.document(uid).updateData({
       'name': user.name,
       'favorite': {
-        'event' : {
           'pictureUrl': user.favorite.event.pictureUrl,
           'city': user.favorite.event.city,
           'price': user.favorite.event.price,
           'title': user.favorite.event.title,
           'date': user.favorite.event.date,
           'description': user.favorite.event.description
-        }
       }
     });
   }
@@ -44,23 +42,46 @@ class DatabaseService {
 
   List<User> _userListFromSnapshot(QuerySnapshot snapshot){
     return snapshot.documents.map((doc) {
-      return User(
+      if(doc.data["favorite"] == null){
+        return User(
+          uid: doc.documentID,
+            name: doc.data['name'],
+            event: Event(pictureUrl: doc.data['event']['pictureUrl'], title: doc.data['event']['title'],
+                price: doc.data['event']['price'],
+                date: doc.data['event']['date'],
+                description: doc.data['event']['description'],
+                city: doc.data['event']['city']
+            ),
+
+            );
+      }else{
+        return User(
+          uid: doc.documentID,
           name: doc.data['name'],
           event: Event(pictureUrl: doc.data['event']['pictureUrl'], title: doc.data['event']['title'],
               price: doc.data['event']['price'],
               date: doc.data['event']['date'],
               description: doc.data['event']['description'],
-
               city: doc.data['event']['city']
           ),
-
-      );
+          favorite: Favorite(event: Event(pictureUrl: doc.data['favorite']['pictureUrl'] ,
+              title: doc.data['favorite']['title'],
+              price: doc.data['favorite']['price'],
+              date: doc.data['favorite']['date'],
+              description: doc.data['favorite']['description'],
+              city: doc.data['favorite']['city']),
+          ),
+        );
+      }
     }).toList();
   }
+
+
 
 
 
   Stream<List<User>> get users {
     return userCollection.snapshots().map(_userListFromSnapshot);
   }
+
 }
