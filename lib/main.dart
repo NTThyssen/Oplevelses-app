@@ -129,6 +129,7 @@ class _MainPageState extends State<MainPage> {
         }
       }
     }
+
     print(count.length);
     return isLoading
         ? Container(
