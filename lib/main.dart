@@ -1,19 +1,14 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'package:flare_flutter/flare_actor.dart';
+import 'package:flare_flutter/flare_controls.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/add_event.dart';
-import 'package:flutter_app/profile.dart';
 import 'package:flutter_app/service/DatabaseService.dart';
 import 'package:flutter_app/service/auth.dart';
 import 'package:flutter_app/size_config.dart';
 import 'package:flutter_app/widgets/pop_up_menu.dart';
-import 'package:flutter_app/widgets/sing_in_alert_box.dart';
-import 'package:flutter_app/wrapper.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:preload_page_view/preload_page_view.dart';
 import 'package:provider/provider.dart';
-import 'authenticate/log_in_page.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter_app/my_favorites.dart';
 import 'event_details.dart';
 import 'model/user.dart';
 import 'widgets/custom_scaffold_with_navBar.dart';
@@ -94,6 +89,8 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   var isLoading = false;
   var items = 5;
+  bool isLiked = false;
+  final FlareControls flareControls = FlareControls();
   Widget build(BuildContext context) {
     void preload(BuildContext context, String path) {
       if (path != null) {
@@ -114,17 +111,22 @@ class _MainPageState extends State<MainPage> {
       }
     }
 
+
     final users = Provider.of<List<User>>(context ) ?? [];
+    final authUser = Provider.of<User>(context);
+
     List count = new List();
     var cnt = 0;
     if (users != null) {
       for (var doc in users) {
-        print(doc.uid);
-        if (cnt <2) {
-          count.add("images/big-ice.png");
-          count.add(doc.event.pictureUrl);
-          //preload(context, doc.event.pictureUrl);
-          cnt++;
+        if(doc.uid != authUser.uid){
+          print(doc.uid);
+          if (cnt <1) {
+            count.add("images/big-ice.png");
+            count.add(doc.event.pictureUrl);
+            //preload(context, doc.event.pictureUrl);
+            cnt++;
+          }
         }
       }
     }
@@ -157,20 +159,14 @@ class _MainPageState extends State<MainPage> {
                       for (var i = 0; i < users.length; i++) {
                         return GestureDetector(
                           onDoubleTap: () {
-                            showDialog(
-                              context: context,
-                              builder: (e) => SingInAlertBox(
-                                alertTitle: "FAVORIT ANIMATION",
-                                alertContent: "an animation will apper",
-                                actions: [
-                                  FlatButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: Text("ok"))
-                                ],
-                              ),
-                            );
+                            setState(() {
+                              isLiked = true;
+                              flareControls.play("like");
+                              authUser.favorite = Favorite();
+                              authUser.favorite.event = users.elementAt(position).event;
+                              DatabaseService(uid: authUser.uid).updateUserData(authUser);
+                            });
+
                           },
                           onTap: () {
                             Navigator.push(
@@ -186,13 +182,26 @@ class _MainPageState extends State<MainPage> {
                               profilePicture: "images/flower2.jpg",
                               imageURL: count.elementAt(position) != null
                                   ? count.elementAt(position)
-                                  : "images/big-ice.png")),
+                                  : "images/big-ice.png"), flareControls),
                         );
                       }
                       ;
                     },
                     controller: PreloadPageController(),
-                  )
+                  ),
+                  IgnorePointer(
+                    child: Center(
+                        child: SizedBox(
+                          width: 180,
+                          height: 180,
+                          child: FlareActor(
+                            'images/instagram_like.flr',
+                            controller: flareControls,
+                            animation: 'idle',
+                          ),
+                        ),
+                      ),
+                  ) ,
                 ],
               ),
             );
@@ -201,7 +210,8 @@ class _MainPageState extends State<MainPage> {
 
 class EventDisplay extends StatefulWidget {
   final User user;
-  EventDisplay(this.user);
+  final  FlareControls flareControls;
+  EventDisplay(this.user,  this.flareControls);
 
   @override
   _EventDisplayState createState() => _EventDisplayState();
@@ -210,83 +220,87 @@ class EventDisplay extends StatefulWidget {
 class _EventDisplayState extends State<EventDisplay> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          fit: BoxFit.fill,
-          image: widget.user.imageURL == "images/big-ice.png"
-              ? AssetImage(widget.user.imageURL)
-              : NetworkImage(widget.user.imageURL),
+    return Hero(
+      tag: widget.user.imageURL,
+      child: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            fit: BoxFit.cover,
+            image: widget.user.imageURL == "images/big-ice.png"
+                ? AssetImage(widget.user.imageURL)
+                : NetworkImage(widget.user.imageURL),
+          ),
         ),
-      ),
-      child: Column(
-        children: [
-          Expanded(
-            flex: 2,
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(20, 15, 0, 10),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CircleAvatar(
-                    radius: 25.0,
-                    backgroundImage: AssetImage(widget.user.profilePicture),
-                  ),
-                  Expanded(
-                    flex: 8,
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(15, 5, 0, 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            widget.user.name +
-                                " " +
-                                (widget.user.age?.toString() ?? "23"),
-                            style: TextStyle(
-                                color: Colors.white,
-                                letterSpacing: 1.0,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16),
-                          ),
-                          Text(
-                            'aktivitet 5km væk',
-                            style: TextStyle(
-                                color: Colors.white,
-                                letterSpacing: 0.7,
-                                fontWeight: FontWeight.w300,
-                                fontSize: 16),
-                          ),
-                        ],
-                      ),
+        child: Column(
+          children: [
+            Expanded(
+              flex: 2,
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(20, 15, 0, 10),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CircleAvatar(
+                      radius: 25.0,
+                      backgroundImage: AssetImage(widget.user.profilePicture),
                     ),
-                  ),
-                  Expanded(
-                    flex: 3,
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(0, 0, 15, 0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              print("Favorit!");
-                            },
-                            child: Icon(
-                              Icons.favorite_border,
-                              color: Colors.white,
-                              size: 30,
+                    Expanded(
+                      flex: 8,
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(15, 5, 0, 10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              widget.user.name +
+                                  " " +
+                                  (widget.user.age?.toString() ?? "23"),
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  letterSpacing: 1.0,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16),
                             ),
-                          )
-                        ],
+                            Text(
+                              'aktivitet 5km væk',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  letterSpacing: 0.7,
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 16),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                    Expanded(
+                      flex: 3,
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(0, 0, 15, 0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                print("Favorit!");
+                                widget.flareControls.play("like");
+                              },
+                              child: Icon(
+                                Icons.favorite_border,
+                                color: Colors.white,
+                                size: 30,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

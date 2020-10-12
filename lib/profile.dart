@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/service/auth.dart';
@@ -29,7 +31,7 @@ class _ProfileState extends State<Profile> {
     } else {
       name = "Pia, 22";
     }
-
+    print(name);
     return name;
   }
 
@@ -52,10 +54,11 @@ class _ProfileState extends State<Profile> {
 
 
 
-  String name;
+
 
   @override
   Widget build(BuildContext context) {
+    String name = checkFbData();
     //convertDateFromString(UserLoginState.instance.getProfile()['birthday']);
     return Container(
         color: Theme.of(context).primaryColor,
@@ -66,13 +69,20 @@ class _ProfileState extends State<Profile> {
               // Profile image with gradient
               Stack(
                 children: [
-                  Image(
-                    fit: BoxFit.cover,
-                    image: AssetImage('images/pia-profile-pic.jpg'),
-                    // UserLoginState.instance.getProfilePicture(),
+                  Hero(
+                    tag:"profile",
+                    child: Container(
+                      width: SizeConfig.blockSizeHorizontal*100,
+                      height: SizeConfig.blockSizeVertical*70,
+                      child: Image(
+                        fit: BoxFit.cover,
+                        image: name == "Pia, 22" ? AssetImage("images/pia-profile-pic.jpg") :  NetworkImage(UserLoginState.instance.profilePic.url),
+                        // UserLoginState.instance.getProfilePicture(),
+                      ),
+                    ),
                   ),
                   Container(
-                    height: MediaQuery.of(context).size.width * 1.471,
+                    height:SizeConfig.blockSizeVertical*70,
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
@@ -95,7 +105,7 @@ class _ProfileState extends State<Profile> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      name = checkFbData(),
+                      name,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 30,

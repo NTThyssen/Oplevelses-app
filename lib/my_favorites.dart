@@ -3,6 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/widgets/custom_scaffold_with_navBar.dart';
 import 'package:flutter_app/size_config.dart';
+import 'package:provider/provider.dart';
+import 'package:simple_animations/simple_animations.dart';
+import 'package:simple_animations/simple_animations.dart';
+import 'package:supercharged/supercharged.dart';
+
+import 'model/user.dart';
 
 class MyFavorites extends StatefulWidget {
   @override
@@ -11,34 +17,65 @@ class MyFavorites extends StatefulWidget {
 
 class _MyFavoritesState extends State<MyFavorites> {
 
-  Future uploadFile() async {
-    StorageReference storageReference = FirebaseStorage.instance.ref().child("eventPicture/image_picker603815392078609585.jpg");
-
-    String url = await storageReference.getDownloadURL();
-    print("this is download url : " + url);
-
-
-  }
-
   @override
   Widget build(BuildContext context) {
-    uploadFile();
+    final authUser = Provider.of<User>(context);
+    final users = Provider.of<List<User>>(context);
+    User currentUser;
+    print(users.length);
+    for(var user in users){
+      print(user.uid);
+      if(authUser.uid == user.uid){
+        currentUser = user;
+      }
+    }
+
     return  Container(
             child: SingleChildScrollView(
               child: Column(children: [
-                FavoriteCardView(),
-                FavoriteCardView(),
-                FavoriteCardView(),
-
+                FadeIn(0.5, FavoriteCardView(eventUrl: currentUser.favorite.event.pictureUrl,)),
               ],
               ),
             )
     );
   }
 }
+enum _AniProps { opacity, translateX }
+
+class FadeIn extends StatelessWidget {
+  final double delay;
+  final Widget child;
+
+  FadeIn(this.delay, this.child);
+
+  @override
+  Widget build(BuildContext context) {
+    final tween = MultiTween<_AniProps>()
+      ..add(_AniProps.opacity, 0.0.tweenTo(1.0))
+      ..add(_AniProps.translateX, 130.0.tweenTo(0.0));
+
+    return PlayAnimation<MultiTweenValues<_AniProps>>(
+      delay: (300 * delay).round().milliseconds,
+      duration: 500.milliseconds,
+      tween: tween,
+      child: child,
+      builder: (context, child, value) => Opacity(
+        opacity: value.get(_AniProps.opacity),
+        child: Transform.translate(
+          offset: Offset(value.get(_AniProps.translateX), 0),
+          child: child,
+        ),
+      ),
+    );
+  }
+}
 
 
 class FavoriteCardView extends StatefulWidget {
+  String eventUrl;
+
+  FavoriteCardView({this.eventUrl});
+
   @override
   _FavoriteCardViewState createState() => _FavoriteCardViewState();
 }
@@ -144,7 +181,7 @@ class _FavoriteCardViewState extends State<FavoriteCardView> {
                           image: new DecorationImage(
                             fit: BoxFit.fitWidth,
                             alignment: FractionalOffset.centerLeft,
-                            image: AssetImage('images/big-ice.png'),
+                            image: widget.eventUrl != null ? NetworkImage(widget.eventUrl) : AssetImage('images/big-ice.png'),
                           ),
                        )
                    ),

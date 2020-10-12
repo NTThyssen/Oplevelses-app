@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_app/model/user.dart';
 import 'package:flutter_app/service/DatabaseService.dart';
+import 'package:flutter_app/size_config.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -32,8 +33,11 @@ class AuthService {
             'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email,birthday&access_token=$token');
         final profile = json.decode(graphResponse.body);
         final profilePic = profile['id'];
+        int width=SizeConfig.screenWidth.toInt();
+        int height=SizeConfig.screenHeight.toInt();
+        print("{width : $width, heigth: $height}");
         final graphResponse2 = await http.get(
-            'https://graph.facebook.com/$profilePic/picture?type=large&redirect=false&access_token=$token');
+            'https://graph.facebook.com/$profilePic/picture?height=$height&width=$width&redirect=false&access_token=$token');
         final profilepic2 = json.decode(graphResponse2.body);
         print(profile);
         print(profilepic2);

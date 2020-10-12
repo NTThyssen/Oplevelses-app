@@ -38,14 +38,13 @@ class _CustomScaffoldWithNavBarState extends State<CustomScaffoldWithNavBar> {
   @override
   Widget build(BuildContext context) {
     bool keyboardIsOpened = MediaQuery.of(context).viewInsets.bottom != 0.0;
-    final authUser = Provider.of<User>(context);
 
     return Scaffold(
         extendBodyBehindAppBar: widget.extendUp ?? false,
         appBar: AppBar(
             title: Text(widget.title ?? ""),
             centerTitle: true,
-            backgroundColor: widget.backgroundColor.withOpacity(0.50),
+            backgroundColor: widget.backgroundColor.withOpacity(1),
             leading: IconButton(
               icon: Icon(
                 Icons.filter_list,
@@ -58,14 +57,14 @@ class _CustomScaffoldWithNavBarState extends State<CustomScaffoldWithNavBar> {
         extendBody: true,
         bottomNavigationBar: ConvexAppBar(
           color: Theme.of(context).secondaryHeaderColor,
-          activeColor:  Colors.white,
+          activeColor: Colors.indigo,
           style: TabStyle.fixedCircle,
           initialActiveIndex:  selectedPage,
           backgroundColor: Theme.of(context).primaryColor.withOpacity(0.7),
           items: [
             TabItem(icon: Icons.home, title: 'Home',),
             TabItem(icon: Icons.message, title: 'Beskeder'),
-            TabItem(icon: Icon(Icons.add, color:Theme.of(context).primaryColor, size:  50,), title: 'Add'),
+            TabItem(icon: Icon(Icons.add, color: Colors.white, size:  50,), title: 'Add'),
             TabItem(icon: Icons.favorite_border , title: 'Favoritter'),
             TabItem(icon: Icons.person_outline, title: 'Profil'),
           ],

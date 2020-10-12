@@ -5,10 +5,19 @@ class User {
   int age;
   String profilePicture;
   Event event;
+  Favorite favorite;
 
-  User({this.uid, this.name, this.profilePicture, this.imageURL, this.event});
+  User({this.uid, this.name, this.profilePicture, this.imageURL, this.event, this.favorite});
 
 }
+
+class Favorite {
+  Event event;
+  User user;
+
+  Favorite({this.event, this.user});
+}
+
 
 class Event {
   String pictureUrl;

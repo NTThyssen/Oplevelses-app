@@ -20,13 +20,15 @@ class Test extends StatefulWidget {
 }
 
 class _TestState extends State<Test> {
+  int heroTagCounter=0;
 
   @override
   Widget build(BuildContext context) {
+
     final users = Provider.of<List<User>>(context);
     User currentUser;
     users.forEach((user) {
-
+    heroTagCounter++;
 
       if(user.event.pictureUrl == widget.pictureUrl){
         currentUser = user;
@@ -51,12 +53,15 @@ class _TestState extends State<Test> {
                 // Profile image with gradient
                 Stack(
                   children: [
-                    Container(
-                      height: SizeConfig.blockSizeVertical*60,
-                      width: SizeConfig.blockSizeVertical*100,
-                      child: Image(
-                        fit: BoxFit.cover,
-                        image: NetworkImage(widget.pictureUrl),
+                    Hero(
+                      tag: widget.pictureUrl,
+                      child: Container(
+                        height: SizeConfig.blockSizeVertical*60,
+                        width: SizeConfig.blockSizeVertical*100,
+                        child: Image(
+                          fit: BoxFit.cover,
+                          image: NetworkImage(widget.pictureUrl),
+                        ),
                       ),
                     ),
                     Container(

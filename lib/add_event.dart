@@ -1,33 +1,34 @@
 import 'dart:io';
 
-import 'package:date_format/date_format.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/service/DatabaseService.dart';
-import 'package:flutter_app/service/auth.dart';
 import 'package:flutter_app/size_config.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
-
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'model/user.dart';
-import 'widgets/custom_scaffold_with_navBar.dart';
+import 'package:intl/intl.dart';
+import 'package:loading_overlay/loading_overlay.dart';
+import 'package:badges/badges.dart';
 
 class AddEvent extends StatefulWidget {
-  String title = "";
-  String description = "";
-  String price = "";
-  String date = "";
-  String city = "";
-  String _uploadedFileURL = "";
-  String uid = "";
-  User currentUser;
+
   @override
   _AddEventState createState() => _AddEventState();
 }
 
 class _AddEventState extends State<AddEvent> {
-
+  String title = "";
+  String description = "";
+  String price = "";
+  String date = "";
+  String city = "";
+  String uploadedFileURL = "";
+  String uid = "";
+  User currentUser;
+  bool isUploading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -35,21 +36,19 @@ class _AddEventState extends State<AddEvent> {
     final authUser = Provider.of<User>(context);
     File image;
 
-
-    users.forEach((user) {
-      widget.currentUser = User(uid: authUser.uid, event: Event(title: widget.title, description: widget.description, date: widget.date, price: widget.price, pictureUrl: widget._uploadedFileURL));
-    });
-
     Future uploadFile() async {
       StorageReference storageReference = FirebaseStorage.instance
           .ref()
           .child('eventPicture/${basename(image.path)}');
       StorageUploadTask uploadTask = storageReference.putFile(image);
+
       await uploadTask.onComplete;
       print('File Uploaded');
+
       storageReference.getDownloadURL().then((fileURL) {
         setState(() {
-          widget._uploadedFileURL = fileURL;
+          uploadedFileURL = fileURL;
+          isUploading = false;
         });
       });
     }
@@ -57,46 +56,62 @@ class _AddEventState extends State<AddEvent> {
     cameraConnect() async {
       print('Picker is Called');
       if(image == null) {
-        File img = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+        File img = await ImagePicker.pickImage(source: ImageSource.camera);
         if (img != null) {
           print("hello");
           image = img;
-          setState(() {});
-          uploadFile();
+          setState(()  {
+            isUploading = true;
+            uploadFile();
+          });
         }
-      }else{
-        image = null;
-        setState(() {});
       }
 
     }
 
 
-    return Container(
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(height: SizeConfig.blockSizeVertical*8,),
-                Container(
-                  width: SizeConfig.blockSizeHorizontal*40,
-                  height: SizeConfig.blockSizeVertical*25,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                    color: Theme.of(context).secondaryHeaderColor
-                  ),
-                  child: IconButton(
-                    onPressed: (){
-                      cameraConnect();
-                    },
-                    icon: Icon(Icons.add, size: 50, color: Colors.white,),
+    return LoadingOverlay(
+      isLoading: isUploading,
+      child: Container(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(height: SizeConfig.blockSizeVertical*8,),
+              Container(
+                width: SizeConfig.blockSizeHorizontal*40,
+                height: SizeConfig.blockSizeVertical*25,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                  color: Theme.of(context).secondaryHeaderColor,
+                  image: DecorationImage(
+                    fit: BoxFit.fill,
+                    image: NetworkImage(uploadedFileURL ),
+
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text("Tilføj billede"),
+                child: uploadedFileURL != "" ?
+                IconButton(
+                  onPressed: (){
+                    cameraConnect();
+
+                  },
+                  icon: Icon(Icons.edit, size: 50, color: Colors.white.withOpacity(0.50),),
+                ) :
+                IconButton(
+                  onPressed: (){
+                    cameraConnect();
+
+                  },
+                  icon: Icon(Icons.add, size: 50, color: Colors.white,),
                 ),
-                SizedBox(height: SizeConfig.blockSizeVertical*3,),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text("Tilføj billede"),
+              ),
+              SizedBox(height: SizeConfig.blockSizeVertical*3,),
               Padding(
                 padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
                 child: Center(
@@ -106,9 +121,11 @@ class _AddEventState extends State<AddEvent> {
                       child: Padding(
                         padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
                         child: TextFormField(
+                          textInputAction: TextInputAction.next,
+                          onFieldSubmitted: (_) => FocusScope.of(context).nextFocus(),
                           onChanged: (input) {
                             setState(() {
-                                widget.title = input;
+                              title = input;
                             });
                           },
                           keyboardType: TextInputType.multiline,
@@ -141,207 +158,228 @@ class _AddEventState extends State<AddEvent> {
                   ),
                 ),
               ),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
-                  child: Center(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8.0),
-                      child: Container(
-                        child: Padding(
-                          padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
-                          child: TextFormField(
-                            onChanged: (input) {
-                              setState(() {
-                                widget.description = input;
-                              });
-                            },
-                            keyboardType: TextInputType.multiline,
-                            maxLines: null,
-                            maxLength: 180,
-                            decoration: InputDecoration(
-                              hintStyle: TextStyle(color: Colors.grey),
-                              border: InputBorder.none,
-                              labelText: "Beskrivelse",
-                              counterText: "",
-                            ),
-
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
+                child: Center(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8.0),
+                    child: Container(
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
+                        child: TextFormField(
+                          textInputAction: TextInputAction.next,
+                          onFieldSubmitted: (_) => FocusScope.of(context).nextFocus(),
+                          onChanged: (input) {
+                            setState(() {
+                              description = input;
+                            });
+                          },
+                          keyboardType: TextInputType.multiline,
+                          maxLines: null,
+                          maxLength: 180,
+                          decoration: InputDecoration(
+                            hintStyle: TextStyle(color: Colors.grey),
+                            border: InputBorder.none,
+                            labelText: "Beskrivelse",
+                            counterText: "",
                           ),
+
                         ),
-                        width: SizeConfig.blockSizeHorizontal*90,
-                        height: SizeConfig.blockSizeHorizontal*35,
-                        margin: const EdgeInsets.only(bottom: 6.0), //Same as `blurRadius` i guess
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5.0),
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey,
-                              offset: Offset(0.0, 1.0), //(x,y)
-                              blurRadius: 6.0,
-                            ),
-                          ],
-                        ),
+                      ),
+                      width: SizeConfig.blockSizeHorizontal*90,
+                      height: SizeConfig.blockSizeHorizontal*35,
+                      margin: const EdgeInsets.only(bottom: 6.0), //Same as `blurRadius` i guess
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5.0),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey,
+                            offset: Offset(0.0, 1.0), //(x,y)
+                            blurRadius: 6.0,
+                          ),
+                        ],
                       ),
                     ),
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
-                  child: Center(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8.0),
-                      child: Container(
-                        child: Padding(
-                          padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
-                          child: TextFormField(
-                            onChanged: (input) {
-                              setState(() {
-                                  widget.price = input;
-                              });
-                            },
-                            keyboardType: TextInputType.multiline,
-                            maxLines: null,
-                            maxLength: 180,
-                            decoration: InputDecoration(
-                              hintStyle: TextStyle(color: Colors.grey),
-                              border: InputBorder.none,
-                              labelText: "Pris",
-                              counterText: "",
-                            ),
-
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
+                child: Center(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8.0),
+                    child: Container(
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
+                        child: TextFormField(
+                          textInputAction: TextInputAction.next,
+                          onFieldSubmitted: (_) => FocusScope.of(context).nextFocus(),
+                          onChanged: (input) {
+                            setState(() {
+                              price = input;
+                            });
+                          },
+                          keyboardType: TextInputType.number,
+                          maxLines: null,
+                          maxLength: 180,
+                          decoration: InputDecoration(
+                            hintStyle: TextStyle(color: Colors.grey),
+                            border: InputBorder.none,
+                            labelText: "Pris",
+                            counterText: "",
                           ),
+
                         ),
-                        width: SizeConfig.blockSizeHorizontal*90,
-                        height: SizeConfig.blockSizeHorizontal*14,
-                        margin: const EdgeInsets.only(bottom: 6.0), //Same as `blurRadius` i guess
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5.0),
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey,
-                              offset: Offset(0.0, 1.0), //(x,y)
-                              blurRadius: 6.0,
-                            ),
-                          ],
-                        ),
+                      ),
+                      width: SizeConfig.blockSizeHorizontal*90,
+                      height: SizeConfig.blockSizeHorizontal*14,
+                      margin: const EdgeInsets.only(bottom: 6.0), //Same as `blurRadius` i guess
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5.0),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey,
+                            offset: Offset(0.0, 1.0), //(x,y)
+                            blurRadius: 6.0,
+                          ),
+                        ],
                       ),
                     ),
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
-                  child: Center(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8.0),
-                      child: Container(
-                        child: Padding(
-                          padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
-                          child: TextFormField(
-                            onChanged: (input) {
-                              setState(() {
-                                    widget.date = input;
-                              });
-                            },
-                            keyboardType: TextInputType.multiline,
-                            maxLines: null,
-                            maxLength: 180,
-                            decoration: InputDecoration(
-                              hintStyle: TextStyle(color: Colors.grey),
-                              border: InputBorder.none,
-                              labelText: "Dato",
-                              counterText: "",
-                            ),
+              ),
+              /*TextFormField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Address',
+                    ),
+                    enabled: true,
 
+                  ),*/
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
+                child: Center(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8.0),
+                    child: Container(
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
+                        child: DateTimeField(
+                          decoration: InputDecoration(
+                            hintStyle: TextStyle(color: Colors.grey),
+                            border: InputBorder.none,
+                            labelText: "Vælg Dato",
+                            counterText: "",
                           ),
+                          format: DateFormat("dd-MM-yyyy"),
+                          textInputAction: TextInputAction.next,
+                          onFieldSubmitted: (_) => FocusScope.of(context).nextFocus(),
+                          onChanged: (input) {
+
+                            date = (input.day.toString()+ "/"+ input.month.toString());
+                            print(date);
+                          },
+                          onShowPicker: (context, currentValue) {
+                            return showDatePicker(
+                                context: context,
+                                firstDate: DateTime(1900),
+                                initialDate: currentValue ?? DateTime.now(),
+                                lastDate: DateTime(2100));
+                          },
                         ),
-                        width: SizeConfig.blockSizeHorizontal*90,
-                        height: SizeConfig.blockSizeHorizontal*14,
-                        margin: const EdgeInsets.only(bottom: 6.0), //Same as `blurRadius` i guess
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5.0),
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey,
-                              offset: Offset(0.0, 1.0), //(x,y)
-                              blurRadius: 6.0,
-                            ),
-                          ],
-                        ),
+                      ),
+                      width: SizeConfig.blockSizeHorizontal*90,
+                      height: SizeConfig.blockSizeHorizontal*14,
+                      margin: const EdgeInsets.only(bottom: 6.0), //Same as `blurRadius` i guess
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5.0),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey,
+                            offset: Offset(0.0, 1.0), //(x,y)
+                            blurRadius: 6.0,
+                          ),
+                        ],
                       ),
                     ),
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(0, 8, 0, 15),
-                  child: Center(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8.0),
-                      child: Container(
-                        child: Padding(
-                          padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
-                          child: TextFormField(
-                            onChanged: (input) {
-                              setState(() {
-                                  widget.city = input;
-                              });
-                            },
-                            keyboardType: TextInputType.multiline,
-                            maxLines: null,
-                            maxLength: 180,
-                            decoration: InputDecoration(
-                              hintStyle: TextStyle(color: Colors.grey),
-                              border: InputBorder.none,
-                              labelText: "by",
-                              counterText: "",
-                            ),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 8, 0, 15),
+                child: Center(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8.0),
+                    child: Container(
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
+                        child: TextFormField(
+                          onChanged: (input) {
+                            setState(() {
+                              city = input;
+                            });
+                          },
+                          keyboardType: TextInputType.multiline,
+                          maxLines: null,
+                          maxLength: 180,
 
+                          decoration: InputDecoration(
+                            hintStyle: TextStyle(color: Colors.grey),
+                            border: InputBorder.none,
+                            labelText: "by",
+                            counterText: "",
                           ),
+
                         ),
-                        width: SizeConfig.blockSizeHorizontal*90,
-                        height: SizeConfig.blockSizeHorizontal*14,
-                        margin: const EdgeInsets.only(bottom: 6.0), //Same as `blurRadius` i guess
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5.0),
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey,
-                              offset: Offset(0.0, 1.0), //(x,y)
-                              blurRadius: 6.0,
-                            ),
-                          ],
-                        ),
+                      ),
+                      width: SizeConfig.blockSizeHorizontal*90,
+                      height: SizeConfig.blockSizeHorizontal*14,
+                      margin: const EdgeInsets.only(bottom: 6.0), //Same as `blurRadius` i guess
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5.0),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey,
+                            offset: Offset(0.0, 1.0), //(x,y)
+                            blurRadius: 6.0,
+                          ),
+                        ],
                       ),
                     ),
                   ),
                 ),
-                RaisedButton(
+              ),
+              RaisedButton(
 
                   child: Text("Opret Event", style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,
                   ),),
                   color: Theme.of(context).secondaryHeaderColor,
-                    onPressed: () {
-                  widget.currentUser.event.title =   widget.title;
-                  widget.currentUser.event.pictureUrl =  widget._uploadedFileURL;
-                  widget.currentUser.event.price =  widget.price;
-                  widget.currentUser.event.date =  widget.date;
-                  widget.currentUser.event.city =  widget.city;
-                  widget.currentUser .event.description =  widget.description;
-                      DatabaseService(uid: widget.currentUser.uid).updateUserDate(widget.currentUser);
+                  onPressed: () {
+                    currentUser = authUser;
+                    currentUser.event = Event(title: title, pictureUrl: uploadedFileURL, price: price, date: date, city: city, description: description);
+                    DatabaseService(uid: currentUser.uid).updateUserDate(currentUser);
 
-                }),
-                SizedBox(
-                  height: SizeConfig.blockSizeVertical*12,
-                )
-              ],
-            ),
+                  }),
+              SizedBox(
+                height: SizeConfig.blockSizeVertical*12,
+              )
+            ],
           ),
+        ),
 
-    );
+      ),
+    ); /*isUploading ? Center(
+      child: SpinKitCubeGrid(
+        color: Colors.white,
+        size: 80.0,
+      ),
+    ),*/
   }
 }
 
