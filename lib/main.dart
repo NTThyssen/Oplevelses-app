@@ -87,8 +87,8 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  var isLoading = false;
-  var items = 5;
+  var isLoading = true;
+  var items = 4;
   bool isLiked = false;
   final FlareControls flareControls = FlareControls();
   Widget build(BuildContext context) {
@@ -115,22 +115,21 @@ class _MainPageState extends State<MainPage> {
     final users = Provider.of<List<User>>(context ) ?? [];
     final authUser = Provider.of<User>(context);
 
-    List count = new List();
+    List<User> count = new List();
     var cnt = 0;
     if (users != null) {
       for (var doc in users) {
         if(doc.uid != authUser.uid){
           print(doc.uid);
-          if (cnt <1) {
-            count.add("images/big-ice.png");
-            count.add(doc.event.pictureUrl);
-            //preload(context, doc.event.pictureUrl);
+          if (cnt < 4) {
+            count.add(doc);
+            preload(context, doc.event.pictureUrl);
             cnt++;
           }
         }
       }
     }
-
+    print(count.length);
     return isLoading
         ? Container(
             width: SizeConfig.blockSizeHorizontal * 100,
@@ -146,8 +145,8 @@ class _MainPageState extends State<MainPage> {
               child: Stack(
                 children: [
                   PreloadPageView.builder(
-                    itemCount: users.length,
-                    preloadPagesCount: 5,
+                    itemCount: count.length,
+                    preloadPagesCount: 4,
                     onPageChanged: (index) {
                       if (index == items - 1) {
                         print("last page");
@@ -156,14 +155,14 @@ class _MainPageState extends State<MainPage> {
                       }
                     },
                     itemBuilder: (BuildContext context, int position) {
-                      for (var i = 0; i < users.length; i++) {
+                      for (var i = 0; i < count.length; i++) {
                         return GestureDetector(
                           onDoubleTap: () {
                             setState(() {
                               isLiked = true;
                               flareControls.play("like");
                               authUser.favorite = Favorite();
-                              authUser.favorite.event = users.elementAt(position).event;
+                              authUser.favorite.event = count.elementAt(position).event;
                               DatabaseService(uid: authUser.uid).updateUserData(authUser);
                             });
 
@@ -174,14 +173,14 @@ class _MainPageState extends State<MainPage> {
                                 FadeRoute(
                                     page: Test(
                                         pictureUrl:
-                                            count.elementAt(position))));
+                                            count.elementAt(position).event.pictureUrl)));
                           },
                           child: EventDisplay(User(
                               uid: 'id',
                               name: "nicklas",
                               profilePicture: "images/flower2.jpg",
-                              imageURL: count.elementAt(position) != null
-                                  ? count.elementAt(position)
+                              imageURL: count.elementAt(position).event.pictureUrl != null
+                                  ? count.elementAt(position).event.pictureUrl
                                   : "images/big-ice.png"), flareControls),
                         );
                       }

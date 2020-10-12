@@ -74,6 +74,7 @@ class _CustomScaffoldWithNavBarState extends State<CustomScaffoldWithNavBar> {
                 case 0:
                   break;
                 case 1:
+                  index = 0;
                   break;
                 case 2:
                   break;
