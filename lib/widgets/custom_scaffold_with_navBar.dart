@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/add_event.dart';
+import 'package:flutter_app/screens/main_menu/add_event.dart';
 import 'package:flutter_app/authenticate/log_in_page.dart';
 import 'package:flutter_app/model/user.dart';
-import 'package:flutter_app/my_favorites.dart';
-import 'package:flutter_app/profile.dart';
+import 'package:flutter_app/screens/main_menu/my_favorites.dart';
+import 'package:flutter_app/screens/settings/profile.dart';
 import 'package:flutter_app/service/auth.dart';
 import 'package:flutter_app/widgets/sing_in_alert_box.dart';
 import 'package:provider/provider.dart';
@@ -12,20 +12,17 @@ import '../main.dart';
 import '../wrapper.dart';
 
 class CustomScaffoldWithNavBar extends StatefulWidget {
-
   final String title;
   final bool extendUp;
   final List<Widget> icons;
   final Color backgroundColor;
 
-
-  CustomScaffoldWithNavBar(
-      {
-      this.title,
-      this.extendUp,
-      this.icons,
-      this.backgroundColor,
-      });
+  CustomScaffoldWithNavBar({
+    this.title,
+    this.extendUp,
+    this.icons,
+    this.backgroundColor,
+  });
 
   @override
   _CustomScaffoldWithNavBarState createState() =>
@@ -59,18 +56,27 @@ class _CustomScaffoldWithNavBarState extends State<CustomScaffoldWithNavBar> {
           color: Theme.of(context).secondaryHeaderColor,
           activeColor: Colors.indigo,
           style: TabStyle.fixedCircle,
-          initialActiveIndex:  selectedPage,
+          initialActiveIndex: selectedPage,
           backgroundColor: Theme.of(context).primaryColor.withOpacity(0.7),
           items: [
-            TabItem(icon: Icons.home, title: 'Home',),
+            TabItem(
+              icon: Icons.home,
+              title: 'Home',
+            ),
             TabItem(icon: Icons.message, title: 'Beskeder'),
-            TabItem(icon: Icon(Icons.add, color: Colors.white, size:  50,), title: 'Add'),
-            TabItem(icon: Icons.favorite_border , title: 'Favoritter'),
+            TabItem(
+                icon: Icon(
+                  Icons.add,
+                  color: Colors.white,
+                  size: 50,
+                ),
+                title: 'Add'),
+            TabItem(icon: Icons.favorite_border, title: 'Favoritter'),
             TabItem(icon: Icons.person_outline, title: 'Profil'),
           ],
-          onTap: (int index ){
+          onTap: (int index) {
             setState(() {
-              switch(index){
+              switch (index) {
                 case 0:
                   break;
                 case 1:
@@ -86,9 +92,7 @@ class _CustomScaffoldWithNavBarState extends State<CustomScaffoldWithNavBar> {
             });
           },
         ),
-        body: Wrapper(index: selectedPage)
-
-    );
+        body: Wrapper(index: selectedPage));
   }
 }
 
@@ -175,8 +179,6 @@ class _BottomAppBarCustomState extends State<BottomAppBarCustom> {
   }
 }
 
-
-
 class FadeRoute extends PageRouteBuilder {
   final Widget page;
   FadeRoute({this.page})
@@ -194,8 +196,8 @@ class FadeRoute extends PageRouteBuilder {
             Widget child,
           ) =>
               FadeTransition(
-                opacity: animation,
-                child: child,
+            opacity: animation,
+            child: child,
           ),
         );
 }

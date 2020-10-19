@@ -8,13 +8,12 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-import 'model/user.dart';
+import '../../model/user.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:badges/badges.dart';
 
 class AddEvent extends StatefulWidget {
-
   @override
   _AddEventState createState() => _AddEventState();
 }
@@ -52,24 +51,22 @@ class _AddEventState extends State<AddEvent> {
         });
       });
     }
+
     //connect camera
     cameraConnect() async {
       print('Picker is Called');
-      if(image == null) {
-
+      if (image == null) {
         File img = await ImagePicker.pickImage(source: ImageSource.camera);
         if (img != null) {
           print("hello");
           image = img;
-          setState(()  {
+          setState(() {
             isUploading = true;
             uploadFile();
           });
         }
       }
-
     }
-
 
     return LoadingOverlay(
       isLoading: isUploading,
@@ -78,40 +75,49 @@ class _AddEventState extends State<AddEvent> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(height: SizeConfig.blockSizeVertical*8,),
+              SizedBox(
+                height: SizeConfig.blockSizeVertical * 8,
+              ),
               Container(
-                width: SizeConfig.blockSizeHorizontal*40,
-                height: SizeConfig.blockSizeVertical*25,
+                width: SizeConfig.blockSizeHorizontal * 40,
+                height: SizeConfig.blockSizeVertical * 25,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(15.0)),
                   color: Theme.of(context).secondaryHeaderColor,
                   image: DecorationImage(
                     fit: BoxFit.fill,
-                    image: NetworkImage(uploadedFileURL ),
-
+                    image: NetworkImage(uploadedFileURL),
                   ),
                 ),
-                child: uploadedFileURL != "" ?
-                IconButton(
-                  onPressed: (){
-                    cameraConnect();
-
-                  },
-                  icon: Icon(Icons.edit, size: 50, color: Colors.white.withOpacity(0.50),),
-                ) :
-                IconButton(
-                  onPressed: (){
-                    cameraConnect();
-
-                  },
-                  icon: Icon(Icons.add, size: 50, color: Colors.white,),
-                ),
+                child: uploadedFileURL != ""
+                    ? IconButton(
+                        onPressed: () {
+                          cameraConnect();
+                        },
+                        icon: Icon(
+                          Icons.edit,
+                          size: 50,
+                          color: Colors.white.withOpacity(0.50),
+                        ),
+                      )
+                    : IconButton(
+                        onPressed: () {
+                          cameraConnect();
+                        },
+                        icon: Icon(
+                          Icons.add,
+                          size: 50,
+                          color: Colors.white,
+                        ),
+                      ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text("Tilføj billede"),
               ),
-              SizedBox(height: SizeConfig.blockSizeVertical*3,),
+              SizedBox(
+                height: SizeConfig.blockSizeVertical * 3,
+              ),
               Padding(
                 padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
                 child: Center(
@@ -122,7 +128,8 @@ class _AddEventState extends State<AddEvent> {
                         padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
                         child: TextFormField(
                           textInputAction: TextInputAction.next,
-                          onFieldSubmitted: (_) => FocusScope.of(context).nextFocus(),
+                          onFieldSubmitted: (_) =>
+                              FocusScope.of(context).nextFocus(),
                           onChanged: (input) {
                             setState(() {
                               title = input;
@@ -137,12 +144,12 @@ class _AddEventState extends State<AddEvent> {
                             labelText: "Overskrift",
                             counterText: "",
                           ),
-
                         ),
                       ),
-                      width: SizeConfig.blockSizeHorizontal*90,
-                      height: SizeConfig.blockSizeHorizontal*14,
-                      margin: const EdgeInsets.only(bottom: 6.0), //Same as `blurRadius` i guess
+                      width: SizeConfig.blockSizeHorizontal * 90,
+                      height: SizeConfig.blockSizeHorizontal * 14,
+                      margin: const EdgeInsets.only(
+                          bottom: 6.0), //Same as `blurRadius` i guess
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5.0),
                         color: Colors.white,
@@ -168,7 +175,8 @@ class _AddEventState extends State<AddEvent> {
                         padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
                         child: TextFormField(
                           textInputAction: TextInputAction.next,
-                          onFieldSubmitted: (_) => FocusScope.of(context).nextFocus(),
+                          onFieldSubmitted: (_) =>
+                              FocusScope.of(context).nextFocus(),
                           onChanged: (input) {
                             setState(() {
                               description = input;
@@ -183,12 +191,12 @@ class _AddEventState extends State<AddEvent> {
                             labelText: "Beskrivelse",
                             counterText: "",
                           ),
-
                         ),
                       ),
-                      width: SizeConfig.blockSizeHorizontal*90,
-                      height: SizeConfig.blockSizeHorizontal*35,
-                      margin: const EdgeInsets.only(bottom: 6.0), //Same as `blurRadius` i guess
+                      width: SizeConfig.blockSizeHorizontal * 90,
+                      height: SizeConfig.blockSizeHorizontal * 35,
+                      margin: const EdgeInsets.only(
+                          bottom: 6.0), //Same as `blurRadius` i guess
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5.0),
                         color: Colors.white,
@@ -214,7 +222,8 @@ class _AddEventState extends State<AddEvent> {
                         padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
                         child: TextFormField(
                           textInputAction: TextInputAction.next,
-                          onFieldSubmitted: (_) => FocusScope.of(context).nextFocus(),
+                          onFieldSubmitted: (_) =>
+                              FocusScope.of(context).nextFocus(),
                           onChanged: (input) {
                             setState(() {
                               price = input;
@@ -229,12 +238,12 @@ class _AddEventState extends State<AddEvent> {
                             labelText: "Pris",
                             counterText: "",
                           ),
-
                         ),
                       ),
-                      width: SizeConfig.blockSizeHorizontal*90,
-                      height: SizeConfig.blockSizeHorizontal*14,
-                      margin: const EdgeInsets.only(bottom: 6.0), //Same as `blurRadius` i guess
+                      width: SizeConfig.blockSizeHorizontal * 90,
+                      height: SizeConfig.blockSizeHorizontal * 14,
+                      margin: const EdgeInsets.only(
+                          bottom: 6.0), //Same as `blurRadius` i guess
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5.0),
                         color: Colors.white,
@@ -275,10 +284,12 @@ class _AddEventState extends State<AddEvent> {
                           ),
                           format: DateFormat("dd-MM-yyyy"),
                           textInputAction: TextInputAction.next,
-                          onFieldSubmitted: (_) => FocusScope.of(context).nextFocus(),
+                          onFieldSubmitted: (_) =>
+                              FocusScope.of(context).nextFocus(),
                           onChanged: (input) {
-
-                            date = (input.day.toString()+ "/"+ input.month.toString());
+                            date = (input.day.toString() +
+                                "/" +
+                                input.month.toString());
                             print(date);
                           },
                           onShowPicker: (context, currentValue) {
@@ -290,9 +301,10 @@ class _AddEventState extends State<AddEvent> {
                           },
                         ),
                       ),
-                      width: SizeConfig.blockSizeHorizontal*90,
-                      height: SizeConfig.blockSizeHorizontal*14,
-                      margin: const EdgeInsets.only(bottom: 6.0), //Same as `blurRadius` i guess
+                      width: SizeConfig.blockSizeHorizontal * 90,
+                      height: SizeConfig.blockSizeHorizontal * 14,
+                      margin: const EdgeInsets.only(
+                          bottom: 6.0), //Same as `blurRadius` i guess
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5.0),
                         color: Colors.white,
@@ -325,19 +337,18 @@ class _AddEventState extends State<AddEvent> {
                           keyboardType: TextInputType.multiline,
                           maxLines: null,
                           maxLength: 180,
-
                           decoration: InputDecoration(
                             hintStyle: TextStyle(color: Colors.grey),
                             border: InputBorder.none,
                             labelText: "by",
                             counterText: "",
                           ),
-
                         ),
                       ),
-                      width: SizeConfig.blockSizeHorizontal*90,
-                      height: SizeConfig.blockSizeHorizontal*14,
-                      margin: const EdgeInsets.only(bottom: 6.0), //Same as `blurRadius` i guess
+                      width: SizeConfig.blockSizeHorizontal * 90,
+                      height: SizeConfig.blockSizeHorizontal * 14,
+                      margin: const EdgeInsets.only(
+                          bottom: 6.0), //Same as `blurRadius` i guess
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5.0),
                         color: Colors.white,
@@ -354,27 +365,35 @@ class _AddEventState extends State<AddEvent> {
                 ),
               ),
               RaisedButton(
-
-                  child: Text("Opret Event", style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                  ),),
+                  child: Text(
+                    "Opret Event",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                    ),
+                  ),
                   color: Theme.of(context).secondaryHeaderColor,
                   onPressed: () {
                     currentUser = authUser;
-                    currentUser.event = Event(title: title, pictureUrl: uploadedFileURL, price: price, date: date, city: city, description: description);
-                    DatabaseService(uid: currentUser.uid).updateUserDate(currentUser);
-
+                    currentUser.event = Event(
+                        title: title,
+                        pictureUrl: uploadedFileURL,
+                        price: price,
+                        date: date,
+                        city: city,
+                        description: description);
+                    DatabaseService(uid: currentUser.uid)
+                        .updateUserDate(currentUser);
                   }),
               SizedBox(
-                height: SizeConfig.blockSizeVertical*12,
+                height: SizeConfig.blockSizeVertical * 12,
               )
             ],
           ),
         ),
-
       ),
-    ); /*isUploading ? Center(
+    );
+    /*isUploading ? Center(
       child: SpinKitCubeGrid(
         color: Colors.white,
         size: 80.0,
@@ -383,14 +402,14 @@ class _AddEventState extends State<AddEvent> {
   }
 }
 
-
 class InoutBoxWithBottomShadow extends StatefulWidget {
   final String labelText;
   final bool bigBox;
   InoutBoxWithBottomShadow(this.labelText, {this.bigBox});
 
   @override
-  _InoutBoxWithBottomShadowState createState() => _InoutBoxWithBottomShadowState();
+  _InoutBoxWithBottomShadowState createState() =>
+      _InoutBoxWithBottomShadowState();
 }
 
 class _InoutBoxWithBottomShadowState extends State<InoutBoxWithBottomShadow> {
@@ -398,7 +417,7 @@ class _InoutBoxWithBottomShadowState extends State<InoutBoxWithBottomShadow> {
 
   @override
   Widget build(BuildContext context) {
-    return  Padding(
+    return Padding(
       padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
       child: Center(
         child: ClipRRect(
@@ -407,26 +426,26 @@ class _InoutBoxWithBottomShadowState extends State<InoutBoxWithBottomShadow> {
             child: Padding(
               padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
               child: TextFormField(
-                    onChanged: (input) {
-                      setState(() {
-
-                      });
-                      },
-                    keyboardType: TextInputType.multiline,
-                    maxLines: null,
-                    maxLength: 180,
+                onChanged: (input) {
+                  setState(() {});
+                },
+                keyboardType: TextInputType.multiline,
+                maxLines: null,
+                maxLength: 180,
                 decoration: InputDecoration(
-                    hintStyle: TextStyle(color: Colors.grey),
-                    border: InputBorder.none,
-                    labelText: widget.labelText,
-                    counterText: "",
+                  hintStyle: TextStyle(color: Colors.grey),
+                  border: InputBorder.none,
+                  labelText: widget.labelText,
+                  counterText: "",
                 ),
-
               ),
             ),
-            width: SizeConfig.blockSizeHorizontal*90,
-            height: widget.bigBox == null ? SizeConfig.blockSizeHorizontal*14 : SizeConfig.blockSizeHorizontal*35,
-            margin: const EdgeInsets.only(bottom: 6.0), //Same as `blurRadius` i guess
+            width: SizeConfig.blockSizeHorizontal * 90,
+            height: widget.bigBox == null
+                ? SizeConfig.blockSizeHorizontal * 14
+                : SizeConfig.blockSizeHorizontal * 35,
+            margin: const EdgeInsets.only(
+                bottom: 6.0), //Same as `blurRadius` i guess
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5.0),
               color: Colors.white,
@@ -444,5 +463,3 @@ class _InoutBoxWithBottomShadowState extends State<InoutBoxWithBottomShadow> {
     );
   }
 }
-
-

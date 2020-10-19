@@ -1,4 +1,3 @@
-
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flare_flutter/flare_controls.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +8,7 @@ import 'package:flutter_app/widgets/pop_up_menu.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:preload_page_view/preload_page_view.dart';
 import 'package:provider/provider.dart';
-import 'event_details.dart';
+import 'screens/home/event_details.dart';
 import 'model/user.dart';
 import 'widgets/custom_scaffold_with_navBar.dart';
 
@@ -22,8 +21,7 @@ void main() {
             value: DatabaseService().users,
             child: MyApp(),
           ),
-          StreamProvider<User>.value(
-              value: AuthService().user, child: MyApp()),
+          StreamProvider<User>.value(value: AuthService().user, child: MyApp()),
         ],
         child: MaterialApp(
             theme: ThemeData(
@@ -37,7 +35,6 @@ void main() {
 class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
-
 }
 
 List<PopUpItem> choices = <PopUpItem>[
@@ -46,8 +43,6 @@ List<PopUpItem> choices = <PopUpItem>[
 ];
 
 class _MyAppState extends State<MyApp> {
-
-
   PopUpItem selectedItem = choices[0];
 
   void _select(PopUpItem item) {
@@ -55,29 +50,30 @@ class _MyAppState extends State<MyApp> {
       selectedItem = item;
     });
   }
+
   @override
   Widget build(BuildContext context) {
-
     SizeConfig().init(context);
     return CustomScaffoldWithNavBar(
       backgroundColor: Theme.of(context).primaryColor,
       title: "Title",
       icons: [
-      PopupMenuButton<PopUpItem>(
-        onCanceled: () {
-          print('On cancelled was called');
-        },
-        onSelected: _select,
-        itemBuilder: (BuildContext context) {
-          return choices.map((PopUpItem choice) {
-            return PopupMenuItem<PopUpItem>(
-              value: choice,
-              child: Text(choice.title),
-            );
-          }).toList();
-        },
-      ),
-    ],);
+        PopupMenuButton<PopUpItem>(
+          onCanceled: () {
+            print('On cancelled was called');
+          },
+          onSelected: _select,
+          itemBuilder: (BuildContext context) {
+            return choices.map((PopUpItem choice) {
+              return PopupMenuItem<PopUpItem>(
+                value: choice,
+                child: Text(choice.title),
+              );
+            }).toList();
+          },
+        ),
+      ],
+    );
   }
 }
 
@@ -111,17 +107,16 @@ class _MainPageState extends State<MainPage> {
       }
     }
 
-
-    final users = Provider.of<List<User>>(context ) ?? [];
+    final users = Provider.of<List<User>>(context) ?? [];
     final authUser = Provider.of<User>(context);
 
     List count = new List();
     var cnt = 0;
     if (users != null) {
       for (var doc in users) {
-        if(doc.uid != authUser.uid){
+        if (doc.uid != authUser.uid) {
           print(doc.uid);
-          if (cnt <1) {
+          if (cnt < 1) {
             count.add("images/big-ice.png");
             count.add(doc.event.pictureUrl);
             //preload(context, doc.event.pictureUrl);
@@ -143,75 +138,77 @@ class _MainPageState extends State<MainPage> {
               ),
             ))
         : Container(
-              child: Stack(
-                children: [
-                  PreloadPageView.builder(
-                    itemCount: users.length,
-                    preloadPagesCount: 5,
-                    onPageChanged: (index) {
-                      if (index == items - 1) {
-                        print("last page");
-                        setState(() {});
-                        print(index);
-                      }
-                    },
-                    itemBuilder: (BuildContext context, int position) {
-                      for (var i = 0; i < users.length; i++) {
-                        return GestureDetector(
-                          onDoubleTap: () {
-                            setState(() {
-                              isLiked = true;
-                              flareControls.play("like");
-                              authUser.favorite = Favorite();
-                              authUser.favorite.event = users.elementAt(position).event;
-                              DatabaseService(uid: authUser.uid).updateUserData(authUser);
-                            });
-
-                          },
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                FadeRoute(
-                                    page: Test(
-                                        pictureUrl:
-                                            count.elementAt(position))));
-                          },
-                          child: EventDisplay(User(
-                              uid: 'id',
-                              name: "nicklas",
-                              profilePicture: "images/flower2.jpg",
-                              imageURL: count.elementAt(position) != null
-                                  ? count.elementAt(position)
-                                  : "images/big-ice.png"), flareControls),
-                        );
-                      }
-                      ;
-                    },
-                    controller: PreloadPageController(),
-                  ),
-                  IgnorePointer(
-                    child: Center(
-                        child: SizedBox(
-                          width: 180,
-                          height: 180,
-                          child: FlareActor(
-                            'images/instagram_like.flr',
-                            controller: flareControls,
-                            animation: 'idle',
-                          ),
-                        ),
+            child: Stack(
+              children: [
+                PreloadPageView.builder(
+                  itemCount: users.length,
+                  preloadPagesCount: 5,
+                  onPageChanged: (index) {
+                    if (index == items - 1) {
+                      print("last page");
+                      setState(() {});
+                      print(index);
+                    }
+                  },
+                  itemBuilder: (BuildContext context, int position) {
+                    for (var i = 0; i < users.length; i++) {
+                      return GestureDetector(
+                        onDoubleTap: () {
+                          setState(() {
+                            isLiked = true;
+                            flareControls.play("like");
+                            authUser.favorite = Favorite();
+                            authUser.favorite.event =
+                                users.elementAt(position).event;
+                            DatabaseService(uid: authUser.uid)
+                                .updateUserData(authUser);
+                          });
+                        },
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              FadeRoute(
+                                  page: Test(
+                                      pictureUrl: count.elementAt(position))));
+                        },
+                        child: EventDisplay(
+                            User(
+                                uid: 'id',
+                                name: "nicklas",
+                                profilePicture: "images/flower2.jpg",
+                                imageURL: count.elementAt(position) != null
+                                    ? count.elementAt(position)
+                                    : "images/big-ice.png"),
+                            flareControls),
+                      );
+                    }
+                    ;
+                  },
+                  controller: PreloadPageController(),
+                ),
+                IgnorePointer(
+                  child: Center(
+                    child: SizedBox(
+                      width: 180,
+                      height: 180,
+                      child: FlareActor(
+                        'images/instagram_like.flr',
+                        controller: flareControls,
+                        animation: 'idle',
                       ),
-                  ) ,
-                ],
-              ),
-            );
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
   }
 }
 
 class EventDisplay extends StatefulWidget {
   final User user;
-  final  FlareControls flareControls;
-  EventDisplay(this.user,  this.flareControls);
+  final FlareControls flareControls;
+  EventDisplay(this.user, this.flareControls);
 
   @override
   _EventDisplayState createState() => _EventDisplayState();

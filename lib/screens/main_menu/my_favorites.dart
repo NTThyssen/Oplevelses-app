@@ -8,7 +8,7 @@ import 'package:simple_animations/simple_animations.dart';
 import 'package:simple_animations/simple_animations.dart';
 import 'package:supercharged/supercharged.dart';
 
-import 'model/user.dart';
+import '../../model/user.dart';
 
 class MyFavorites extends StatefulWidget {
   @override
@@ -16,30 +16,34 @@ class MyFavorites extends StatefulWidget {
 }
 
 class _MyFavoritesState extends State<MyFavorites> {
-
   @override
   Widget build(BuildContext context) {
     final authUser = Provider.of<User>(context);
     final users = Provider.of<List<User>>(context);
     User currentUser;
     print(users.length);
-    for(var user in users){
+    for (var user in users) {
       print(user.uid);
-      if(authUser.uid == user.uid){
+      if (authUser.uid == user.uid) {
         currentUser = user;
       }
     }
 
-    return  Container(
-            child: SingleChildScrollView(
-              child: Column(children: [
-                FadeIn(0.5, FavoriteCardView(eventUrl: currentUser.favorite.event.pictureUrl,)),
-              ],
-              ),
-            )
-    );
+    return Container(
+        child: SingleChildScrollView(
+      child: Column(
+        children: [
+          FadeIn(
+              0.5,
+              FavoriteCardView(
+                eventUrl: currentUser.favorite.event.pictureUrl,
+              )),
+        ],
+      ),
+    ));
   }
 }
+
 enum _AniProps { opacity, translateX }
 
 class FadeIn extends StatelessWidget {
@@ -69,7 +73,6 @@ class FadeIn extends StatelessWidget {
     );
   }
 }
-
 
 class FavoriteCardView extends StatefulWidget {
   String eventUrl;
@@ -181,16 +184,18 @@ class _FavoriteCardViewState extends State<FavoriteCardView> {
                           image: new DecorationImage(
                             fit: BoxFit.fitWidth,
                             alignment: FractionalOffset.centerLeft,
-                            image: widget.eventUrl != null ? NetworkImage(widget.eventUrl) : AssetImage('images/big-ice.png'),
+                            image: widget.eventUrl != null
+                                ? NetworkImage(widget.eventUrl)
+                                : AssetImage('images/big-ice.png'),
                           ),
-                       )
-                   ),
-               ),
-             ),
-             )
-          ],
+                        )),
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
-    ),);
+    );
   }
 }
