@@ -63,16 +63,26 @@ class _CustomScaffoldWithNavBarState extends State<CustomScaffoldWithNavBar> {
               icon: Icons.home,
               title: 'Home',
             ),
-            TabItem(icon: Icons.message, title: 'Beskeder'),
             TabItem(
-                icon: Icon(
-                  Icons.add,
-                  color: Colors.white,
-                  size: 50,
-                ),
-                title: 'Add'),
-            TabItem(icon: Icons.favorite_border, title: 'Favoritter'),
-            TabItem(icon: Icons.person_outline, title: 'Profil'),
+              icon: Icons.message,
+              title: 'Beskeder',
+            ),
+            TabItem(
+              icon: Icon(
+                Icons.add,
+                color: Colors.white,
+                size: 50,
+              ),
+              title: 'Add',
+            ),
+            TabItem(
+              icon: Icons.favorite_border,
+              title: 'Favoritter',
+            ),
+            TabItem(
+              icon: Icons.person_outline,
+              title: 'Profil',
+            ),
           ],
           onTap: (int index) {
             setState(() {

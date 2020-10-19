@@ -17,9 +17,7 @@ class Profile extends StatefulWidget {
   _ProfileState createState() => _ProfileState();
 }
 
-
 class _ProfileState extends State<Profile> {
-
   String checkFbData() {
     String name;
     if (UserLoginState.instance.getProfile() != null) {
@@ -52,103 +50,100 @@ class _ProfileState extends State<Profile> {
     return age.years;
   }
 
-
-
-
-
   @override
   Widget build(BuildContext context) {
     String name = checkFbData();
     //convertDateFromString(UserLoginState.instance.getProfile()['birthday']);
     return Container(
-        color: Theme.of(context).primaryColor,
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Profile image with gradient
-              Stack(
-                children: [
-                  Hero(
-                    tag:"profile",
-                    child: Container(
-                      width: SizeConfig.blockSizeHorizontal*100,
-                      height: SizeConfig.blockSizeVertical*70,
-                      child: Image(
-                        fit: BoxFit.cover,
-                        image: name == "Pia, 22" ? AssetImage("images/pia-profile-pic.jpg") :  NetworkImage(UserLoginState.instance.profilePic.url),
-                        // UserLoginState.instance.getProfilePicture(),
-                      ),
+      color: Theme.of(context).primaryColor,
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Profile image with gradient
+            Stack(
+              children: [
+                Hero(
+                  tag: "profile",
+                  child: Container(
+                    width: SizeConfig.blockSizeHorizontal * 100,
+                    height: SizeConfig.blockSizeVertical * 70,
+                    child: Image(
+                      fit: BoxFit.cover,
+                      image: name == "Pia, 22"
+                          ? AssetImage("images/pia-profile-pic.jpg")
+                          : NetworkImage(
+                              UserLoginState.instance.profilePic.url),
+                      // UserLoginState.instance.getProfilePicture(),
                     ),
                   ),
-                  Container(
-                    height:SizeConfig.blockSizeVertical*70,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        stops: [0.5, 1.0],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Colors.transparent,
-                          Theme.of(context).primaryColor,
-                        ],
-                      ),
+                ),
+                Container(
+                  height: SizeConfig.blockSizeVertical * 70,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      stops: [0.5, 1.0],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Colors.transparent,
+                        Theme.of(context).primaryColor,
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            // Profile name and age
+            Padding(
+              padding: EdgeInsets.all(11),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    name,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 30,
                     ),
                   ),
                 ],
               ),
-              // Profile name and age
-              Padding(
-                padding: EdgeInsets.all(11),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      name,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 30,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              // Home town info
-              InfoHeaderWidget(
-                icon: Icons.place,
-                text: 'København NV',
-              ),
-              // Work info
-              InfoHeaderWidget(
-                icon: Icons.work,
-                text: 'Fotograf hos Hansens billeder',
-              ),
-              // School info
-              InfoHeaderWidget(
-                icon: Icons.school,
-                text: 'Dansk fotograf institut',
-              ),
-              // About person text
-              AboutText(
-                heading: 'Om Pia',
-                body:
-                    'Typen der altid løber efter bussen, og altid ender med at komme i alt for god tid.',
-              ),
-              // Common friends
-              FriendsWidget(
-                text: 'Venner',
-              ),
-              // Instagram
-              Padding(
-                padding: const EdgeInsets.only(bottom: 100),
-                child: InstagramImagesWidget(),
-              ),
-            ],
-          ),
+            ),
+            // Home town info
+            InfoHeaderWidget(
+              icon: Icons.place,
+              text: 'København NV',
+            ),
+            // Work info
+            InfoHeaderWidget(
+              icon: Icons.work,
+              text: 'Fotograf hos Hansens billeder',
+            ),
+            // School info
+            InfoHeaderWidget(
+              icon: Icons.school,
+              text: 'Dansk fotograf institut',
+            ),
+            // About person text
+            AboutText(
+              heading: 'Om Pia',
+              body:
+                  'Typen der altid løber efter bussen, og altid ender med at komme i alt for god tid.',
+            ),
+            // Common friends
+            FriendsWidget(
+              text: 'Venner',
+            ),
+            // Instagram
+            Padding(
+              padding: const EdgeInsets.only(bottom: 100),
+              child: InstagramImagesWidget(),
+            ),
+          ],
         ),
-
-
+      ),
     );
   }
 }
