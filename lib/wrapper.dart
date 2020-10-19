@@ -3,6 +3,7 @@ import 'package:flutter_app/screens/main_menu/add_event.dart';
 import 'package:flutter_app/main.dart';
 import 'package:flutter_app/screens/main_menu/my_favorites.dart';
 import 'package:flutter_app/screens/settings/profile.dart';
+import 'package:flutter_app/screens/settings/settings_page.dart';
 import 'package:provider/provider.dart';
 
 import 'authenticate/not_signed_in.dart';
@@ -30,7 +31,7 @@ class Wrapper extends StatelessWidget {
         widget = authUser != null ? MyFavorites() : NotSignedIn();
         break;
       case 4:
-        widget = authUser != null ? Profile() : NotSignedIn();
+        widget = authUser != null ? SettingsPage() : NotSignedIn();
         break;
       default:
         return widget;

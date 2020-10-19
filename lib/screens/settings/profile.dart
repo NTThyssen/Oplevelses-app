@@ -18,6 +18,8 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  // Check if we can get some info from facebook.
+  // Otherwise, set the name and age to mack data.
   String checkFbData() {
     String name;
     if (UserLoginState.instance.getProfile() != null) {
@@ -44,7 +46,10 @@ class _ProfileState extends State<Profile> {
     // Find out your age
 
     age = Age.dateDifference(
-        fromDate: birthday, toDate: today, includeToDate: false);
+      fromDate: birthday,
+      toDate: today,
+      includeToDate: false,
+    );
     print(age.years);
     print('Your age is {$age}'); // Your ag
     return age.years;
@@ -70,11 +75,12 @@ class _ProfileState extends State<Profile> {
                     height: SizeConfig.blockSizeVertical * 70,
                     child: Image(
                       fit: BoxFit.cover,
+                      // If the mock data is set, then use mock image.
+                      // Otherwise get the image from facebook.
                       image: name == "Pia, 22"
                           ? AssetImage("images/pia-profile-pic.jpg")
                           : NetworkImage(
                               UserLoginState.instance.profilePic.url),
-                      // UserLoginState.instance.getProfilePicture(),
                     ),
                   ),
                 ),
@@ -144,59 +150,6 @@ class _ProfileState extends State<Profile> {
           ],
         ),
       ),
-    );
-  }
-}
-
-class MenuButton extends StatefulWidget {
-  final String text;
-  final IconData menuIcon;
-  MenuButton({this.text, this.menuIcon});
-
-  @override
-  _MenuButtonState createState() => _MenuButtonState();
-}
-
-class _MenuButtonState extends State<MenuButton> {
-  String route;
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: FlatButton(
-        onPressed: () {
-          switch (widget.text) {
-            case "Vis Profil":
-              route = "/showProfile";
-              break;
-            case "Rediger":
-              route = "/editProfile";
-              break;
-            case "Indstillinger":
-              route = "/settings";
-              break;
-          }
-          Navigator.pushNamed(context, route);
-        },
-        child: Row(
-          children: [
-            Icon(widget.menuIcon),
-            Padding(
-              padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-              child: Text(widget.text,
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16)),
-            ),
-            Spacer(),
-            Icon(
-              Icons.arrow_forward_ios,
-              color: Colors.grey,
-            ),
-          ],
-        ),
-      ),
-      decoration: BoxDecoration(color: Colors.white),
     );
   }
 }
