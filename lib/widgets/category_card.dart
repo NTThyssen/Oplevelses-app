@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class CategoryCard extends StatefulWidget {
-  CategoryCard({this.image, this.text});
+  CategoryCard({this.image, this.text, this.selected});
 
-  String image;
-  String text;
+  final String image;
+  final String text;
   bool selected = false;
 
   @override

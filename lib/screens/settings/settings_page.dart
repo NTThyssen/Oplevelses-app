@@ -1,133 +1,39 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/widgets/age_slider.dart';
+import 'package:flutter_app/widgets/distance_slider.dart';
+import 'package:flutter_app/widgets/navigation_button.dart';
 import 'package:flutter_app/widgets/category_card.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:flutter_svg/svg.dart';
 
 class SettingsPage extends StatefulWidget {
-  bool selectAll = false;
-
   @override
   _SettingsPageState createState() => _SettingsPageState();
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  var _currentAgeRangeValues = RangeValues(18, 40);
-  double _currentDistanceSliderValue = 20;
+  bool _selectAll = false;
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         children: [
-          FlatButton(
-            onPressed: () {},
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 10, top: 15),
-              child: Row(
-                children: [
-                  // Profile navigation button
-                  Padding(
-                    padding: const EdgeInsets.only(right: 8),
-                    child: Icon(
-                      Icons.person_outline,
-                      color: Colors.grey[400],
-                      size: 30,
-                    ),
-                  ),
-                  Text(
-                    'Profil',
-                    style: TextStyle(
-                      color: Colors.grey[400],
-                      fontSize: 20,
-                    ),
-                  ),
-                  Spacer(),
-                  Icon(
-                    Icons.arrow_forward_ios,
-                    color: Colors.grey[400],
-                  ),
-                ],
-              ),
-            ),
+          NavigationButton(
+            icon: Icons.person_outline,
+            text: 'Profil',
           ),
           Divider(
             indent: 18,
             endIndent: 18,
           ),
           // Age filtering
-          Column(
-            children: [
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 22, vertical: 8),
-                child: Row(
-                  children: [
-                    Text(
-                      'Alder',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Spacer(),
-                    Text(
-                      '${_currentAgeRangeValues.start.round().toString()} - ${_currentAgeRangeValues.end.round().toString()}',
-                      style: TextStyle(
-                          color: Colors.grey[400], fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-              ),
-              RangeSlider(
-                values: _currentAgeRangeValues,
-                min: 18.0,
-                max: 40.0,
-                onChanged: (newRange) {
-                  setState(() => _currentAgeRangeValues = newRange);
-                },
-              ),
-            ],
-          ),
+          AgeSlider(),
           Divider(
             indent: 18,
             endIndent: 18,
           ),
           // Distance filtering
-          Column(
-            children: [
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 22, vertical: 8),
-                child: Row(
-                  children: [
-                    Text(
-                      'Aktivitet inden for',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Spacer(),
-                    Text(
-                      '${_currentDistanceSliderValue.round().toString()} km',
-                      style: TextStyle(
-                          color: Colors.grey[400], fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: Slider(
-                  value: _currentDistanceSliderValue,
-                  min: 0,
-                  max: 100,
-                  onChanged: (value) {
-                    setState(() => _currentDistanceSliderValue = value);
-                  },
-                ),
-              ),
-            ],
-          ),
+          DistanceSlider(),
           // Activity divider
           Container(
             color: Colors.grey[200],
@@ -154,36 +60,19 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                 ),
                 Spacer(),
-                PlatformWidget(
-                  cupertino: (_, __) => CupertinoSwitch(
-                    value: widget.selectAll,
+                Switch.adaptive(
                     activeColor: Colors.blue,
+                    value: _selectAll,
                     onChanged: (value) {
                       setState(() {
-                        widget.selectAll = !widget.selectAll;
+                        _selectAll = !_selectAll;
                       });
-                    },
-                  ),
-                  material: (_, __) => Switch(
-                    value: widget.selectAll,
-                    activeColor: Colors.blue,
-                    onChanged: (value) {
-                      setState(() {
-                        widget.selectAll = !widget.selectAll;
-                        if (widget.selectAll) {
-                          // Make all cards selected
-                        } else {
-                          // Unselect all
-                        }
-                      });
-                    },
-                  ),
-                ),
+                    }),
               ],
             ),
           ),
           Divider(),
-          // Activity filter buttons
+          // Category filter buttons
           Padding(
             padding: const EdgeInsets.only(bottom: 130),
             child: Column(
@@ -193,14 +82,17 @@ class _SettingsPageState extends State<SettingsPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     CategoryCard(
+                      selected: _selectAll,
                       image: 'images/bicycle.svg',
                       text: 'Motion',
                     ),
                     CategoryCard(
+                      selected: _selectAll,
                       image: 'images/popcorn.svg',
                       text: 'Underholdning',
                     ),
                     CategoryCard(
+                      selected: _selectAll,
                       image: 'images/food.svg',
                       text: 'Mad og drikke',
                     ),
@@ -210,14 +102,17 @@ class _SettingsPageState extends State<SettingsPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     CategoryCard(
+                      selected: _selectAll,
                       image: 'images/speaker.svg',
                       text: 'Musik og natteliv',
                     ),
                     CategoryCard(
+                      selected: _selectAll,
                       image: 'images/museum.svg',
                       text: 'Kultur',
                     ),
                     CategoryCard(
+                      selected: _selectAll,
                       image: 'images/open-book.svg',
                       text: 'Bliv klogere',
                     ),
@@ -227,6 +122,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     CategoryCard(
+                      selected: _selectAll,
                       image: 'images/thumb-up.svg',
                       text: 'Gratis',
                     ),
