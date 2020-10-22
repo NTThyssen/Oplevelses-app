@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/theme.dart';
 
 class InfoHeaderWidget extends StatelessWidget {
   InfoHeaderWidget({this.icon, this.text});
@@ -21,7 +22,7 @@ class InfoHeaderWidget extends StatelessWidget {
           ),
           Text(
             text,
-            style: TextStyle(color: Colors.white, fontSize: 17),
+            style: inputFieldTextStyle,
           ),
         ],
       ),
