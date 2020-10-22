@@ -69,7 +69,6 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    // FirebaseCrashlytics.instance.crash();
     return CustomScaffoldWithNavBar(
       backgroundColor: Theme.of(context).primaryColor,
       title: "Title",
