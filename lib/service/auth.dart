@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_app/model/user.dart';
@@ -12,19 +10,20 @@ import 'dart:convert';
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   // This widget is the root of your application.
-  User _userFromFirebaseUser(FirebaseUser user) {
-    return user != null ? User(uid: user.uid) : null;
+  MockUser _userFromFirebaseUser(User user) {
+    return user != null ? MockUser(uid: user.uid) : null;
   }
 
-   //auth change user stream
-  Stream<User> get user {
-    return _auth.onAuthStateChanged
-        .map(_userFromFirebaseUser);
+  //auth change user stream
+  Stream<MockUser> get user {
+    return _auth.authStateChanges().map(_userFromFirebaseUser);
   }
-  Future facebookSignIn() async{
+
+  Future facebookSignIn() async {
     FacebookLogin facebookLogin = FacebookLogin();
 
-    final result = await facebookLogin.logIn(['email', "user_birthday", "user_photos"]);
+    final result =
+        await facebookLogin.logIn(['email', "user_birthday", "user_photos"]);
     print(result.status.toString() + "-----------------------------------");
     switch (result.status) {
       case FacebookLoginStatus.loggedIn:
@@ -33,17 +32,18 @@ class AuthService {
             'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email,birthday&access_token=$token');
         final profile = json.decode(graphResponse.body);
         final profilePic = profile['id'];
-        int width=SizeConfig.screenWidth.toInt();
-        int height=SizeConfig.screenHeight.toInt();
+        int width = SizeConfig.screenWidth.toInt();
+        int height = SizeConfig.screenHeight.toInt();
         print("{width : $width, heigth: $height}");
         final graphResponse2 = await http.get(
             'https://graph.facebook.com/$profilePic/picture?height=$height&width=$width&redirect=false&access_token=$token');
         final profilepic2 = json.decode(graphResponse2.body);
         print(profile);
         print(profilepic2);
-        UserLoginState.instance.setProfilePicture(profilePic: profilepic2['data']['url']);
+        UserLoginState.instance
+            .setProfilePicture(profilePic: profilepic2['data']['url']);
         UserLoginState.instance.setProfile(profile: profile);
-        final creadentials = FacebookAuthProvider.getCredential(accessToken: token);
+        final creadentials = FacebookAuthProvider.credential(token);
         await _auth.signInWithCredential(creadentials);
         return true;
       case FacebookLoginStatus.cancelledByUser:
@@ -51,55 +51,54 @@ class AuthService {
       case FacebookLoginStatus.error:
         return null;
     }
-
   }
 
   Future registerWithEmail(String email, String password) async {
-    try{
-      AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
-      FirebaseUser user = result.user;
+    try {
+      User user = (await _auth.createUserWithEmailAndPassword(
+              email: email, password: password))
+          .user;
 
-      await DatabaseService(uid:user.uid).updateUserDate(_userFromFirebaseUser(user));
+      await DatabaseService(uid: user.uid)
+          .updateUserDate(_userFromFirebaseUser(user));
       return _userFromFirebaseUser(user);
-    }catch(e){
+    } catch (e) {
       print(e.toString());
       return null;
     }
   }
 
   Future singInWithEmail(String email, String password) async {
-    try{
-      AuthResult result = await _auth.signInWithEmailAndPassword(email: email, password: password);
-      FirebaseUser user = result.user;
+    try {
+      User user = (await _auth.signInWithEmailAndPassword(
+              email: email, password: password))
+          .user;
       return _userFromFirebaseUser(user);
-    }catch(e){
+    } catch (e) {
       print(e.toString());
       return null;
     }
   }
 
-
   Future signInAnon() async {
     try {
-      AuthResult result = await _auth.signInAnonymously();
-      FirebaseUser user = result.user;
+      User user = (await _auth.signInAnonymously()).user;
       print(user.displayName);
       return _userFromFirebaseUser(user);
-    }catch(e){
+    } catch (e) {
       print(e.toString());
       return null;
     }
   }
 
   Future signOut() async {
-    try{
+    try {
       return await _auth.signOut();
-    }catch(e){
+    } catch (e) {
       print(e.toString());
       return null;
     }
   }
-
 }
 
 class UserLoginState {
@@ -107,24 +106,23 @@ class UserLoginState {
   dynamic profile;
   NetworkImage profilePic;
 
-  NetworkImage getProfilePicture(){
+  NetworkImage getProfilePicture() {
     return profilePic;
   }
 
-  void setProfilePicture({profilePic}){
+  void setProfilePicture({profilePic}) {
     this.profilePic = NetworkImage(profilePic.toString());
   }
 
-  dynamic getProfile(){
+  dynamic getProfile() {
     return profile;
   }
 
-  void setProfile({profile}){
+  void setProfile({profile}) {
     this.profile = profile;
   }
 
   UserLoginState._privateConstructor();
 
   static final UserLoginState instance = UserLoginState._privateConstructor();
-
 }

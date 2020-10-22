@@ -24,8 +24,8 @@ class _TestState extends State<Test> {
 
   @override
   Widget build(BuildContext context) {
-    final users = Provider.of<List<User>>(context);
-    User currentUser;
+    final users = Provider.of<List<MockUser>>(context);
+    MockUser currentUser;
     users.forEach((user) {
       heroTagCounter++;
 

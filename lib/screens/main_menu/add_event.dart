@@ -26,13 +26,13 @@ class _AddEventState extends State<AddEvent> {
   String city = "";
   String uploadedFileURL = "";
   String uid = "";
-  User currentUser;
+  MockUser currentUser;
   bool isUploading = false;
 
   @override
   Widget build(BuildContext context) {
-    final users = Provider.of<List<User>>(context);
-    final authUser = Provider.of<User>(context);
+    final users = Provider.of<List<MockUser>>(context);
+    final authUser = Provider.of<MockUser>(context);
     File image;
 
     Future uploadFile() async {

@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flare_flutter/flare_controls.dart';
 import 'package:flutter/material.dart';
@@ -11,17 +12,21 @@ import 'package:provider/provider.dart';
 import 'screens/home/event_details.dart';
 import 'model/user.dart';
 import 'widgets/custom_scaffold_with_navBar.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart' show kDebugMode;
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(
     MultiProvider(
         providers: [
-          StreamProvider<List<User>>.value(
+          StreamProvider<List<MockUser>>.value(
             value: DatabaseService().users,
             child: MyApp(),
           ),
-          StreamProvider<User>.value(value: AuthService().user, child: MyApp()),
+          StreamProvider<MockUser>.value(
+              value: AuthService().user, child: MyApp()),
         ],
         child: MaterialApp(
             theme: ThemeData(
@@ -30,6 +35,16 @@ void main() {
             ),
             home: MyApp())),
   );
+
+  if (kDebugMode) {
+    // Force disable Crashlytics collection while doing every day development.
+    // Temporarily toggle this to true if you want to test crash reporting in your app.
+    await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+  } else {
+    // Handle Crashlytics enabled status when not in Debug,
+    // e.g. allow your users to opt-in to crash reporting.
+    await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+  }
 }
 
 class MyApp extends StatefulWidget {
@@ -107,8 +122,8 @@ class _MainPageState extends State<MainPage> {
       }
     }
 
-    final users = Provider.of<List<User>>(context) ?? [];
-    final authUser = Provider.of<User>(context);
+    final users = Provider.of<List<MockUser>>(context) ?? [];
+    final authUser = Provider.of<MockUser>(context);
 
     List count = new List();
     var cnt = 0;
@@ -172,7 +187,7 @@ class _MainPageState extends State<MainPage> {
                                       pictureUrl: count.elementAt(position))));
                         },
                         child: EventDisplay(
-                            User(
+                            MockUser(
                                 uid: 'id',
                                 name: "nicklas",
                                 profilePicture: "images/flower2.jpg",
@@ -206,7 +221,7 @@ class _MainPageState extends State<MainPage> {
 }
 
 class EventDisplay extends StatefulWidget {
-  final User user;
+  final MockUser user;
   final FlareControls flareControls;
   EventDisplay(this.user, this.flareControls);
 
