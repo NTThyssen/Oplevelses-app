@@ -435,7 +435,7 @@ class _InoutBoxWithBottomShadowState extends State<InoutBoxWithBottomShadow> {
                 maxLines: null,
                 maxLength: 180,
                 decoration: InputDecoration(
-                  hintStyle: TextStyle(color: Colors.grey),
+                  hintStyle: inputFieldTextStyle,
                   border: InputBorder.none,
                   labelText: widget.labelText,
                   counterText: "",

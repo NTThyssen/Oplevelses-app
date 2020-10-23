@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/service/DatabaseService.dart';
 import 'package:flutter_app/service/auth.dart';
 import 'package:flutter_app/size_config.dart';
+import 'package:flutter_app/theme.dart';
 import 'package:flutter_app/widgets/pop_up_menu.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:preload_page_view/preload_page_view.dart';
@@ -267,19 +268,11 @@ class _EventDisplayState extends State<EventDisplay> {
                               widget.user.name +
                                   " " +
                                   (widget.user.age?.toString() ?? "23"),
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  letterSpacing: 1.0,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16),
+                              style: subtitleTextStyle,
                             ),
                             Text(
-                              'aktivitet 5km væk',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  letterSpacing: 0.7,
-                                  fontWeight: FontWeight.w300,
-                                  fontSize: 16),
+                              'Aktivitet 5km væk',
+                              style: smallHeaderTextStyle,
                             ),
                           ],
                         ),

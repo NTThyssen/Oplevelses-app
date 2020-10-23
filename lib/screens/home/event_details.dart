@@ -9,6 +9,7 @@ import 'package:flutter_app/widgets/instagram_images_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../../model/user.dart';
+import '../../theme.dart';
 
 class Test extends StatefulWidget {
   final String pictureUrl;
@@ -87,10 +88,7 @@ class _TestState extends State<Test> {
                   children: [
                     Text(
                       currentUser.event.title.toString(),
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 30,
-                      ),
+                      style: titleTextStyle,
                     ),
                     Icon(
                       CupertinoIcons.heart,
