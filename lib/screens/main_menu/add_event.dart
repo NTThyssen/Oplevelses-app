@@ -13,6 +13,8 @@ import 'package:intl/intl.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:badges/badges.dart';
 
+import '../../theme.dart';
+
 class AddEvent extends StatefulWidget {
   @override
   _AddEventState createState() => _AddEventState();
@@ -26,13 +28,13 @@ class _AddEventState extends State<AddEvent> {
   String city = "";
   String uploadedFileURL = "";
   String uid = "";
-  User currentUser;
+  MockUser currentUser;
   bool isUploading = false;
 
   @override
   Widget build(BuildContext context) {
-    final users = Provider.of<List<User>>(context);
-    final authUser = Provider.of<User>(context);
+    final users = Provider.of<List<MockUser>>(context);
+    final authUser = Provider.of<MockUser>(context);
     File image;
 
     Future uploadFile() async {
@@ -139,7 +141,7 @@ class _AddEventState extends State<AddEvent> {
                           maxLines: null,
                           maxLength: 180,
                           decoration: InputDecoration(
-                            hintStyle: TextStyle(color: Colors.grey),
+                            hintStyle: inputFieldTextStyle,
                             border: InputBorder.none,
                             labelText: "Overskrift",
                             counterText: "",
@@ -186,7 +188,7 @@ class _AddEventState extends State<AddEvent> {
                           maxLines: null,
                           maxLength: 180,
                           decoration: InputDecoration(
-                            hintStyle: TextStyle(color: Colors.grey),
+                            hintStyle: inputFieldTextStyle,
                             border: InputBorder.none,
                             labelText: "Beskrivelse",
                             counterText: "",
@@ -233,7 +235,7 @@ class _AddEventState extends State<AddEvent> {
                           maxLines: null,
                           maxLength: 180,
                           decoration: InputDecoration(
-                            hintStyle: TextStyle(color: Colors.grey),
+                            hintStyle: inputFieldTextStyle,
                             border: InputBorder.none,
                             labelText: "Pris",
                             counterText: "",
@@ -277,7 +279,7 @@ class _AddEventState extends State<AddEvent> {
                         padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
                         child: DateTimeField(
                           decoration: InputDecoration(
-                            hintStyle: TextStyle(color: Colors.grey),
+                            hintStyle: inputFieldTextStyle,
                             border: InputBorder.none,
                             labelText: "Vælg Dato",
                             counterText: "",
@@ -338,7 +340,7 @@ class _AddEventState extends State<AddEvent> {
                           maxLines: null,
                           maxLength: 180,
                           decoration: InputDecoration(
-                            hintStyle: TextStyle(color: Colors.grey),
+                            hintStyle: inputFieldTextStyle,
                             border: InputBorder.none,
                             labelText: "by",
                             counterText: "",
@@ -433,7 +435,7 @@ class _InoutBoxWithBottomShadowState extends State<InoutBoxWithBottomShadow> {
                 maxLines: null,
                 maxLength: 180,
                 decoration: InputDecoration(
-                  hintStyle: TextStyle(color: Colors.grey),
+                  hintStyle: inputFieldTextStyle,
                   border: InputBorder.none,
                   labelText: widget.labelText,
                   counterText: "",

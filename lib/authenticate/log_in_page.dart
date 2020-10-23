@@ -4,6 +4,7 @@ import 'package:flutter_app/authenticate/sing_up.dart';
 import 'package:flutter_app/model/user.dart';
 import 'package:flutter_app/service/DatabaseService.dart';
 import 'package:flutter_app/size_config.dart';
+import 'package:flutter_app/theme.dart';
 import 'package:flutter_app/widgets/custom_scaffold_with_navBar.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:flutter_app/service/auth.dart';
@@ -26,7 +27,6 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Colors.blue,
       appBar: AppBar(
@@ -66,36 +66,39 @@ class _LoginState extends State<Login> {
                       child: Column(
                         children: [
                           Padding(
-                          padding: EdgeInsets.fromLTRB(
-                              0, SizeConfig.blockSizeVertical * 5, 0, 0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: Colors.transparent,
-                                border: Border(
-                                    bottom: BorderSide(
-                                        width: 2.0, color: Colors.blueGrey))),
-                            width: SizeConfig.blockSizeHorizontal * 80,
-                            child: Theme(
-                              data: Theme.of(context)
-                                  .copyWith(primaryColor: Theme.of(context).secondaryHeaderColor,),
-                              child: TextFormField(
-                                textAlign: TextAlign.left,
-                                  validator: (val) => val.isEmpty ? "enter email" : null,
-                                onChanged: (val) {
-                                  setState(() {
-                                    email = val;
-                                    print(val);
-                                  });
-                                },
-                                decoration: InputDecoration(
-                                    prefixIcon: Icon(Icons.person_outline),
-                                    hintStyle: TextStyle(color: Colors.grey),
-                                    border: InputBorder.none,
-                                    hintText: 'Email'),
+                            padding: EdgeInsets.fromLTRB(
+                                0, SizeConfig.blockSizeVertical * 5, 0, 0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.transparent,
+                                  border: Border(
+                                      bottom: BorderSide(
+                                          width: 2.0, color: Colors.blueGrey))),
+                              width: SizeConfig.blockSizeHorizontal * 80,
+                              child: Theme(
+                                data: Theme.of(context).copyWith(
+                                  primaryColor:
+                                      Theme.of(context).secondaryHeaderColor,
+                                ),
+                                child: TextFormField(
+                                  textAlign: TextAlign.left,
+                                  validator: (val) =>
+                                      val.isEmpty ? "enter email" : null,
+                                  onChanged: (val) {
+                                    setState(() {
+                                      email = val;
+                                      print(val);
+                                    });
+                                  },
+                                  decoration: InputDecoration(
+                                      prefixIcon: Icon(Icons.person_outline),
+                                      hintStyle: inputFieldTextStyle,
+                                      border: InputBorder.none,
+                                      hintText: 'Email'),
+                                ),
                               ),
                             ),
                           ),
-                        ),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                             child: Container(
@@ -106,12 +109,16 @@ class _LoginState extends State<Login> {
                                           width: 2.0, color: Colors.blueGrey))),
                               width: SizeConfig.blockSizeHorizontal * 80,
                               child: Theme(
-                                data: Theme.of(context)
-                                    .copyWith(primaryColor: Theme.of(context).secondaryHeaderColor,),
+                                data: Theme.of(context).copyWith(
+                                  primaryColor:
+                                      Theme.of(context).secondaryHeaderColor,
+                                ),
                                 child: TextFormField(
                                   textAlign: TextAlign.left,
                                   obscureText: true,
-                                  validator: (val) => val.length < 6 ? "must be greater than 6 chars" : null,
+                                  validator: (val) => val.length < 6
+                                      ? "must be greater than 6 chars"
+                                      : null,
                                   onChanged: (val) {
                                     setState(() {
                                       password = val;
@@ -119,7 +126,7 @@ class _LoginState extends State<Login> {
                                     });
                                   },
                                   decoration: InputDecoration(
-                                      hintStyle: TextStyle(color: Colors.grey),
+                                      hintStyle: inputFieldTextStyle,
                                       prefixIcon: Icon(Icons.vpn_key),
                                       border: InputBorder.none,
                                       hintText: 'Password'),
@@ -134,10 +141,12 @@ class _LoginState extends State<Login> {
                               child: RaisedButton(
                                 color: Theme.of(context).secondaryHeaderColor,
                                 onPressed: () async {
-                                  if(_formKey.currentState.validate()){
-                                    dynamic result = await _auth.singInWithEmail(email, password);
+                                  if (_formKey.currentState.validate()) {
+                                    dynamic result = await _auth
+                                        .singInWithEmail(email, password);
                                     print(result);
-                                    Navigator.pushReplacement(context, FadeRoute( page: MainPage()));
+                                    Navigator.pushReplacement(
+                                        context, FadeRoute(page: MainPage()));
                                   }
                                 },
                                 child: Center(
@@ -157,8 +166,8 @@ class _LoginState extends State<Login> {
                               child: RaisedButton(
                                 color: Theme.of(context).secondaryHeaderColor,
                                 onPressed: () async {
-                                 await _auth.signInAnon();
-                                    Navigator.pop(context);
+                                  await _auth.signInAnon();
+                                  Navigator.pop(context);
                                 },
                                 child: Center(
                                     child: Text("SIGN IN ANONYMOUSLY",
@@ -171,9 +180,8 @@ class _LoginState extends State<Login> {
                             ),
                           ),
                         ],
-                          ),
+                      ),
                     ),
-
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                       child: GestureDetector(
@@ -221,7 +229,7 @@ class _LoginState extends State<Login> {
                       var result = await _auth.facebookSignIn();
                       print(result);
                       if (result != null) {
-                            Navigator.pop(context);
+                        Navigator.pop(context);
                       } else {
                         print("you have to sign in");
                         setState(() {
