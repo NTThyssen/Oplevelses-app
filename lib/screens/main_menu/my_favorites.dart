@@ -18,9 +18,9 @@ class MyFavorites extends StatefulWidget {
 class _MyFavoritesState extends State<MyFavorites> {
   @override
   Widget build(BuildContext context) {
-    final authUser = Provider.of<User>(context);
-    final users = Provider.of<List<User>>(context);
-    User currentUser;
+    final authUser = Provider.of<MockUser>(context);
+    final users = Provider.of<List<MockUser>>(context);
+    MockUser currentUser;
     print(users.length);
     for (var user in users) {
       print(user.uid);
