@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/service/DatabaseService.dart';
 import 'package:flutter_app/size_config.dart';
 import 'package:flutter_app/widgets/about_text.dart';
 import 'package:flutter_app/widgets/custom_scaffold_with_navBar.dart';
@@ -11,36 +13,37 @@ import 'package:provider/provider.dart';
 import '../../model/user.dart';
 
 class Test extends StatefulWidget {
-  final String pictureUrl;
+  final String uid;
 
-  Test({Key key, @required this.pictureUrl}) : super(key: key);
+  Test({Key key, @required this.uid}) : super(key: key);
 
   @override
   _TestState createState() => _TestState();
 }
 
 class _TestState extends State<Test> {
-  int heroTagCounter = 0;
+
 
   @override
   Widget build(BuildContext context) {
-    final users = Provider.of<List<User>>(context);
-    User currentUser;
-    users.forEach((user) {
-      heroTagCounter++;
+    final events = Provider.of<List<Event>>(context);
+    Event event;
+    events.forEach((e) {
 
-      if (user.event.pictureUrl == widget.pictureUrl) {
-        currentUser = user;
-        print(currentUser.event.city);
-        print(currentUser.event.price.toString() + "price");
-        print(currentUser.event.date);
-        print(currentUser.event.description);
+      if (e.uid == widget.uid) {
+        event = e;
+        print(e.city);
+        print(e.price.toString() + "price");
+        print(e.date);
+        print(e.description);
       }
     });
+    User user;
+
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(currentUser.event.title),
+        title: Text(event.title),
         centerTitle: true,
       ),
       body: Container(
@@ -53,13 +56,13 @@ class _TestState extends State<Test> {
               Stack(
                 children: [
                   Hero(
-                    tag: widget.pictureUrl,
+                    tag: widget.uid,
                     child: Container(
                       height: SizeConfig.blockSizeVertical * 60,
                       width: SizeConfig.blockSizeVertical * 100,
                       child: Image(
                         fit: BoxFit.cover,
-                        image: NetworkImage(widget.pictureUrl),
+                        image: NetworkImage(event.pictureUrl),
                       ),
                     ),
                   ),
@@ -86,7 +89,7 @@ class _TestState extends State<Test> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      currentUser.event.title.toString(),
+                      event.title.toString(),
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 30,
@@ -103,22 +106,22 @@ class _TestState extends State<Test> {
               // Place info
               InfoHeaderWidget(
                 icon: Icons.place,
-                text: currentUser.event.city.toString(),
+                text: event.city.toString(),
               ),
               // Date info
               InfoHeaderWidget(
                 icon: Icons.access_time,
-                text: currentUser.event.date.toString(),
+                text: event.date.toString(),
               ),
               // Price info
               InfoHeaderWidget(
                 icon: Icons.payment,
-                text: currentUser.event.price.toString(),
+                text: event.price.toString(),
               ),
               // Event description
               AboutText(
                   heading: 'Oplevelsen',
-                  body: currentUser.event.description.toString()),
+                  body: event.description.toString()),
               // About event creator section
               AboutText(
                 heading: 'Om Pia',
