@@ -245,7 +245,7 @@ class _EventDisplayState extends State<EventDisplay> {
                   children: [
                     CircleAvatar(
                       radius: 25.0,
-                      backgroundImage: AssetImage(widget.event.pictureUrl),
+                      backgroundImage: AssetImage("images/flower2.jpg"),
                     ),
                     Expanded(
                       flex: 8,

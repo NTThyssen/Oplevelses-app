@@ -30,6 +30,13 @@ class Event {
   Event({this.uid, this.userUid, this.pictureUrl, this.title, this.description, this.price, this.date, this.city});
 }
 
+class EventRequest {
+  String eventUid;
+  String userUid;
+
+  EventRequest({this.eventUid, this.userUid});
+}
+
 // Friends
 final User lasse = User(
   uid: '1',

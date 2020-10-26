@@ -49,6 +49,13 @@ class DatabaseService {
     });
   }
 
+  Future sendEventRequest(String eventUid, String askedUserUid, String userUid) async {
+    return await userCollection.document(askedUserUid).collection("eventRequest").document().setData({
+      'eventUid': eventUid,
+      'userUid': userUid,
+    });
+  }
+
 
   List<Event> _eventListFromSnapshot(QuerySnapshot snapshot){
     return snapshot.documents.map((doc) {
@@ -64,6 +71,20 @@ class DatabaseService {
           );
     }).toList();
     }
+
+
+  List<EventRequest> _EventRequestListFromSnapshot(QuerySnapshot snapshot){
+
+    return snapshot.documents.map((doc) {
+      if(doc.data["favorite"] == null){
+        return EventRequest(
+          eventUid: doc.documentID,
+          userUid: doc.data['name'],
+
+        );
+      }
+    }).toList();
+  }
 
   List<User> _userListFromSnapshot(QuerySnapshot snapshot){
 
@@ -98,6 +119,13 @@ class DatabaseService {
     DocumentSnapshot doc = await eventsCollection.document(uid).get();
     return _userFromSnapShot(doc);
   }
+
+  Stream<List<EventRequest>> getRequest(String uid){
+    return userCollection.document(uid).collection("eventRequest").snapshots().map(_EventRequestListFromSnapshot);
+
+  }
+  
+  
   Stream<List<User>> get users {
     return userCollection.snapshots().map(_userListFromSnapshot);
   }

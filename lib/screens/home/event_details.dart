@@ -27,6 +27,7 @@ class _TestState extends State<Test> {
   @override
   Widget build(BuildContext context) {
     final events = Provider.of<List<Event>>(context);
+    final authUser = Provider.of<User>(context);
     Event event;
     events.forEach((e) {
 
@@ -150,7 +151,10 @@ class _TestState extends State<Test> {
                       icon: Icon(Icons.add_box),
                       color: Theme.of(context).secondaryHeaderColor,
                       iconSize: 40.0,
-                      onPressed: () {},
+                      onPressed: () async {
+                       dynamic result = await DatabaseService().sendEventRequest(event.uid, event.userUid, authUser.uid);
+                       print("eventRequest sent: " + result);
+                      },
                     ),
                   ],
                 ),
