@@ -16,7 +16,6 @@ class Favorite {
   Favorite({this.event, this.user});
 }
 
-
 class Event {
   String uid;
   String userUid;

@@ -14,7 +14,7 @@ class Wrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authUser = Provider.of<User>(context);
+    final authUser = Provider.of<MockUser>(context);
     Widget widget;
     switch (index) {
       case 0:

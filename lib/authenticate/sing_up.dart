@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/service/DatabaseService.dart';
 import 'package:flutter_app/service/auth.dart';
+import 'package:flutter_app/theme.dart';
 import 'package:flutter_app/widgets/custom_scaffold_with_navBar.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -88,8 +89,7 @@ class _SignUpState extends State<SignUp> {
                                             .secondaryHeaderColor),
                                     prefixIcon: Icon(
                                       Icons.person_outline,
-                                      color: Theme.of(context)
-                                          .secondaryHeaderColor,
+                                      color: white,
                                     ),
                                     border: InputBorder.none,
                                     labelText: "Navn"),

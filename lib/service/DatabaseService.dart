@@ -12,7 +12,7 @@ class DatabaseService {
 
   Future updateUserDate(User user) async {
     print(uid);
-    return await userCollection.document(uid).setData({
+    return await userCollection.doc(uid).set({
       'name': user.name,
 
     });
@@ -36,15 +36,15 @@ class DatabaseService {
 
   Future updateUserData(User user) async {
     print(uid);
-    return await userCollection.document(uid).updateData({
+    return await userCollection.doc(uid).update({
       'name': user.name,
       'favorite': {
-          'pictureUrl': user.favorite.event.pictureUrl,
-          'city': user.favorite.event.city,
-          'price': user.favorite.event.price,
-          'title': user.favorite.event.title,
-          'date': user.favorite.event.date,
-          'description': user.favorite.event.description
+        'pictureUrl': user.favorite.event.pictureUrl,
+        'city': user.favorite.event.city,
+        'price': user.favorite.event.price,
+        'title': user.favorite.event.title,
+        'date': user.favorite.event.date,
+        'description': user.favorite.event.description
       }
     });
   }
@@ -124,8 +124,8 @@ class DatabaseService {
     return userCollection.document(uid).collection("eventRequest").snapshots().map(_EventRequestListFromSnapshot);
 
   }
-  
-  
+
+
   Stream<List<User>> get users {
     return userCollection.snapshots().map(_userListFromSnapshot);
   }
