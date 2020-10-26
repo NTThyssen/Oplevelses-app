@@ -5,12 +5,12 @@ import 'package:flutter_app/model/user.dart';
 class DatabaseService {
   final String uid;
 
-  final CollectionReference userCollection = Firestore.instance.collection("users");
-  final CollectionReference eventsCollection = Firestore.instance.collection("events");
+  final CollectionReference userCollection = FirebaseFirestore.instance.collection("users");
+  final CollectionReference eventsCollection = FirebaseFirestore.instance.collection("events");
   DatabaseService({this.uid});
 
 
-  Future updateUserDate(User user) async {
+  Future updateUserDate(MockUser user) async {
     print(uid);
     return await userCollection.doc(uid).set({
       'name': user.name,
@@ -19,9 +19,7 @@ class DatabaseService {
   }
 
   Future createEventWithUser(String userUid, Event event) async {
-    var doc_ref = await Firestore.instance.collection("board").document(userUid);
-    User user = await doc_ref.get().then((value) => User());
-    return await eventsCollection.document().setData({
+    return await eventsCollection.doc().set({
       'userUid': userUid,
       'event': {
         'pictureUrl' : event.pictureUrl,
@@ -34,7 +32,7 @@ class DatabaseService {
     });
   }
 
-  Future updateUserData(User user) async {
+  Future updateUserData(MockUser user) async {
     print(uid);
     return await userCollection.doc(uid).update({
       'name': user.name,
@@ -50,7 +48,7 @@ class DatabaseService {
   }
 
   Future sendEventRequest(String eventUid, String askedUserUid, String userUid) async {
-    return await userCollection.document(askedUserUid).collection("eventRequest").document().setData({
+    return await userCollection.doc(askedUserUid).collection("eventRequest").doc().set({
       'eventUid': eventUid,
       'userUid': userUid,
     });
@@ -58,81 +56,81 @@ class DatabaseService {
 
 
   List<Event> _eventListFromSnapshot(QuerySnapshot snapshot){
-    return snapshot.documents.map((doc) {
+    return snapshot.docs.map((doc) {
         return Event(
-          uid : doc.documentID,
-          userUid: doc.data['userUid'],
-          pictureUrl:  doc.data['event']['pictureUrl'],
-            title: doc.data['event']['title'],
-              price: doc.data['event']['price'],
-              date: doc.data['event']['date'],
-              description: doc.data['event']['description'],
-              city: doc.data['event']['city']
+          uid : doc.id,
+          userUid: doc.data()['userUid'],
+          pictureUrl:  doc.data()['event']['pictureUrl'],
+            title: doc.data()['event']['title'],
+              price: doc.data()['event']['price'],
+              date: doc.data()['event']['date'],
+              description: doc.data()['event']['description'],
+              city: doc.data()['event']['city']
           );
     }).toList();
     }
 
 
-  List<EventRequest> _EventRequestListFromSnapshot(QuerySnapshot snapshot){
+  List<EventRequest> _eventRequestListFromSnapshot(QuerySnapshot snapshot){
 
-    return snapshot.documents.map((doc) {
-      if(doc.data["favorite"] == null){
+    return snapshot.docs.map((doc) {
+      if(doc.data()["favorite"] == null){
         return EventRequest(
-          eventUid: doc.documentID,
-          userUid: doc.data['name'],
+          eventUid: doc.id,
+          userUid: doc.data()['name'],
 
         );
       }
     }).toList();
   }
 
-  List<User> _userListFromSnapshot(QuerySnapshot snapshot){
+  List<MockUser> _userListFromSnapshot(QuerySnapshot snapshot){
 
-    return snapshot.documents.map((doc) {
-      if(doc.data["favorite"] == null){
-        return User(
-          uid: doc.documentID,
-            name: doc.data['name'],
+    return snapshot.docs.map((doc) {
+      if(doc.data()["favorite"] == null){
+        return MockUser(
+          uid: doc.id,
+            name: doc.data()['name'],
 
             );
       }else{
-        return User(
-          uid: doc.documentID,
-          name: doc.data['name'],
-          favorite: Favorite(event: Event(pictureUrl: doc.data['favorite']['pictureUrl'] ,
-              title: doc.data['favorite']['title'],
-              price: doc.data['favorite']['price'],
-              date: doc.data['favorite']['date'],
-              description: doc.data['favorite']['description'],
-              city: doc.data['favorite']['city']),
+        return MockUser(
+          uid: doc.id,
+          name: doc.data()['name'],
+          favorite: Favorite(event: Event(pictureUrl: doc.data()['favorite']['pictureUrl'] ,
+              title: doc.data()['favorite']['title'],
+              price: doc.data()['favorite']['price'],
+              date: doc.data()['favorite']['date'],
+              description: doc.data()['favorite']['description'],
+              city: doc.data()['favorite']['city']),
           ),
         );
       }
     }).toList();
   }
 
-  User _userFromSnapShot(DocumentSnapshot doc){
-    return User(uid: doc.documentID);
+  MockUser _userFromSnapShot(DocumentSnapshot doc){
+    return MockUser(uid: doc.id);
   }
 
-  Future<User> getUserFromUid(String uid) async {
-    DocumentSnapshot doc = await eventsCollection.document(uid).get();
+  Future<MockUser> getUserFromUid(String uid) async {
+    DocumentSnapshot doc = await eventsCollection.doc(uid).get();
     return _userFromSnapShot(doc);
   }
 
   Stream<List<EventRequest>> getRequest(String uid){
-    return userCollection.document(uid).collection("eventRequest").snapshots().map(_EventRequestListFromSnapshot);
+    return userCollection.doc(uid).collection("eventRequest").snapshots().map(_eventRequestListFromSnapshot);
 
   }
 
 
-  Stream<List<User>> get users {
+  Stream<List<MockUser>> get users {
     return userCollection.snapshots().map(_userListFromSnapshot);
   }
 
 
   Stream<List<Event>> get events {
-    return userCollection.snapshots().map(_eventListFromSnapshot);
+    return eventsCollection.snapshots().map(_eventListFromSnapshot);
   }
 
 }

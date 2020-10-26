@@ -1,17 +1,17 @@
-class User {
+class MockUser {
   String name;
   String uid;
   int age;
   String profilePicture;
   Favorite favorite;
 
-  User({this.uid, this.name, this.profilePicture, this.favorite});
+  MockUser({this.uid, this.name, this.profilePicture, this.favorite});
 
 }
 
 class Favorite {
   Event event;
-  User user;
+  MockUser user;
 
   Favorite({this.event, this.user});
 }
@@ -37,34 +37,34 @@ class EventRequest {
 }
 
 // Friends
-final User lasse = User(
+final MockUser lasse = MockUser(
   uid: '1',
   name: 'Lasse',
   profilePicture: 'images/lasse.jpg',
 );
 
-final User christy = User(
+final MockUser christy = MockUser(
   uid: '2',
   name: 'Christy',
   profilePicture: 'images/christy.jpg',
 );
 
-final User peter = User(
+final MockUser peter = MockUser(
   uid: '3',
   name: 'Peter',
   profilePicture: 'images/peter.jpg',
 );
 
-final User tine = User(
+final MockUser tine = MockUser(
   uid: '4',
   name: 'Tine',
   profilePicture: 'images/tine.jpg',
 );
 
-final User andrea = User(
+final MockUser andrea = MockUser(
   uid: '5',
   name: 'Andrea',
   profilePicture: 'images/andrea.jpg',
 );
 
-List<User> friends = [lasse, christy, peter, tine, andrea];
+List<MockUser> friends = [lasse, christy, peter, tine, andrea];

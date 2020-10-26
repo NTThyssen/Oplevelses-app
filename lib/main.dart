@@ -23,11 +23,11 @@ Future<void> main() async {
   runApp(
     MultiProvider(
         providers: [
-          StreamProvider<List<User>>.value(
+          StreamProvider<List<MockUser>>.value(
             value: DatabaseService().users,
             child: MyApp(),
           ),
-          StreamProvider<User>.value(value: AuthService().user, child: MyApp()),
+          StreamProvider<MockUser>.value(value: AuthService().user, child: MyApp()),
           StreamProvider<List<Event>>.value(value: DatabaseService().events, child: MyApp()),
         ],
         child: MaterialApp(
@@ -103,15 +103,13 @@ class _MainPageState extends State<MainPage> {
   var isLoading = false;
   var items = 5;
   bool isLiked = false;
-  User user;
+  MockUser user;
 
   final FlareControls flareControls = FlareControls();
   Widget build(BuildContext context) {
-    //final users = Provider.of<List<User>>(context) ?? [];
-    final authUser = Provider.of<User>(context);
+    final authUser = Provider.of<MockUser>(context);
     final events = Provider.of<List<Event>>(context) ?? [];
     List<Event> count = new List();
-    List<User> userCount = new List();
 
     void preload(BuildContext context, String path) {
       if (path != null) {
@@ -138,9 +136,9 @@ class _MainPageState extends State<MainPage> {
       for (var doc in events) {
 
         if (doc.userUid != authUser.uid) {
-          Future<User> user =  DatabaseService().getUserFromUid(doc.userUid);
+          Future<MockUser> user =  DatabaseService().getUserFromUid(doc.userUid);
           user.then((value) => print(value.uid + "heeeeeeeeeeey"));
-          if (cnt < 1) {
+          if (cnt < 3) {
             count.add(doc);
             //preload(context, doc.event.pictureUrl);
             cnt++;
@@ -196,7 +194,7 @@ class _MainPageState extends State<MainPage> {
                         },
                         child: EventDisplay(
                             Event(
-                                uid: 'id',
+                                uid: count.elementAt(position).uid,
                                 pictureUrl: count.elementAt(position).pictureUrl != null
                                     ? count.elementAt(position).pictureUrl
                                     : "images/big-ice.png"),

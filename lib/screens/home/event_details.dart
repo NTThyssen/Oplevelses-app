@@ -28,7 +28,7 @@ class _TestState extends State<Test> {
   @override
   Widget build(BuildContext context) {
     final events = Provider.of<List<Event>>(context);
-    final authUser = Provider.of<User>(context);
+    final authUser = Provider.of<MockUser>(context);
     Event event;
     events.forEach((e) {
 
@@ -40,7 +40,7 @@ class _TestState extends State<Test> {
         print(e.description);
       }
     });
-    User user;
+    MockUser user;
 
 
     return Scaffold(
@@ -151,7 +151,7 @@ class _TestState extends State<Test> {
                       iconSize: 40.0,
                       onPressed: () async {
                        dynamic result = await DatabaseService().sendEventRequest(event.uid, event.userUid, authUser.uid);
-                       print("eventRequest sent: " + result);
+                       print("eventRequest sent: {$result}");
                       },
                     ),
                   ],
