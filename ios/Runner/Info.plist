@@ -33,7 +33,7 @@
 	<key>FacebookAppID</key>
 	<string>746585462555099</string>
 	<key>FacebookDisplayName</key>
-	<string>com.example.flutterApp</string>
+	<string>com.thyssen.flutterApp</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>

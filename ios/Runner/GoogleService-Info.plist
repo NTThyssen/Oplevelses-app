@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.flutterApp</string>
+	<string>com.thyssen.flutterApp</string>
 	<key>PROJECT_ID</key>
 	<string>oplevelse-179d8</string>
 	<key>STORAGE_BUCKET</key>
