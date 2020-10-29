@@ -135,7 +135,7 @@ class _MainPageState extends State<MainPage> {
     if (events != null) {
       for (var doc in events) {
 
-        if (doc.userUid != authUser.uid) {
+        if (doc.userUid != authUser?.uid ?? 1 ) {
           Future<MockUser> user =  DatabaseService().getUserFromUid(doc.userUid);
           user.then((value) => print(value.uid + "heeeeeeeeeeey"));
           if (cnt < 3) {
