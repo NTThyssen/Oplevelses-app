@@ -34,7 +34,7 @@ class FriendsWidget extends StatelessWidget {
                   children: [
                     CircleAvatar(
                       radius: 35.0,
-                      backgroundImage: AssetImage(friends[index].imageURL),
+                      backgroundImage: AssetImage(friends[index].profilePicture),
                     ),
                     SizedBox(
                       height: 6.0,

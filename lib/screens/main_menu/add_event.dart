@@ -29,11 +29,11 @@ class _AddEventState extends State<AddEvent> {
   String uploadedFileURL = "";
   String uid = "";
   MockUser currentUser;
+  Event event;
   bool isUploading = false;
 
   @override
   Widget build(BuildContext context) {
-    final users = Provider.of<List<MockUser>>(context);
     final authUser = Provider.of<MockUser>(context);
     File image;
 
@@ -376,16 +376,16 @@ class _AddEventState extends State<AddEvent> {
                   ),
                   color: Theme.of(context).secondaryHeaderColor,
                   onPressed: () {
-                    currentUser = authUser;
-                    currentUser.event = Event(
+                    event = Event(
+                      userUid: authUser.uid,
                         title: title,
                         pictureUrl: uploadedFileURL,
                         price: price,
                         date: date,
                         city: city,
                         description: description);
-                    DatabaseService(uid: currentUser.uid)
-                        .updateUserDate(currentUser);
+                    DatabaseService(uid: authUser.uid)
+                        .createEventWithUser(authUser.uid, event);
                   }),
               SizedBox(
                 height: SizeConfig.blockSizeVertical * 12,
