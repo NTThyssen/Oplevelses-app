@@ -38,19 +38,6 @@ class _CustomScaffoldWithNavBarState extends State<CustomScaffoldWithNavBar> {
 
     return Scaffold(
         extendBodyBehindAppBar: widget.extendUp ?? false,
-        appBar: AppBar(
-            title: Text(widget.title ?? ""),
-            centerTitle: true,
-            backgroundColor: widget.backgroundColor.withOpacity(1),
-            leading: IconButton(
-              icon: Icon(
-                Icons.filter_list,
-              ),
-              onPressed: () async {
-                await _auth.signOut();
-              },
-            ),
-            actions: widget.icons),
         extendBody: true,
         bottomNavigationBar: ConvexAppBar(
           color: Theme.of(context).secondaryHeaderColor,
@@ -64,10 +51,6 @@ class _CustomScaffoldWithNavBarState extends State<CustomScaffoldWithNavBar> {
               title: 'Home',
             ),
             TabItem(
-              icon: Icons.message,
-              title: 'Beskeder',
-            ),
-            TabItem(
               icon: Icon(
                 Icons.add,
                 color: Colors.white,
@@ -75,10 +58,7 @@ class _CustomScaffoldWithNavBarState extends State<CustomScaffoldWithNavBar> {
               ),
               title: 'Add',
             ),
-            TabItem(
-              icon: Icons.favorite_border,
-              title: 'Favoritter',
-            ),
+
             TabItem(
               icon: Icons.settings,
               title: 'Instillinger',

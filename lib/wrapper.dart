@@ -22,15 +22,9 @@ class Wrapper extends StatelessWidget {
         widget = MainPage();
         break;
       case 1:
-        widget = authUser != null ? Profile() : NotSignedIn();
-        break;
-      case 2:
         widget = authUser != null ? AddEvent() : NotSignedIn();
         break;
-      case 3:
-        widget = authUser != null ? MyFavorites() : NotSignedIn();
-        break;
-      case 4:
+      case 2:
         widget = authUser != null ? SettingsPage() : NotSignedIn();
         break;
       default:
