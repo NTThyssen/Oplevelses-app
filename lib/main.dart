@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flare_flutter/flare_controls.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/helpers/category_manager.dart';
 import 'package:flutter_app/service/DatabaseService.dart';
 import 'package:flutter_app/service/auth.dart';
 import 'package:flutter_app/size_config.dart';
@@ -27,8 +28,12 @@ Future<void> main() async {
             value: DatabaseService().users,
             child: MyApp(),
           ),
-          StreamProvider<MockUser>.value(value: AuthService().user, child: MyApp()),
-          StreamProvider<List<Event>>.value(value: DatabaseService().events, child: MyApp()),
+          StreamProvider<MockUser>.value(
+              value: AuthService().user, child: MyApp()),
+          StreamProvider<List<Event>>.value(
+              value: DatabaseService().events, child: MyApp()),
+          ChangeNotifierProvider<CategoryManager>(
+              create: (_) => CategoryManager()),
         ],
         child: MaterialApp(
             theme: ThemeData(
@@ -130,13 +135,11 @@ class _MainPageState extends State<MainPage> {
       }
     }
 
-
     var cnt = 0;
     if (events != null) {
       for (var doc in events) {
-
-        if (doc.userUid != authUser?.uid ?? 1 ) {
-          Future<MockUser> user =  DatabaseService().getUserFromUid(doc.userUid);
+        if (doc.userUid != authUser?.uid ?? 1) {
+          Future<MockUser> user = DatabaseService().getUserFromUid(doc.userUid);
           user.then((value) => print(value.uid + "heeeeeeeeeeey"));
           if (cnt < 3) {
             count.add(doc);
@@ -179,8 +182,7 @@ class _MainPageState extends State<MainPage> {
                             isLiked = true;
                             flareControls.play("like");
                             authUser.favorite = Favorite();
-                            authUser.favorite.event =
-                                count.elementAt(position);
+                            authUser.favorite.event = count.elementAt(position);
                             DatabaseService(uid: authUser.uid)
                                 .updateUserData(authUser);
                           });
@@ -195,9 +197,10 @@ class _MainPageState extends State<MainPage> {
                         child: EventDisplay(
                             Event(
                                 uid: count.elementAt(position).uid,
-                                pictureUrl: count.elementAt(position).pictureUrl != null
-                                    ? count.elementAt(position).pictureUrl
-                                    : "images/big-ice.png"),
+                                pictureUrl:
+                                    count.elementAt(position).pictureUrl != null
+                                        ? count.elementAt(position).pictureUrl
+                                        : "images/big-ice.png"),
                             flareControls),
                       );
                     }
@@ -268,9 +271,7 @@ class _EventDisplayState extends State<EventDisplay> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-
-                                  " " +
-                                  (widget.event.price?.toString() ?? "23"),
+                              " " + (widget.event.price?.toString() ?? "23"),
                               style: subtitleTextStyle,
                             ),
                             Text(
