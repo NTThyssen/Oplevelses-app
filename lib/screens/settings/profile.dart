@@ -1,16 +1,12 @@
-import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/service/auth.dart';
 import 'package:age/age.dart';
 import 'package:flutter_app/size_config.dart';
 import 'package:flutter_app/widgets/about_text.dart';
-import 'package:flutter_app/widgets/custom_scaffold_with_navBar.dart';
 import 'package:flutter_app/widgets/friends_widget.dart';
 import 'package:flutter_app/widgets/info_header_widget.dart';
 import 'package:flutter_app/widgets/instagram_images_widget.dart';
-import 'package:flutter_app/widgets/pop_up_menu.dart';
 
 class Profile extends StatefulWidget {
   @override
