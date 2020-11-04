@@ -11,33 +11,68 @@ import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import '../main.dart';
 import '../wrapper.dart';
 
-class CustomScaffoldWithNavBar extends StatefulWidget {
-  final String title;
-  final bool extendUp;
-  final List<Widget> icons;
-  final Color backgroundColor;
+/// Methods in this mixin can be accessed if the mixin is implemented
+///
+/// You implement like this:
+/// class IntroPage extends BasePage {
+///   @override
+///   _IntroPageState createState() => _IntroPageState();
+/// }
 
-  CustomScaffoldWithNavBar({
-    this.title,
-    this.extendUp,
-    this.icons,
-    this.backgroundColor,
-  });
+/// class _IntroPageState extends BasePageState<IntroPage> with BasicMixin {
+/// }
+mixin BasicMixin<Page extends StatefulWidget> on State<Page> {
+  Widget appBar;
+
+  @override
+  Widget build(BuildContext context) {
+    appBar = AppBar(
+      actions: <Widget>[action()],
+      brightness: Theme.of(context).colorScheme.brightness,
+      centerTitle: true,
+      elevation: 0,
+      textTheme: Theme.of(context).textTheme,
+      title: titleWidget(),
+      backgroundColor: Colors.transparent,
+    );
+
+    return Stack(
+      children: <Widget>[
+        Scaffold(
+          appBar: appBar,
+          body: Container(
+            width: MediaQuery.of(context).size.width,
+            child: body(),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget body({BuildContext context});
+
+  Widget action() => Container();
+
+  Widget titleWidget() {
+    return Container();
+  }
+}
+
+class CustomScaffoldWithNavBar extends StatefulWidget {
 
   @override
   _CustomScaffoldWithNavBarState createState() =>
       _CustomScaffoldWithNavBarState();
 }
 
+
 class _CustomScaffoldWithNavBarState extends State<CustomScaffoldWithNavBar> {
-  final AuthService _auth = new AuthService();
   int selectedPage = 0;
   @override
   Widget build(BuildContext context) {
     bool keyboardIsOpened = MediaQuery.of(context).viewInsets.bottom != 0.0;
 
     return Scaffold(
-        extendBodyBehindAppBar: widget.extendUp ?? false,
         extendBody: true,
         bottomNavigationBar: ConvexAppBar(
           color: Theme.of(context).secondaryHeaderColor,
@@ -82,8 +117,11 @@ class _CustomScaffoldWithNavBarState extends State<CustomScaffoldWithNavBar> {
             });
           },
         ),
-        body: Wrapper(index: selectedPage));
+        body: Wrapper(index: selectedPage)
+    );
   }
+
+
 }
 
 class BottomAppBarCustom extends StatefulWidget {
@@ -173,98 +211,98 @@ class FadeRoute extends PageRouteBuilder {
   final Widget page;
   FadeRoute({this.page})
       : super(
-          pageBuilder: (
-            BuildContext context,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-          ) =>
-              page,
-          transitionsBuilder: (
-            BuildContext context,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-            Widget child,
-          ) =>
-              FadeTransition(
-            opacity: animation,
-            child: child,
-          ),
-        );
+    pageBuilder: (
+        BuildContext context,
+        Animation<double> animation,
+        Animation<double> secondaryAnimation,
+        ) =>
+    page,
+    transitionsBuilder: (
+        BuildContext context,
+        Animation<double> animation,
+        Animation<double> secondaryAnimation,
+        Widget child,
+        ) =>
+        FadeTransition(
+          opacity: animation,
+          child: child,
+        ),
+  );
 }
 
 class SlideRightRoute extends PageRouteBuilder {
   final Widget page;
   SlideRightRoute({this.page})
       : super(
-          pageBuilder: (
-            BuildContext context,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-          ) =>
-              page,
-          transitionsBuilder: (
-            BuildContext context,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-            Widget child,
-          ) =>
-              SlideTransition(
-            position: Tween<Offset>(
-              begin: const Offset(-1, 0),
-              end: Offset.zero,
-            ).animate(animation),
-            child: child,
-          ),
-        );
+    pageBuilder: (
+        BuildContext context,
+        Animation<double> animation,
+        Animation<double> secondaryAnimation,
+        ) =>
+    page,
+    transitionsBuilder: (
+        BuildContext context,
+        Animation<double> animation,
+        Animation<double> secondaryAnimation,
+        Widget child,
+        ) =>
+        SlideTransition(
+          position: Tween<Offset>(
+            begin: const Offset(-1, 0),
+            end: Offset.zero,
+          ).animate(animation),
+          child: child,
+        ),
+  );
 }
 
 class SlideLeftRoute extends PageRouteBuilder {
   final Widget page;
   SlideLeftRoute({this.page})
       : super(
-          pageBuilder: (
-            BuildContext context,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-          ) =>
-              page,
-          transitionsBuilder: (
-            BuildContext context,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-            Widget child,
-          ) =>
-              SlideTransition(
-            position: Tween<Offset>(
-              begin: const Offset(0, 1),
-              end: Offset.zero,
-            ).animate(animation),
-            child: child,
-          ),
-        );
+    pageBuilder: (
+        BuildContext context,
+        Animation<double> animation,
+        Animation<double> secondaryAnimation,
+        ) =>
+    page,
+    transitionsBuilder: (
+        BuildContext context,
+        Animation<double> animation,
+        Animation<double> secondaryAnimation,
+        Widget child,
+        ) =>
+        SlideTransition(
+          position: Tween<Offset>(
+            begin: const Offset(1, 0),
+            end: Offset.zero,
+          ).animate(animation),
+          child: child,
+        ),
+  );
 }
 
 class SizeRoute extends PageRouteBuilder {
   final Widget page;
   SizeRoute({this.page})
       : super(
-          pageBuilder: (
-            BuildContext context,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-          ) =>
-              page,
-          transitionsBuilder: (
-            BuildContext context,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-            Widget child,
-          ) =>
-              Align(
-            child: SizeTransition(
-              sizeFactor: animation,
-              child: child,
-            ),
+    pageBuilder: (
+        BuildContext context,
+        Animation<double> animation,
+        Animation<double> secondaryAnimation,
+        ) =>
+    page,
+    transitionsBuilder: (
+        BuildContext context,
+        Animation<double> animation,
+        Animation<double> secondaryAnimation,
+        Widget child,
+        ) =>
+        Align(
+          child: SizeTransition(
+            sizeFactor: animation,
+            child: child,
           ),
-        );
+        ),
+  );
 }

@@ -28,7 +28,7 @@ class NotSignedIn extends StatelessWidget {
             color: Theme.of(context).secondaryHeaderColor,
             child: Text("CLICK TO SIGN IN"),
               onPressed: () {
-                Navigator.push(context,  MaterialPageRoute(builder: (context) => Login()));
+                Navigator.pushReplacement(context,  MaterialPageRoute(builder: (context) => Login()));
               })
           ,
           Spacer(flex: 5,)

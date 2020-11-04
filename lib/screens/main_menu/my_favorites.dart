@@ -19,28 +19,20 @@ class _MyFavoritesState extends State<MyFavorites> {
   @override
   Widget build(BuildContext context) {
     final authUser = Provider.of<MockUser>(context);
-    final users = Provider.of<List<MockUser>>(context);
-    MockUser currentUser;
-    print(users.length);
-    for (var user in users) {
-      print(user.uid);
-      if (authUser.uid == user.uid) {
-        currentUser = user;
-      }
-    }
 
-    return Container(
-        child: SingleChildScrollView(
+
+    return authUser.favorite != null ?  Scaffold(
+        body : SingleChildScrollView(
       child: Column(
         children: [
           FadeIn(
               0.5,
               FavoriteCardView(
-                eventUrl: currentUser.favorite.event.pictureUrl,
+                eventUrl: "",
               )),
         ],
       ),
-    ));
+    )) : Center(child: Text("Du har ingen Favoritter"),);
   }
 }
 

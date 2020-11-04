@@ -31,7 +31,7 @@ class Event {
 
 class EventRequest {
   String eventUid;
-  String userUid;
+  List userUid;
 
   EventRequest({this.eventUid, this.userUid});
 }
