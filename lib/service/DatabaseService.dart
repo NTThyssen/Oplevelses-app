@@ -91,18 +91,12 @@ class DatabaseService {
 
   List<EventRequest> _eventRequestListFromSnapshot(QuerySnapshot snapshot){
     try{
-      List lsit =  snapshot.docs.map((doc) {
-        print(doc.data());
-        EventRequest t = EventRequest(
+     return snapshot.docs.map((doc) {
+        return EventRequest(
           eventUid: doc.id,
           userUid: doc.data()["userUid"],
         );
-
-        print(t.userUid);
-        return t;
       }).toList();
-
-      return lsit;
     }catch(e) {
       print(e);
     }
@@ -155,9 +149,7 @@ class DatabaseService {
 
 
   Stream<List<EventRequest>> getEventRequests(String uid){
-    Stream<List<EventRequest>> test = userCollection.doc(uid).collection("eventRequest").snapshots().map(_eventRequestListFromSnapshot);
-    print(test);
-    return test;
+    return userCollection.doc(uid).collection("eventRequest").snapshots().map(_eventRequestListFromSnapshot);
   }
 
 

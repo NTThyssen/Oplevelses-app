@@ -1,5 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_app/authenticate/not_signed_in.dart';
+import 'package:flutter_app/screens/main_menu/add_event.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/service/DatabaseService.dart';
 import 'package:flutter_app/size_config.dart';
@@ -27,6 +30,7 @@ class _TestState extends State<Test> {
 
   @override
   Widget build(BuildContext context) {
+    final key = new GlobalKey<ScaffoldState>();
     final events = Provider.of<List<Event>>(context);
     final authUser = Provider.of<MockUser>(context);
     Event event;
@@ -44,6 +48,7 @@ class _TestState extends State<Test> {
 
 
     return Scaffold(
+      key: key,
       appBar: AppBar(
         title: Text(event.title),
         centerTitle: true,
@@ -143,15 +148,23 @@ class _TestState extends State<Test> {
                       icon: Icon(Icons.repeat),
                       color: Theme.of(context).secondaryHeaderColor,
                       iconSize: 40.0,
-                      onPressed: () {},
+                      onPressed: () {
+                        authUser == null ? Navigator.push(context, FadeRoute(page: NotSignedIn())) :  Navigator.push(context, FadeRoute(page: AddOrRepostEvent(event: event,)));
+                      },
                     ),
                     IconButton(
                       icon: Icon(Icons.add_box),
                       color: Theme.of(context).secondaryHeaderColor,
                       iconSize: 40.0,
                       onPressed: () async {
-                       dynamic result = await DatabaseService().sendEventRequest(event.uid, event.userUid, authUser.uid);
-                       print("eventRequest sent: {$result}");
+                        if(authUser == null) {
+                          Navigator.push(context, FadeRoute(page: NotSignedIn()));
+                        }else{
+                          dynamic result = await DatabaseService().sendEventRequest(event.uid, event.userUid, authUser.uid);
+                          key.currentState.showSnackBar(SnackBar(content: Text("Anmodning Sendt")));
+                          print("eventRequest sent: {$result}");
+                        }
+
                       },
                     ),
                   ],
@@ -166,4 +179,5 @@ class _TestState extends State<Test> {
       ),
     );
   }
+
 }

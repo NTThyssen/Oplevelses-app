@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:date_format/date_format.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/screens/main_menu/request_viewer.dart';
@@ -45,12 +46,8 @@ class _AddEventState extends State<RequestForEvents> with BasicMixin {
     return StreamBuilder<List<EventRequest>>(
         stream: DatabaseService().getEventRequests(authUser.uid),
         builder: (context, snapshot) {
-        print(snapshot.data);
-        if(snapshot.hasData ) {
-          print("test2");
-          print(snapshot.data);
+        if(snapshot.hasData) {
           for (var index in snapshot.data) {
-            print(index.eventUid + " event id");
             eventsFutures.add(
                 DatabaseService().getEventFromUid(index.eventUid));
           }
@@ -59,8 +56,6 @@ class _AddEventState extends State<RequestForEvents> with BasicMixin {
            future: Future.wait(eventsFutures),
              builder: (context, AsyncSnapshot<List<Event>> snapshot){
              if(snapshot.hasData){
-               print(snapshot.data);
-               print("test");
              }
                return   snapshot.hasData ? Column(
                  children: [
@@ -76,12 +71,15 @@ class _AddEventState extends State<RequestForEvents> with BasicMixin {
   }
 }
 
-class AddEvents extends StatefulWidget {
+class AddOrRepostEvent extends StatefulWidget {
+  final Event event;
+  AddOrRepostEvent({this.event});
+
   @override
-  _AddEventsState createState() => _AddEventsState();
+  _AddOrRepostEventState createState() => _AddOrRepostEventState();
 }
 
-class _AddEventsState extends State<AddEvents> {
+class _AddOrRepostEventState extends State<AddOrRepostEvent> {
   String title = "";
   String description = "";
   String price = "";
@@ -129,9 +127,8 @@ class _AddEventsState extends State<AddEvents> {
         }
       }
     }
-
-    return Container(
-      child: SingleChildScrollView(
+    return Scaffold(
+      body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -146,7 +143,7 @@ class _AddEventsState extends State<AddEvents> {
                 color: Theme.of(context).secondaryHeaderColor,
                 image: DecorationImage(
                   fit: BoxFit.fill,
-                  image: NetworkImage(uploadedFileURL),
+                  image: widget.event == null ? NetworkImage(uploadedFileURL) : NetworkImage(widget.event.pictureUrl),
                 ),
               ),
               child: uploadedFileURL != ""
@@ -198,6 +195,7 @@ class _AddEventsState extends State<AddEvents> {
                         keyboardType: TextInputType.multiline,
                         maxLines: null,
                         maxLength: 180,
+                        initialValue: widget.event?.title ?? "",
                         decoration: InputDecoration(
                           hintStyle: inputFieldTextStyle,
                           border: InputBorder.none,
@@ -245,6 +243,7 @@ class _AddEventsState extends State<AddEvents> {
                         keyboardType: TextInputType.multiline,
                         maxLines: null,
                         maxLength: 180,
+                        initialValue: widget.event?.description ?? "",
                         decoration: InputDecoration(
                           hintStyle: inputFieldTextStyle,
                           border: InputBorder.none,
@@ -292,6 +291,7 @@ class _AddEventsState extends State<AddEvents> {
                         keyboardType: TextInputType.number,
                         maxLines: null,
                         maxLength: 180,
+                        initialValue: widget.event?.price ?? "",
                         decoration: InputDecoration(
                           hintStyle: inputFieldTextStyle,
                           border: InputBorder.none,
@@ -336,6 +336,7 @@ class _AddEventsState extends State<AddEvents> {
                     child: Padding(
                       padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
                       child: DateTimeField(
+                        initialValue: widget.event?.date != null ? DateFormat("dd/MM/yyyy").parse(widget.event.date+"/2020") : DateFormat("").parse(""),
                         decoration: InputDecoration(
                           hintStyle: inputFieldTextStyle,
                           border: InputBorder.none,
@@ -349,7 +350,7 @@ class _AddEventsState extends State<AddEvents> {
                         onChanged: (input) {
                           date = (input.day.toString() +
                               "/" +
-                              input.month.toString());
+                              input.month.toString()+input.year.toString());
                           print(date);
                         },
                         onShowPicker: (context, currentValue) {
@@ -359,7 +360,7 @@ class _AddEventsState extends State<AddEvents> {
                               initialDate: currentValue ?? DateTime.now(),
                               lastDate: DateTime(2100));
                         },
-                      ),
+                      )
                     ),
                     width: SizeConfig.blockSizeHorizontal * 90,
                     height: SizeConfig.blockSizeHorizontal * 14,
@@ -397,6 +398,7 @@ class _AddEventsState extends State<AddEvents> {
                         keyboardType: TextInputType.multiline,
                         maxLines: null,
                         maxLength: 180,
+                        initialValue: widget.event?.city ?? "",
                         decoration: InputDecoration(
                           hintStyle: inputFieldTextStyle,
                           border: InputBorder.none,
@@ -425,7 +427,11 @@ class _AddEventsState extends State<AddEvents> {
               ),
             ),
             RaisedButton(
-                child: Text(
+                child: widget.event != null ? Text("Repost Event",  style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                ),
+                ) : Text(
                   "Opret Event",
                   style: TextStyle(
                     color: Colors.white,
@@ -541,7 +547,7 @@ class _MenuOverviewState extends State<MenuOverview> with BasicMixin {
   @override
   Widget body({BuildContext context}) {
     // TODO: implement body
-    return Container(
+    return isFavorite ? MyFavorites() : Container(
       width: SizeConfig.blockSizeHorizontal*100,
       height: SizeConfig.blockSizeVertical*100,
       child: Stack(
@@ -567,7 +573,7 @@ class _MenuOverviewState extends State<MenuOverview> with BasicMixin {
                   ),
                   color: Theme.of(context).secondaryHeaderColor,
                   onPressed: () {
-                    Navigator.push(context, FadeRoute(page: AddEvents()));
+                    Navigator.push(context, FadeRoute(page: AddOrRepostEvent()));
                   }),
             ),
           ),
