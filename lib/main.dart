@@ -72,24 +72,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return CustomScaffoldWithNavBar(
-      backgroundColor: Theme.of(context).primaryColor,
-      title: "Title",
-      icons: [
-        PopupMenuButton<PopUpItem>(
-          onCanceled: () {
-            print('On cancelled was called');
-          },
-          onSelected: _select,
-          itemBuilder: (BuildContext context) {
-            return choices.map((PopUpItem choice) {
-              return PopupMenuItem<PopUpItem>(
-                value: choice,
-                child: Text(choice.title),
-              );
-            }).toList();
-          },
-        ),
-      ],
+
     );
   }
 }
@@ -99,7 +82,7 @@ class MainPage extends StatefulWidget {
   _MainPageState createState() => _MainPageState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _MainPageState extends State<MainPage> with BasicMixin {
   var isLoading = false;
   var items = 5;
   bool isLiked = false;
@@ -107,6 +90,35 @@ class _MainPageState extends State<MainPage> {
 
   final FlareControls flareControls = FlareControls();
   Widget build(BuildContext context) {
+      return isLoading
+        ? Container(
+            width: SizeConfig.blockSizeHorizontal * 100,
+            height: SizeConfig.blockSizeVertical * 100,
+            color: Theme.of(context).secondaryHeaderColor,
+            child: Center(
+              child: SpinKitCubeGrid(
+                color: Colors.white,
+                size: 80.0,
+              ),
+            ))
+        : Scaffold(
+            extendBodyBehindAppBar: true,
+            appBar: appBar,
+            body: body(context: context)
+    );
+  }
+
+  @override
+  Widget appBar = AppBar(
+    actions: [IconButton(icon: Icon(Icons.favorite_border, color: Colors.white,), onPressed: () {
+      AuthService().signOut();
+    })],
+    title: Text("Søndags-is"),
+    backgroundColor: Colors.transparent,
+  );
+
+  @override
+  Widget body({BuildContext context}) {
     final authUser = Provider.of<MockUser>(context);
     final events = Provider.of<List<Event>>(context) ?? [];
     List<Event> count = new List();
@@ -118,7 +130,7 @@ class _MainPageState extends State<MainPage> {
         var _image = NetworkImage(path)..resolve(configuration);
         _image.resolve(ImageConfiguration()).addListener(
           ImageStreamListener(
-            (info, call) {
+                (info, call) {
               print(info.image);
               setState(() {});
               print('Networkimage is fully loaded and saved');
@@ -134,10 +146,8 @@ class _MainPageState extends State<MainPage> {
     var cnt = 0;
     if (events != null) {
       for (var doc in events) {
-
         if (doc.userUid != authUser?.uid ?? 1 ) {
-          Future<MockUser> user =  DatabaseService().getUserFromUid(doc.userUid);
-          user.then((value) => print(value.uid + "heeeeeeeeeeey"));
+
           if (cnt < 3) {
             count.add(doc);
             //preload(context, doc.event.pictureUrl);
@@ -146,81 +156,67 @@ class _MainPageState extends State<MainPage> {
         }
       }
     }
-
-    return isLoading
-        ? Container(
-            width: SizeConfig.blockSizeHorizontal * 100,
-            height: SizeConfig.blockSizeVertical * 100,
-            color: Theme.of(context).secondaryHeaderColor,
-            child: Center(
-              child: SpinKitCubeGrid(
-                color: Colors.white,
-                size: 80.0,
-              ),
-            ))
-        : Container(
-            child: Stack(
-              children: [
-                PreloadPageView.builder(
-                  itemCount: count.length,
-                  preloadPagesCount: 5,
-                  onPageChanged: (index) {
-                    if (index == items - 1) {
-                      print("last page");
-                      setState(() {});
-                      print(index);
-                    }
-                  },
-                  itemBuilder: (BuildContext context, int position) {
-                    for (var i = 0; i < count.length; i++) {
-                      return GestureDetector(
-                        onDoubleTap: () {
-                          setState(() {
-                            isLiked = true;
-                            flareControls.play("like");
-                            authUser.favorite = Favorite();
-                            authUser.favorite.event =
-                                count.elementAt(position);
-                            DatabaseService(uid: authUser.uid)
-                                .updateUserData(authUser);
-                          });
-                        },
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              FadeRoute(
-                                  page: Test(
-                                      uid: count.elementAt(position).uid)));
-                        },
-                        child: EventDisplay(
-                            Event(
-                                uid: count.elementAt(position).uid,
-                                pictureUrl: count.elementAt(position).pictureUrl != null
-                                    ? count.elementAt(position).pictureUrl
-                                    : "images/big-ice.png"),
-                            flareControls),
-                      );
-                    }
-                    ;
-                  },
-                  controller: PreloadPageController(),
-                ),
-                IgnorePointer(
-                  child: Center(
-                    child: SizedBox(
-                      width: 180,
-                      height: 180,
-                      child: FlareActor(
-                        'images/instagram_like.flr',
-                        controller: flareControls,
-                        animation: 'idle',
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
+   return Stack(
+     children: [
+       PreloadPageView.builder(
+         itemCount: count.length,
+         preloadPagesCount: 5,
+         onPageChanged: (index) {
+           if (index == items - 1) {
+             print("last page");
+             setState(() {});
+             print(index);
+           }
+         },
+         itemBuilder: (BuildContext context, int position) {
+           for (var i = 0; i < count.length; i++) {
+             return GestureDetector(
+               onDoubleTap: () {
+                 setState(() {
+                   isLiked = true;
+                   flareControls.play("like");
+                   authUser.favorite = Favorite();
+                   authUser.favorite.event =
+                       count.elementAt(position);
+                   DatabaseService(uid: authUser.uid)
+                       .updateUserData(authUser);
+                 });
+               },
+               onTap: () {
+                 Navigator.push(
+                     context,
+                     FadeRoute(
+                         page: Test(
+                             uid: count.elementAt(position).uid)));
+               },
+               child: EventDisplay(
+                   Event(
+                       uid: count.elementAt(position).uid,
+                       pictureUrl: count.elementAt(position).pictureUrl != null
+                           ? count.elementAt(position).pictureUrl
+                           : "images/big-ice.png"),
+                   flareControls),
+             );
+           }
+           ;
+         },
+         controller: PreloadPageController(),
+       ),
+       IgnorePointer(
+         child: Center(
+           child: SizedBox(
+             width: 180,
+             height: 180,
+             child: FlareActor(
+               'images/instagram_like.flr',
+               controller: flareControls,
+               animation: 'idle',
+             ),
+           ),
+         ),
+       ),
+     ],
+   );
   }
 }
 
@@ -249,10 +245,13 @@ class _EventDisplayState extends State<EventDisplay> {
         ),
         child: Column(
           children: [
+            Container(
+              height: SizeConfig.blockSizeVertical*10,
+            ),
             Expanded(
               flex: 2,
               child: Padding(
-                padding: EdgeInsets.fromLTRB(20, 15, 0, 10),
+                padding: EdgeInsets.fromLTRB(10, 15, 0, 10),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -275,30 +274,8 @@ class _EventDisplayState extends State<EventDisplay> {
                             ),
                             Text(
                               'Aktivitet 5km væk',
-                              style: smallHeaderTextStyle,
+                              style: smallGreyHeaderTextStyle,
                             ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 3,
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(0, 0, 15, 0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                print("Favorit!");
-                                widget.flareControls.play("like");
-                              },
-                              child: Icon(
-                                Icons.favorite_border,
-                                color: Colors.white,
-                                size: 30,
-                              ),
-                            )
                           ],
                         ),
                       ),

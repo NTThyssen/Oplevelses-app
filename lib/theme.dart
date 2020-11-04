@@ -81,7 +81,8 @@ ThemeData appTheme = ThemeData(
     /* Small grey header */
     headline6: GoogleFonts.roboto().copyWith(
       fontSize: 12,
-      fontWeight: FontWeight.w700,
+      letterSpacing: 1.2,
+      fontWeight: FontWeight.w300,
       fontStyle: FontStyle.normal,
     ),
   ),
@@ -99,7 +100,7 @@ TextStyle cardTitleTextStyle =
 TextStyle smallHeaderTextStyle =
     appTheme.textTheme.headline5.copyWith(color: white);
 TextStyle smallGreyHeaderTextStyle =
-    appTheme.textTheme.headline6.copyWith(color: lightGrey);
+    appTheme.textTheme.headline6.copyWith(color: white);
 
 /* 
   Colors from figma:

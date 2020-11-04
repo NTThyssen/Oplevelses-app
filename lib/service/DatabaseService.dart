@@ -48,10 +48,28 @@ class DatabaseService {
   }
 
   Future sendEventRequest(String eventUid, String askedUserUid, String userUid) async {
-    return await userCollection.doc(askedUserUid).collection("eventRequest").doc().set({
-      'eventUid': eventUid,
-      'userUid': userUid,
-    });
+    List<String> list = List();
+    list.add(userUid);
+    final snapshot = await userCollection.doc(askedUserUid).collection("eventRequest").get();
+    final eventSnap = userCollection.doc(askedUserUid).collection("eventRequest").doc(eventUid);
+    if(snapshot.docs.length == 0){
+      eventSnap.set({
+        'userUid': FieldValue.arrayUnion(list)
+      });
+    }else{
+      eventSnap.get().then((value) => {
+        if(value.exists){
+          eventSnap.update({
+            'userUid': FieldValue.arrayUnion(list)
+          })
+        }else{
+          eventSnap.set({
+          'userUid': FieldValue.arrayUnion(list)
+          })
+        }
+      });
+    }
+
   }
 
 
@@ -72,16 +90,17 @@ class DatabaseService {
 
 
   List<EventRequest> _eventRequestListFromSnapshot(QuerySnapshot snapshot){
-
-    return snapshot.docs.map((doc) {
-      if(doc.data()["favorite"] == null){
+    try{
+     return snapshot.docs.map((doc) {
         return EventRequest(
           eventUid: doc.id,
-          userUid: doc.data()['name'],
-
+          userUid: doc.data()["userUid"],
         );
-      }
-    }).toList();
+      }).toList();
+    }catch(e) {
+      print(e);
+    }
+
   }
 
   List<MockUser> _userListFromSnapshot(QuerySnapshot snapshot){
@@ -109,18 +128,28 @@ class DatabaseService {
     }).toList();
   }
 
-  MockUser _userFromSnapShot(DocumentSnapshot doc){
+
+  Future<MockUser> getUserFromUid(String uid) async {
+    DocumentSnapshot doc = await userCollection.doc(uid).get();
     return MockUser(uid: doc.id);
   }
 
-  Future<MockUser> getUserFromUid(String uid) async {
+  Future<Event> getEventFromUid(String uid) async {
     DocumentSnapshot doc = await eventsCollection.doc(uid).get();
-    return _userFromSnapShot(doc);
+
+    return Event(uid: doc.id, description:
+    doc.data()["event"]["description"],
+        title: doc.data()["event"]["title"],
+        city: doc.data()["event"]["city"],
+        pictureUrl: doc.data()["event"]["pictureUrl"],
+        userUid: doc.data()["userUid"],
+        date: doc.data()["event"]["date"],
+        price: doc.data()["event"]["price"]);
   }
 
-  Stream<List<EventRequest>> getRequest(String uid){
-    return userCollection.doc(uid).collection("eventRequest").snapshots().map(_eventRequestListFromSnapshot);
 
+  Stream<List<EventRequest>> getEventRequests(String uid){
+    return userCollection.doc(uid).collection("eventRequest").snapshots().map(_eventRequestListFromSnapshot);
   }
 
 
