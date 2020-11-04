@@ -27,14 +27,18 @@ class _SettingsPageState extends State<SettingsPage> with BasicMixin {
           NavigationButton(
             icon: Icons.person_outline,
             text: 'Profil',
+            onPressed: () {
+              // TODO: Navigate to profile
+              print('Profile button pressed');
+            },
           ),
           NavigationButton(
             icon: Icons.notifications_outlined,
             text: 'Notifikationer',
-          ),
-          Divider(
-            indent: 18,
-            endIndent: 18,
+            onPressed: () {
+              // TODO: Navigate to notifications settings
+              print('Notifications button pressed');
+            },
           ),
           // Age filtering
           AgeSlider(),
@@ -104,10 +108,13 @@ class _SettingsPageState extends State<SettingsPage> with BasicMixin {
                       ActivityCategory.values[index],
                     ),
                     onTap: () {
+                      setState(() {
+                        _selectAll = false;
+                      });
                       setCategoryState(
                           context, manager, ActivityCategory.values[index]);
                     },
-                    state: value,
+                    state: _selectAll ? ActivityState.Selected : value,
                   );
                 },
               );

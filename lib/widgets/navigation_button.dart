@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 
 class NavigationButton extends StatelessWidget {
-  NavigationButton({this.icon, this.text});
+  NavigationButton({this.icon, this.text, this.onPressed});
 
   final IconData icon;
   final String text;
+  final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
-      onPressed: () {},
+    return OutlineButton(
+      onPressed: onPressed,
       child: Padding(
         padding: const EdgeInsets.only(bottom: 10, top: 15),
         child: Row(
