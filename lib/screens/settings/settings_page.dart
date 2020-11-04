@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/helpers/category_manager.dart';
 import 'package:flutter_app/helpers/enums.dart';
 import 'package:flutter_app/widgets/age_slider.dart';
+import 'package:flutter_app/widgets/custom_scaffold_with_navBar.dart';
 import 'package:flutter_app/widgets/distance_slider.dart';
 import 'package:flutter_app/widgets/navigation_button.dart';
 import 'package:flutter_app/widgets/category_card.dart';
@@ -16,17 +16,21 @@ class SettingsPage extends StatefulWidget {
   _SettingsPageState createState() => _SettingsPageState();
 }
 
-class _SettingsPageState extends State<SettingsPage> {
+class _SettingsPageState extends State<SettingsPage> with BasicMixin {
   bool _selectAll = false;
 
   @override
-  Widget build(BuildContext context) {
+  Widget body({BuildContext context}) {
     return SingleChildScrollView(
       child: Column(
         children: [
           NavigationButton(
             icon: Icons.person_outline,
             text: 'Profil',
+          ),
+          NavigationButton(
+            icon: Icons.notifications_outlined,
+            text: 'Notifikationer',
           ),
           Divider(
             indent: 18,
@@ -79,41 +83,44 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
           Divider(),
           // Category filter buttons
-          Container(
-            height: 550,
-            child: GridView.count(
-              physics: NeverScrollableScrollPhysics(),
-              crossAxisCount: 3,
-              children: List.generate(7, (index) {
-                return Selector<CategoryManager, ActivityState>(
-                  selector: (context, manager) => getActivityStateFromCategory(
-                      ActivityCategory.values[index], manager),
-                  builder: (context, value, child) {
-                    CategoryManager manager =
-                        Provider.of<CategoryManager>(context, listen: false);
-                    return CategoryCard(
-                      image: getActivityCategoryImageFromCategory(
-                        context,
-                        ActivityCategory.values[index],
-                      ),
-                      text: getActivityCategoryTextFromCategory(
-                        context,
-                        ActivityCategory.values[index],
-                      ),
-                      onTap: () {
-                        setCategoryState(
-                            context, manager, ActivityCategory.values[index]);
-                      },
-                      state: value,
-                    );
-                  },
-                );
-              }),
-            ),
+          GridView.count(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            crossAxisCount: 3,
+            children: List.generate(7, (index) {
+              return Selector<CategoryManager, ActivityState>(
+                selector: (context, manager) => getActivityStateFromCategory(
+                    ActivityCategory.values[index], manager),
+                builder: (context, value, child) {
+                  CategoryManager manager =
+                      Provider.of<CategoryManager>(context, listen: false);
+                  return CategoryCard(
+                    image: getActivityCategoryImageFromCategory(
+                      context,
+                      ActivityCategory.values[index],
+                    ),
+                    text: getActivityCategoryTextFromCategory(
+                      context,
+                      ActivityCategory.values[index],
+                    ),
+                    onTap: () {
+                      setCategoryState(
+                          context, manager, ActivityCategory.values[index]);
+                    },
+                    state: value,
+                  );
+                },
+              );
+            }),
           ),
         ],
       ),
     );
+  }
+
+  @override
+  Widget titleWidget() {
+    return Text("Indstillinger");
   }
 }
 
