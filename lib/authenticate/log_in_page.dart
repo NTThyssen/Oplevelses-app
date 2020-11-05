@@ -146,7 +146,7 @@ class _LoginState extends State<Login> {
                                         .singInWithEmail(email, password);
                                     print(result);
                                     Navigator.pushReplacement(
-                                        context, FadeRoute(page: MainPage()));
+                                        context, FadeRoute(page: MyApp()));
                                   }
                                 },
                                 child: Center(

@@ -178,6 +178,7 @@ class _MainPageState extends State<MainPage> with BasicMixin {
                    authUser.favorite = Favorite();
                    authUser.favorite.event =
                        count.elementAt(position);
+                   authUser.favorite.userUid = count.elementAt(position).uid;
                    DatabaseService(uid: authUser.uid)
                        .updateUserData(authUser);
                  });

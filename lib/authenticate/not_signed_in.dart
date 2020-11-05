@@ -6,7 +6,7 @@ import 'log_in_page.dart';
 class NotSignedIn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return  Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -28,7 +28,7 @@ class NotSignedIn extends StatelessWidget {
             color: Theme.of(context).secondaryHeaderColor,
             child: Text("CLICK TO SIGN IN"),
               onPressed: () {
-                Navigator.pushReplacement(context,  MaterialPageRoute(builder: (context) => Login()));
+                Navigator.push(context,  MaterialPageRoute(builder: (context) => Login()));
               })
           ,
           Spacer(flex: 5,)

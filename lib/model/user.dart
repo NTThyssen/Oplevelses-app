@@ -11,9 +11,9 @@ class MockUser {
 
 class Favorite {
   Event event;
-  MockUser user;
+  String userUid;
 
-  Favorite({this.event, this.user});
+  Favorite({this.event, this.userUid});
 }
 
 class Event {

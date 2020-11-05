@@ -18,7 +18,13 @@ class MyFavorites extends StatefulWidget {
 class _MyFavoritesState extends State<MyFavorites> {
   @override
   Widget build(BuildContext context) {
-    final authUser = Provider.of<MockUser>(context);
+    MockUser authUser = Provider.of<MockUser>(context);
+    final users = Provider.of<List<MockUser>>(context) ?? [];
+    for(var user in users ){
+      if(user.uid == authUser.uid){
+        authUser = user;
+      }
+    }
 
 
     return authUser.favorite != null ?  Scaffold(
@@ -28,7 +34,7 @@ class _MyFavoritesState extends State<MyFavorites> {
           FadeIn(
               0.5,
               FavoriteCardView(
-                eventUrl: "",
+                eventUrl: authUser.favorite.event.pictureUrl,
               )),
         ],
       ),

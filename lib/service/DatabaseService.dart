@@ -10,11 +10,26 @@ class DatabaseService {
   DatabaseService({this.uid});
 
 
-  Future updateUserDate(MockUser user) async {
+  Future updateUserDataOnSignUp(MockUser user) async {
     print(uid);
     return await userCollection.doc(uid).set({
-      'name': user.name,
+      'profile':{
+        'name' : user.name,
+        'age' : user.age
+      },
 
+    });
+  }
+
+  Future getFavoriteDataFromEvent(MockUser user){
+    FirebaseFirestore.instance
+        .collection("events")
+        .where("favorite.", isEqualTo: "USA")
+        .get()
+        .then((value) {
+      value.docs.forEach((result) {
+        print(result.data());
+      });
     });
   }
 
@@ -33,18 +48,21 @@ class DatabaseService {
   }
 
   Future updateUserData(MockUser user) async {
+    final favoriteSnap = userCollection.doc(user.uid).collection("favorites").doc();
     print(uid);
-    return await userCollection.doc(uid).update({
-      'name': user.name,
-      'favorite': {
-        'pictureUrl': user.favorite.event.pictureUrl,
-        'city': user.favorite.event.city,
-        'price': user.favorite.event.price,
-        'title': user.favorite.event.title,
-        'date': user.favorite.event.date,
-        'description': user.favorite.event.description
-      }
-    });
+    Map<String, String> map = {
+      "city" : user.favorite.event.city,
+      "date" : user.favorite.event.date,
+      "description" : user.favorite.event.description,
+      "pictureUrl" : user.favorite.event.pictureUrl,
+      "price" : user.favorite.event.price,
+      "title" : user.favorite.event.title,
+    };
+    return await favoriteSnap.set({
+      'userUid': user.favorite.userUid,
+      'favorites' : FieldValue.arrayUnion([map])
+
+    }, );
   }
 
   Future sendEventRequest(String eventUid, String askedUserUid, String userUid) async {
@@ -100,19 +118,12 @@ class DatabaseService {
     }catch(e) {
       print(e);
     }
-
   }
+
 
   List<MockUser> _userListFromSnapshot(QuerySnapshot snapshot){
 
     return snapshot.docs.map((doc) {
-      if(doc.data()["favorite"] == null){
-        return MockUser(
-          uid: doc.id,
-            name: doc.data()['name'],
-
-            );
-      }else{
         return MockUser(
           uid: doc.id,
           name: doc.data()['name'],
@@ -124,7 +135,7 @@ class DatabaseService {
               city: doc.data()['favorite']['city']),
           ),
         );
-      }
+
     }).toList();
   }
 

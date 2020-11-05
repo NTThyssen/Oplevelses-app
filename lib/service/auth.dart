@@ -53,15 +53,15 @@ class AuthService {
     }
   }
 
-  Future registerWithEmail(String email, String password) async {
+  Future registerWithEmail(String email, String password, MockUser user) async {
     try {
-      User user = (await _auth.createUserWithEmailAndPassword(
+      User registerUser = (await _auth.createUserWithEmailAndPassword(
               email: email, password: password))
           .user;
 
       await DatabaseService(uid: user.uid)
-          .updateUserDate(_userFromFirebaseUser(user));
-      return _userFromFirebaseUser(user);
+          .updateUserDataOnSignUp(user);
+      return _userFromFirebaseUser(registerUser);
     } catch (e) {
       print(e.toString());
       return null;
