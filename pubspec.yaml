@@ -47,7 +47,7 @@ dependencies:
   flutter_spinkit: ^4.1.2
   provider: ^4.3.2+2
   highlighter_coachmark: ^0.0.3
-  flutter_platform_widgets: ^0.50.0
+  flutter_platform_widgets: ^0.60.2
   animations: ^1.1.2
   like_button: ^1.0.3
   datetime_picker_formfield: ^1.0.0
@@ -55,6 +55,7 @@ dependencies:
   flare_flutter: ^2.0.6
   firebase_crashlytics: ^0.2.1+1
   google_fonts: ^1.1.1
+  flutter_svg: ^0.19.0
 
 dev_dependencies:
   flutter_test:

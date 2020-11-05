@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flare_flutter/flare_controls.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/helpers/category_manager.dart';
 import 'package:flutter_app/service/DatabaseService.dart';
 import 'package:flutter_app/service/auth.dart';
 import 'package:flutter_app/size_config.dart';
@@ -27,8 +28,12 @@ Future<void> main() async {
             value: DatabaseService().users,
             child: MyApp(),
           ),
-          StreamProvider<MockUser>.value(value: AuthService().user, child: MyApp()),
-          StreamProvider<List<Event>>.value(value: DatabaseService().events, child: MyApp()),
+          StreamProvider<MockUser>.value(
+              value: AuthService().user, child: MyApp()),
+          StreamProvider<List<Event>>.value(
+              value: DatabaseService().events, child: MyApp()),
+          ChangeNotifierProvider<CategoryManager>(
+              create: (_) => CategoryManager()),
         ],
         child: MaterialApp(
             theme: ThemeData(
@@ -141,7 +146,6 @@ class _MainPageState extends State<MainPage> with BasicMixin {
         );
       }
     }
-
 
     var cnt = 0;
     if (events != null) {
@@ -268,9 +272,7 @@ class _EventDisplayState extends State<EventDisplay> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-
-                                  " " +
-                                  (widget.event.price?.toString() ?? "23"),
+                              " " + (widget.event.price?.toString() ?? "23"),
                               style: subtitleTextStyle,
                             ),
                             Text(

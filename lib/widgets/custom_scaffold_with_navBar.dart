@@ -95,8 +95,8 @@ class _CustomScaffoldWithNavBarState extends State<CustomScaffoldWithNavBar> {
             ),
 
             TabItem(
-              icon: Icons.person_outline,
-              title: 'Profil',
+              icon: Icons.settings,
+              title: 'Instillinger',
             ),
           ],
           onTap: (int index) {
