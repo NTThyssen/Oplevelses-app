@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/model/user.dart';
 import 'package:flutter_app/service/DatabaseService.dart';
 import 'package:flutter_app/service/auth.dart';
 import 'package:flutter_app/theme.dart';
@@ -14,6 +15,7 @@ import '../size_config.dart';
 class SignUp extends StatefulWidget {
   String email;
   String password;
+  MockUser user = MockUser();
 
   @override
   _SignUpState createState() => _SignUpState();
@@ -75,11 +77,9 @@ class _SignUpState extends State<SignUp> {
                               width: SizeConfig.blockSizeHorizontal * 80,
                               child: TextFormField(
                                 textAlign: TextAlign.left,
-                                validator: (val) => val.length < 6
-                                    ? "must be greater than 6 chars"
-                                    : null,
                                 onChanged: (val) {
                                   setState(() {
+                                    widget.user.name = val;
                                     print(val);
                                   });
                                 },
@@ -109,12 +109,9 @@ class _SignUpState extends State<SignUp> {
                               width: SizeConfig.blockSizeHorizontal * 80,
                               child: TextFormField(
                                 textAlign: TextAlign.left,
-                                validator: (val) => val.length < 6
-                                    ? "must be greater than 6 chars"
-                                    : null,
                                 onChanged: (val) {
                                   setState(() {
-                                    print(val);
+                                    widget.user.age = val as int;
                                   });
                                 },
                                 decoration: InputDecoration(
@@ -144,9 +141,6 @@ class _SignUpState extends State<SignUp> {
                               width: SizeConfig.blockSizeHorizontal * 80,
                               child: TextFormField(
                                 textAlign: TextAlign.left,
-                                validator: (val) => val.length < 6
-                                    ? "must be greater than 6 chars"
-                                    : null,
                                 onChanged: (val) {
                                   widget.email = val;
                                   setState(() {
@@ -215,11 +209,9 @@ class _SignUpState extends State<SignUp> {
                                     print(widget.email + widget.password);
                                     dynamic result =
                                         await _auth.registerWithEmail(
-                                            widget.email, widget.password);
-                                    print(result);
-                                    MainPage();
+                                            widget.email, widget.password, widget.user);
                                     Navigator.pushReplacement(
-                                        context, FadeRoute(page: MainPage()));
+                                        context, FadeRoute(page: MyApp()));
                                   }
                                 },
                                 child: Center(

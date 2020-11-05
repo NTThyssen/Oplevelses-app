@@ -26,7 +26,7 @@ class Test extends StatefulWidget {
 }
 
 class _TestState extends State<Test> {
-
+  bool notSignedIn = true;
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +53,7 @@ class _TestState extends State<Test> {
         title: Text(event.title),
         centerTitle: true,
       ),
-      body: Container(
+      body: notSignedIn ? Container(
         color: Theme.of(context).primaryColor,
         child: SingleChildScrollView(
           child: Column(
@@ -158,7 +158,9 @@ class _TestState extends State<Test> {
                       iconSize: 40.0,
                       onPressed: () async {
                         if(authUser == null) {
-                          Navigator.push(context, FadeRoute(page: NotSignedIn()));
+                          setState(() {
+                            notSignedIn = false;
+                          });
                         }else{
                           dynamic result = await DatabaseService().sendEventRequest(event.uid, event.userUid, authUser.uid);
                           key.currentState.showSnackBar(SnackBar(content: Text("Anmodning Sendt")));
@@ -176,7 +178,7 @@ class _TestState extends State<Test> {
             ],
           ),
         ),
-      ),
+      ) : NotSignedIn()
     );
   }
 
