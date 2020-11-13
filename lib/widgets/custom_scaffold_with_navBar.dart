@@ -10,6 +10,7 @@ import 'package:flutter_app/widgets/sing_in_alert_box.dart';
 import 'package:provider/provider.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import '../main.dart';
+import '../size_config.dart';
 import '../wrapper.dart';
 
 /// Methods in this mixin can be accessed if the mixin is implemented
@@ -37,6 +38,7 @@ mixin BasicMixin<Page extends StatefulWidget> on State<Page> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
      return Stack(
       children: <Widget>[
         Scaffold(

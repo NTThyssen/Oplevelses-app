@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/navigation/route_manager.dart' as router;
 
 import 'package:flutter_app/screens/settings/profile.dart';
 import 'package:flutter_app/widgets/age_slider.dart';
@@ -20,25 +21,15 @@ class _SettingsPageState extends State<SettingsPage> with BasicMixin {
   bool profileClick = false;
 
   @override
-  Widget body({BuildContext context}) {
-    return WillPopScope(
-      onWillPop: () {
-        profileClick = false;
-        setState(() {
-
-        });
-      },
-      child: !profileClick ? SingleChildScrollView(
+  Widget body() {
+    return SingleChildScrollView(
         child:  Column(
           children: [
             NavigationButton(
               icon: Icons.person_outline,
               text: 'Profil',
               onPressed: () {
-               profileClick = true;
-               setState(() {
-
-               });
+               Navigator.pushNamed(context, router.ProfileRoute);
               },
             ),
             NavigationButton(
@@ -102,10 +93,7 @@ class _SettingsPageState extends State<SettingsPage> with BasicMixin {
             ),
           ],
         ),
-      ) : Profile()
-    );
+      );
   }
-
-
 
 }

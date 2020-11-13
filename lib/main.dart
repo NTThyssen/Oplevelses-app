@@ -1,10 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flare_flutter/flare_actor.dart';
-import 'package:flare_flutter/flare_controls.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/helpers/category_manager.dart';
+import 'package:flutter_app/navigation/route_manager.dart' as router;
 import 'package:flutter_app/screens/home/home_screen.dart';
 import 'package:flutter_app/screens/main_menu/add_event.dart';
 import 'package:flutter_app/screens/settings/settings_page.dart';
@@ -13,10 +12,7 @@ import 'package:flutter_app/service/auth.dart';
 import 'package:flutter_app/size_config.dart';
 import 'package:flutter_app/theme.dart';
 import 'package:flutter_app/widgets/pop_up_menu.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:preload_page_view/preload_page_view.dart';
 import 'package:provider/provider.dart';
-import 'screens/home/event_details.dart';
 import 'model/user.dart';
 import 'widgets/custom_scaffold_with_navBar.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -40,6 +36,8 @@ Future<void> main() async {
               create: (_) => CategoryManager()),
         ],
         child: MaterialApp(
+          initialRoute: router.RootRoute,
+          onGenerateRoute: router.generateRoute,
           theme: appTheme,
             home: MyApp())),
   );
