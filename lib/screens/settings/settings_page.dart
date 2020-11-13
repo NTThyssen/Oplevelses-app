@@ -1,15 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/helpers/category_manager.dart';
-import 'package:flutter_app/helpers/enums.dart';
+
 import 'package:flutter_app/screens/settings/profile.dart';
 import 'package:flutter_app/widgets/age_slider.dart';
 import 'package:flutter_app/widgets/category_grid.dart';
 import 'package:flutter_app/widgets/custom_scaffold_with_navBar.dart';
 import 'package:flutter_app/widgets/distance_slider.dart';
 import 'package:flutter_app/widgets/navigation_button.dart';
-import 'package:flutter_app/widgets/category_card.dart';
-import 'package:provider/provider.dart';
 
 import '../../theme.dart';
 

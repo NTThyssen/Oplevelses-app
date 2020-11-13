@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/screens/home/home_screen.dart';
 import 'package:flutter_app/screens/main_menu/add_event.dart';
 import 'package:flutter_app/authenticate/log_in_page.dart';
 import 'package:flutter_app/model/user.dart';
@@ -22,24 +23,27 @@ import '../wrapper.dart';
 /// class _IntroPageState extends BasePageState<IntroPage> with BasicMixin {
 /// }
 mixin BasicMixin<Page extends StatefulWidget> on State<Page> {
-  Widget appBar;
+  Widget appBar(){
+    return AppBar(
+        actions: <Widget>[action()],
+    brightness: Theme.of(context).colorScheme.brightness,
+    centerTitle: true,
+    elevation: 0,
+    textTheme: Theme.of(context).textTheme,
+    title: titleWidget(),
+    backgroundColor: Colors.transparent,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    appBar = AppBar(
-      actions: <Widget>[action()],
-      brightness: Theme.of(context).colorScheme.brightness,
-      centerTitle: true,
-      elevation: 0,
-      textTheme: Theme.of(context).textTheme,
-      title: titleWidget(),
-      backgroundColor: Colors.transparent,
-    );
-
-    return Stack(
+     return Stack(
       children: <Widget>[
         Scaffold(
-          appBar: appBar,
+          extendBody: extendBody(),
+          extendBodyBehindAppBar: extendBehindAppBar(),
+          appBar: appBar(),
+          bottomNavigationBar: bottomNavigationBar(),
           body: Container(
             width: MediaQuery.of(context).size.width,
             child: body(),
@@ -49,7 +53,13 @@ mixin BasicMixin<Page extends StatefulWidget> on State<Page> {
     );
   }
 
-  Widget body({BuildContext context});
+  Widget body();
+
+  bool extendBody() => false;
+
+  bool extendBehindAppBar() => false;
+
+  Widget bottomNavigationBar() => null;
 
   Widget action() => Container();
 
@@ -58,7 +68,7 @@ mixin BasicMixin<Page extends StatefulWidget> on State<Page> {
   }
 }
 
-class CustomScaffoldWithNavBar extends StatefulWidget {
+/*class CustomScaffoldWithNavBar extends StatefulWidget {
 
   @override
   _CustomScaffoldWithNavBarState createState() =>
@@ -72,53 +82,7 @@ class _CustomScaffoldWithNavBarState extends State<CustomScaffoldWithNavBar> {
   Widget build(BuildContext context) {
     bool keyboardIsOpened = MediaQuery.of(context).viewInsets.bottom != 0.0;
 
-    return Scaffold(
-        extendBody: true,
-        bottomNavigationBar: ConvexAppBar(
-          color: Theme.of(context).secondaryHeaderColor,
-          activeColor: Colors.indigo,
-          style: TabStyle.fixedCircle,
-          initialActiveIndex: selectedPage,
-          backgroundColor: Theme.of(context).primaryColor.withOpacity(0.7),
-          items: [
-            TabItem(
-              icon: Icons.home,
-              title: 'Home',
-            ),
-            TabItem(
-              icon: Icon(
-                Icons.add,
-                color: Colors.white,
-                size: 50,
-              ),
-              title: 'Add',
-            ),
-
-            TabItem(
-              icon: Icons.settings,
-              title: 'Instillinger',
-            ),
-          ],
-          onTap: (int index) {
-            setState(() {
-              switch (index) {
-                case 0:
-                  break;
-                case 1:
-                  break;
-                case 2:
-                  break;
-                case 3:
-                  break;
-                case 4:
-                  break;
-              }
-              selectedPage = index;
-            });
-          },
-        ),
-        body: Wrapper(index: selectedPage)
-    );
+    return Container();
   }
 
 
@@ -206,7 +170,7 @@ class _BottomAppBarCustomState extends State<BottomAppBarCustom> {
     );
   }
 }
-
+*/
 class FadeRoute extends PageRouteBuilder {
   final Widget page;
   FadeRoute({this.page})
