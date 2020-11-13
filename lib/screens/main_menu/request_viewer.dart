@@ -49,6 +49,7 @@ class _RequestViewerState extends State<RequestViewer> {
     return age.years;
   }
   List<Future<MockUser>> eventsFutures = List();
+  List<MockUser> testUser = List();
   int counter=0;
   List<MockUser> users = List();
   @override
@@ -72,6 +73,7 @@ class _RequestViewerState extends State<RequestViewer> {
             future: Future.wait(eventsFutures),
             builder: (context, AsyncSnapshot<List<MockUser>> snapshot){
               users = snapshot.data;
+
 
               return snapshot.hasData ? Container(
                 color: Theme

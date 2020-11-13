@@ -31,8 +31,8 @@ class _SettingsPageState extends State<SettingsPage> with BasicMixin {
 
         });
       },
-      child: SingleChildScrollView(
-        child: !profileClick ? Column(
+      child: !profileClick ? SingleChildScrollView(
+        child:  Column(
           children: [
             NavigationButton(
               icon: Icons.person_outline,
@@ -104,14 +104,11 @@ class _SettingsPageState extends State<SettingsPage> with BasicMixin {
               selectAll: _selectAll,
             ),
           ],
-        ) : Profile()
-      ),
+        ),
+      ) : Profile()
     );
   }
 
 
-  @override
-  Widget titleWidget() {
-    return Text("Indstillinger");
-  }
+
 }

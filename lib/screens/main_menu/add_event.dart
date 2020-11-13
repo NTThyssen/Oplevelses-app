@@ -76,7 +76,7 @@ class _AddEventState extends State<RequestForEvents> with BasicMixin {
 }
 
 class AddOrRepostEvent extends StatefulWidget {
-  final Event event;
+  Event event;
   AddOrRepostEvent({this.event});
 
   @override
@@ -84,19 +84,21 @@ class AddOrRepostEvent extends StatefulWidget {
 }
 
 class _AddOrRepostEventState extends State<AddOrRepostEvent> {
-  String title = "";
-  String description = "";
-  String price = "";
-  String date = "";
-  String city = "";
-  String uploadedFileURL = "";
+
   String uid = "";
   MockUser currentUser;
   Event event;
   bool isUploading = false;
   @override
   Widget build(BuildContext context) {
+    Event newEvent = Event();
+
+    if(widget.event == null){
+      widget.event = newEvent;
+    }
+
     final authUser = Provider.of<MockUser>(context);
+    final key = new GlobalKey<ScaffoldState>();
     File image;
 
     Future uploadFile() async {
@@ -110,7 +112,7 @@ class _AddOrRepostEventState extends State<AddOrRepostEvent> {
 
       storageReference.getDownloadURL().then((fileURL) {
         setState(() {
-          uploadedFileURL = fileURL;
+          widget.event.pictureUrl = fileURL;
           isUploading = false;
         });
       });
@@ -133,6 +135,7 @@ class _AddOrRepostEventState extends State<AddOrRepostEvent> {
     }
 
     return Scaffold(
+      key: key,
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -148,12 +151,12 @@ class _AddOrRepostEventState extends State<AddOrRepostEvent> {
                 color: Theme.of(context).secondaryHeaderColor,
                 image: DecorationImage(
                   fit: BoxFit.fill,
-                  image: widget.event == null
-                      ? NetworkImage(uploadedFileURL)
+                  image: widget.event.pictureUrl == null
+                      ? NetworkImage("")
                       : NetworkImage(widget.event.pictureUrl),
                 ),
               ),
-              child: uploadedFileURL != ""
+              child: widget.event?.pictureUrl != ""
                   ? IconButton(
                       onPressed: () {
                         cameraConnect();
@@ -196,7 +199,7 @@ class _AddOrRepostEventState extends State<AddOrRepostEvent> {
                             FocusScope.of(context).nextFocus(),
                         onChanged: (input) {
                           setState(() {
-                            title = input;
+                            widget.event.title = input;
                           });
                         },
                         keyboardType: TextInputType.multiline,
@@ -244,7 +247,7 @@ class _AddOrRepostEventState extends State<AddOrRepostEvent> {
                             FocusScope.of(context).nextFocus(),
                         onChanged: (input) {
                           setState(() {
-                            description = input;
+                            widget.event.description = input;
                           });
                         },
                         keyboardType: TextInputType.multiline,
@@ -292,7 +295,7 @@ class _AddOrRepostEventState extends State<AddOrRepostEvent> {
                             FocusScope.of(context).nextFocus(),
                         onChanged: (input) {
                           setState(() {
-                            price = input;
+                            widget.event.price = input;
                           });
                         },
                         keyboardType: TextInputType.number,
@@ -358,11 +361,10 @@ class _AddOrRepostEventState extends State<AddOrRepostEvent> {
                           onFieldSubmitted: (_) =>
                               FocusScope.of(context).nextFocus(),
                           onChanged: (input) {
-                            date = (input.day.toString() +
+                            widget.event.date = (input.day.toString() +
                                 "/" +
-                                input.month.toString() +
+                                input.month.toString() + "/"+
                                 input.year.toString());
-                            print(date);
                           },
                           onShowPicker: (context, currentValue) {
                             return showDatePicker(
@@ -402,7 +404,7 @@ class _AddOrRepostEventState extends State<AddOrRepostEvent> {
                       child: TextFormField(
                         onChanged: (input) {
                           setState(() {
-                            city = input;
+                            widget.event.city = input;
                           });
                         },
                         keyboardType: TextInputType.multiline,
@@ -460,14 +462,15 @@ class _AddOrRepostEventState extends State<AddOrRepostEvent> {
                 onPressed: () {
                   event = Event(
                       userUid: authUser.uid,
-                      title: title,
-                      pictureUrl: uploadedFileURL,
-                      price: price,
-                      date: date,
-                      city: city,
-                      description: description);
+                      title: widget.event.title,
+                      pictureUrl: widget.event.pictureUrl,
+                      price: widget.event.price,
+                      date: widget.event.date,
+                      city: widget.event.city,
+                      description: widget.event.description);
                   DatabaseService(uid: authUser.uid)
                       .createEventWithUser(authUser.uid, event);
+                  key.currentState.showSnackBar(SnackBar(content: Text("Anmodning Sendt")));
                 }),
             SizedBox(
               height: SizeConfig.blockSizeVertical * 12,

@@ -152,9 +152,9 @@ class _MainPageState extends State<MainPage> with BasicMixin {
       for (var doc in events) {
         if (doc.userUid != authUser?.uid ?? 1 ) {
 
-          if (cnt < 3) {
+          if (cnt < 5) {
             count.add(doc);
-            //preload(context, doc.event.pictureUrl);
+            preload(context, doc.pictureUrl);
             cnt++;
           }
         }

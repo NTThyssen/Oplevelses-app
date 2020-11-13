@@ -4,6 +4,7 @@ import 'package:flutter_app/service/auth.dart';
 import 'package:age/age.dart';
 import 'package:flutter_app/size_config.dart';
 import 'package:flutter_app/widgets/about_text.dart';
+import 'package:flutter_app/widgets/custom_scaffold_with_navBar.dart';
 import 'package:flutter_app/widgets/friends_widget.dart';
 import 'package:flutter_app/widgets/info_header_widget.dart';
 import 'package:flutter_app/widgets/instagram_images_widget.dart';
@@ -13,7 +14,7 @@ class Profile extends StatefulWidget {
   _ProfileState createState() => _ProfileState();
 }
 
-class _ProfileState extends State<Profile> {
+class _ProfileState extends State<Profile> with BasicMixin{
   // Check if we can get some info from facebook.
   // Otherwise, set the name and age to mack data.
   String checkFbData() {
@@ -50,11 +51,26 @@ class _ProfileState extends State<Profile> {
     print('Your age is {$age}'); // Your ag
     return age.years;
   }
-
+  String name;
   @override
   Widget build(BuildContext context) {
-    String name = checkFbData();
+    name = checkFbData();
     //convertDateFromString(UserLoginState.instance.getProfile()['birthday']);
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Profil"),
+        centerTitle: true,
+        backgroundColor: Theme.of(context).primaryColor,
+      ),
+      body: body(context: context)
+    );
+  }
+
+
+
+  @override
+  Widget body({BuildContext context}) {
+    // TODO: implement body
     return Container(
       color: Theme.of(context).primaryColor,
       child: SingleChildScrollView(
@@ -76,7 +92,7 @@ class _ProfileState extends State<Profile> {
                       image: name == "Pia, 22"
                           ? AssetImage("images/pia-profile-pic.jpg")
                           : NetworkImage(
-                              UserLoginState.instance.profilePic.url),
+                          UserLoginState.instance.profilePic.url),
                     ),
                   ),
                 ),
@@ -132,7 +148,7 @@ class _ProfileState extends State<Profile> {
             AboutText(
               heading: 'Om Pia',
               body:
-                  'Typen der altid løber efter bussen, og altid ender med at komme i alt for god tid.',
+              'Typen der altid løber efter bussen, og altid ender med at komme i alt for god tid.',
             ),
             // Common friends
             FriendsWidget(
