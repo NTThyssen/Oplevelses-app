@@ -13,16 +13,7 @@ import '../main.dart';
 import '../size_config.dart';
 import '../wrapper.dart';
 
-/// Methods in this mixin can be accessed if the mixin is implemented
-///
-/// You implement like this:
-/// class IntroPage extends BasePage {
-///   @override
-///   _IntroPageState createState() => _IntroPageState();
-/// }
 
-/// class _IntroPageState extends BasePageState<IntroPage> with BasicMixin {
-/// }
 mixin BasicMixin<Page extends StatefulWidget> on State<Page> {
   Widget appBar(){
     return AppBar(

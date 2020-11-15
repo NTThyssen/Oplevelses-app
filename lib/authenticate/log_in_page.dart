@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/authenticate/sing_up.dart';
 import 'package:flutter_app/model/user.dart';
+import 'package:flutter_app/screens/home/home_screen.dart';
 import 'package:flutter_app/service/DatabaseService.dart';
 import 'package:flutter_app/size_config.dart';
 import 'package:flutter_app/theme.dart';

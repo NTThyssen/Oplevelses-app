@@ -12,6 +12,7 @@ import 'package:flutter_app/service/auth.dart';
 import 'package:flutter_app/size_config.dart';
 import 'package:flutter_app/theme.dart';
 import 'package:flutter_app/widgets/pop_up_menu.dart';
+import 'package:flutter_app/wrapper.dart';
 import 'package:provider/provider.dart';
 import 'model/user.dart';
 import 'widgets/custom_scaffold_with_navBar.dart';
@@ -68,7 +69,7 @@ class _MyAppState extends State<MyApp> with BasicMixin {
   int _selectedPage = 0;
   List<Widget> widgetList = [
     MainPage(),
-    MenuOverview(),
+    Wrapper(route: router.MenuOverviewRoute,),
     SettingsPage()
 
   ];
@@ -104,7 +105,6 @@ class _MyAppState extends State<MyApp> with BasicMixin {
 
   @override
   Widget bottomNavigationBar() {
-
     return ConvexAppBar(
       color: Theme.of(context).secondaryHeaderColor,
       activeColor: Colors.indigo,

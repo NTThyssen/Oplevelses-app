@@ -3,6 +3,7 @@ import 'package:flare_flutter/flare_controls.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/model/user.dart';
+import 'package:flutter_app/service/auth.dart';
 
 import '../size_config.dart';
 import '../theme.dart';
@@ -17,6 +18,7 @@ class EventDisplay extends StatefulWidget {
 }
 
 class _EventDisplayState extends State<EventDisplay> {
+  AuthService auth = AuthService();
   @override
   Widget build(BuildContext context) {
     return Hero(
@@ -65,6 +67,7 @@ class _EventDisplayState extends State<EventDisplay> {
                         ),
                       ),
                     ),
+                    IconButton(icon: Icon(Icons.favorite_border, color: Colors.white,), onPressed: () {auth.signOut();} ),
                   ],
                 ),
               ),

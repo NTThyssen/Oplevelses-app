@@ -1,9 +1,7 @@
 import 'dart:io';
 
-import 'package:date_format/date_format.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/screens/main_menu/request_viewer.dart';
 import 'package:flutter_app/service/DatabaseService.dart';
 import 'package:flutter_app/size_config.dart';
 import 'package:flutter_app/widgets/category_grid.dart';
@@ -15,8 +13,6 @@ import 'package:provider/provider.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import '../../model/user.dart';
 import 'package:intl/intl.dart';
-import 'package:loading_overlay/loading_overlay.dart';
-import 'package:badges/badges.dart';
 
 import '../../theme.dart';
 import 'my_favorites.dart';
