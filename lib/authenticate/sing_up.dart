@@ -11,6 +11,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'dart:io';
+import 'package:path/path.dart';
 import '../main.dart';
 import '../size_config.dart';
 
@@ -27,15 +28,15 @@ class _SignUpState extends State<SignUp> {
   bool isLoggingIn = false;
   AuthService _auth = AuthService();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  File image;
 
   @override
   Widget build(BuildContext context) {
-    File image;
 
     Future uploadFile() async {
       StorageReference storageReference = FirebaseStorage.instance
           .ref()
-          .child('profilePicture/${image.path}');
+          .child('profilePicture/${basename(image.path)}');
       StorageUploadTask uploadTask = storageReference.putFile(image);
 
       await uploadTask.onComplete;
@@ -43,7 +44,7 @@ class _SignUpState extends State<SignUp> {
 
       storageReference.getDownloadURL().then((fileURL) {
         setState(() {
-         //TODO
+          widget.user.profilePicture = fileURL;
         });
       });
     }
@@ -56,7 +57,6 @@ class _SignUpState extends State<SignUp> {
         if (img != null) {
           image = img;
           setState(() {
-            uploadFile();
           });
         }
       }
@@ -88,11 +88,18 @@ class _SignUpState extends State<SignUp> {
                     children: [
                       Padding(
                         padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                        child: CircleAvatar(
-                          backgroundColor: Colors.transparent,
-                          backgroundImage: AssetImage("images/no-profile-img.jpg"),
-                          radius: 80,
-                          ),
+                        child: GestureDetector(
+                          onTap: () async {
+                            await cameraConnect();
+                            setState(() {
+                            });
+                          },
+                          child: CircleAvatar(
+                            backgroundColor: Colors.transparent,
+                            backgroundImage: image != null ? AssetImage(image.path) : AssetImage("images/no-profile-img.jpg"),
+                            radius: 80,
+                            ),
+                        ),
                         ),
                       Text("Tryk for at tilføje billede", style: TextStyle(
                         color: Colors.white
@@ -247,6 +254,10 @@ class _SignUpState extends State<SignUp> {
                                       dynamic result =
                                           await _auth.registerWithEmail(
                                               widget.email, widget.password, widget.user);
+                                      await uploadFile();
+
+
+                                      DatabaseService().updateUserDataOnSignUp(widget.user);
                                       Navigator.pushReplacement(
                                           context, FadeRoute(page: MyApp()));
                                     }
