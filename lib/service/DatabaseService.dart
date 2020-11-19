@@ -15,8 +15,8 @@ class DatabaseService {
     return await userCollection.doc(uid).set({
       'profile':{
         'name' : user.name,
-        'age' : user.age,
-        'profilePicture' : user.profilePicture
+        'age' : user.age.toString(),
+        'profilePicture' : user.profilePicture.toString()
       },
 
     });

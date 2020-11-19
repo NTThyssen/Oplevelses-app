@@ -1,11 +1,11 @@
 class MockUser {
   String name;
   String uid;
-  int age;
+  String age;
   String profilePicture;
   Favorite favorite;
 
-  MockUser({this.uid, this.name, this.profilePicture, this.favorite});
+  MockUser({this.uid, this.name, this.profilePicture, this.favorite, this.age});
 
 }
 

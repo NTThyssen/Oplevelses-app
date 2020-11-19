@@ -43,7 +43,7 @@ android {
         applicationId "com.thyssen.flutter_app"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 2
+        versionCode 4
         versionName flutterVersionName
     }
 

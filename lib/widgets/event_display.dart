@@ -1,6 +1,5 @@
 
 import 'package:flare_flutter/flare_controls.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/model/user.dart';
 import 'package:flutter_app/service/auth.dart';
@@ -67,7 +66,9 @@ class _EventDisplayState extends State<EventDisplay> {
                         ),
                       ),
                     ),
-                    IconButton(icon: Icon(Icons.favorite_border, color: Colors.white,), onPressed: () {auth.signOut();} ),
+                    Expanded(
+                      flex : 2,
+                        child: IconButton(icon: Icon(Icons.favorite_border, color: Colors.white,), onPressed: () {auth.signOut();} )),
                   ],
                 ),
               ),

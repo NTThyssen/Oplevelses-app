@@ -18,7 +18,7 @@ import '../size_config.dart';
 class SignUp extends StatefulWidget {
   String email;
   String password;
-  MockUser user = MockUser();
+
 
   @override
   _SignUpState createState() => _SignUpState();
@@ -29,22 +29,24 @@ class _SignUpState extends State<SignUp> {
   AuthService _auth = AuthService();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   File image;
-
+  MockUser user = MockUser();
   @override
   Widget build(BuildContext context) {
+  File tempImage = image;
 
     Future uploadFile() async {
       StorageReference storageReference = FirebaseStorage.instance
           .ref()
-          .child('profilePicture/${basename(image.path)}');
-      StorageUploadTask uploadTask = storageReference.putFile(image);
+          .child('profilePicture/${basename(tempImage.path)}');
+      StorageUploadTask uploadTask = storageReference.putFile(tempImage);
 
       await uploadTask.onComplete;
       print('File Uploaded');
 
-      storageReference.getDownloadURL().then((fileURL) {
+      await storageReference.getDownloadURL().then((fileURL) {
         setState(() {
-          widget.user.profilePicture = fileURL;
+          user.profilePicture = fileURL;
+          print(user.profilePicture + " what the fuycj");
         });
       });
     }
@@ -123,7 +125,7 @@ class _SignUpState extends State<SignUp> {
                                   textAlign: TextAlign.left,
                                   onChanged: (val) {
                                     setState(() {
-                                      widget.user.name = val;
+                                      user.name = val;
                                       print(val);
                                     });
                                   },
@@ -155,7 +157,8 @@ class _SignUpState extends State<SignUp> {
                                   textAlign: TextAlign.left,
                                   onChanged: (val) {
                                     setState(() {
-                                      widget.user.age = val as int;
+                                      user.age = val;
+                                      print(val);
                                     });
                                   },
                                   decoration: InputDecoration(
@@ -253,14 +256,16 @@ class _SignUpState extends State<SignUp> {
                                       print(widget.email + widget.password);
                                       dynamic result =
                                           await _auth.registerWithEmail(
-                                              widget.email, widget.password, widget.user);
-                                      await uploadFile();
+                                              widget.email, widget.password, user);
+                                      dynamic status =  await uploadFile();
+                                      print(status.toString() + " this is status ");
+                                      print(user.profilePicture);
 
-
-                                      DatabaseService().updateUserDataOnSignUp(widget.user);
+                                      DatabaseService().updateUserDataOnSignUp(user);
                                       Navigator.pushReplacement(
                                           context, FadeRoute(page: MyApp()));
                                     }
+
                                   },
                                   child: Center(
                                       child: Text("SIGN UP",
