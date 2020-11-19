@@ -69,7 +69,7 @@ class _TestState extends State<Test> {
                       width: SizeConfig.blockSizeVertical * 100,
                       child: Image(
                         fit: BoxFit.cover,
-                        image: NetworkImage(event.pictureUrl),
+                        image: AssetImage("images/flower2.jpg"),
                       ),
                     ),
                   ),

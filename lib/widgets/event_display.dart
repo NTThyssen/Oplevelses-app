@@ -20,61 +20,61 @@ class _EventDisplayState extends State<EventDisplay> {
   AuthService auth = AuthService();
   @override
   Widget build(BuildContext context) {
-    return Hero(
-      tag: widget.event.uid,
-      child: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            fit: BoxFit.cover,
-            image: widget.event.pictureUrl == "images/big-ice.png"
-                ? AssetImage(widget.event.pictureUrl)
-                : NetworkImage(widget.event.pictureUrl),
-          ),
+    return Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          fit: BoxFit.cover,
+          image: widget.event.pictureUrl == "images/big-ice.png"
+              ? AssetImage(widget.event.pictureUrl)
+              : NetworkImage(widget.event.pictureUrl),
         ),
-        child: Column(
-          children: [
-            Container(
-              height: SizeConfig.blockSizeVertical*10,
-            ),
-            Expanded(
-              flex: 2,
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(10, 15, 0, 10),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CircleAvatar(
+      ),
+      child: Column(
+        children: [
+          Container(
+            height: SizeConfig.blockSizeVertical*10,
+          ),
+          Expanded(
+            flex: 2,
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(10, 15, 0, 10),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Hero(
+                    tag: widget.event.uid,
+                    child: CircleAvatar(
                       radius: 25.0,
                       backgroundImage: AssetImage("images/flower2.jpg"),
                     ),
-                    Expanded(
-                      flex: 8,
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(15, 5, 0, 10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              " " + (widget.event.price?.toString() ?? "23"),
-                              style: subtitleTextStyle,
-                            ),
-                            Text(
-                              'Aktivitet 5km væk',
-                              style: smallGreyHeaderTextStyle,
-                            ),
-                          ],
-                        ),
+                  ),
+                  Expanded(
+                    flex: 8,
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(15, 5, 0, 10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            " " + (widget.event.price?.toString() ?? "23"),
+                            style: subtitleTextStyle,
+                          ),
+                          Text(
+                            'Aktivitet 5km væk',
+                            style: smallGreyHeaderTextStyle,
+                          ),
+                        ],
                       ),
                     ),
-                    Expanded(
-                      flex : 2,
-                        child: IconButton(icon: Icon(Icons.favorite_border, color: Colors.white,), onPressed: () {auth.signOut();} )),
-                  ],
-                ),
+                  ),
+                  Expanded(
+                    flex : 2,
+                      child: IconButton(icon: Icon(Icons.favorite_border, color: Colors.white,), onPressed: () {auth.signOut();} )),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
