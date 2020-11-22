@@ -16,6 +16,7 @@ import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import '../../theme.dart';
 import 'my_favorites.dart';
+import 'package:flutter_app/navigation/route_manager.dart' as router;
 
 class RequestForEvents extends StatefulWidget {
   @override
@@ -487,10 +488,10 @@ class MenuOverview extends StatefulWidget {
 
 class _MenuOverviewState extends State<MenuOverview> with BasicMixin {
   bool isFavorite = false;
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
+
+    @override
+    Widget appBar() {
+      return AppBar(
           backgroundColor: Color.fromRGBO(30, 30, 60, 1),
           centerTitle: true,
           actions: [
@@ -498,8 +499,7 @@ class _MenuOverviewState extends State<MenuOverview> with BasicMixin {
                 padding: EdgeInsets.fromLTRB(0, 0, 15, 0),
                 child: GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                          context, SlideLeftRoute(page: RequestForEvents()));
+                      Navigator.pushNamed(this.context, router.EventRequestRoute);
                     },
                     child: Icon(Icons.notifications_none)))
           ],
@@ -552,14 +552,12 @@ class _MenuOverviewState extends State<MenuOverview> with BasicMixin {
                 ),
               ],
             ),
-          )),
-      body: body(context: context),
-    );
-  }
+          ));
+    }
+
 
   @override
-  Widget body({BuildContext context}) {
-    // TODO: implement body
+  Widget body() {
     return isFavorite
         ? MyFavorites()
         : Container(
@@ -584,10 +582,10 @@ class _MenuOverviewState extends State<MenuOverview> with BasicMixin {
                             fontSize: 18,
                           ),
                         ),
-                        color: Theme.of(context).secondaryHeaderColor,
+                        color: Theme.of(this.context).secondaryHeaderColor,
                         onPressed: () {
                           Navigator.push(
-                              context, FadeRoute(page: AddOrRepostEvent()));
+                              this.context, FadeRoute(page: AddOrRepostEvent()));
                         }),
                   ),
                 ),

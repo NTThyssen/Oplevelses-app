@@ -25,8 +25,8 @@ class Event {
   String price;
   String date;
   String city;
-
-  Event({this.uid, this.userUid, this.pictureUrl, this.title, this.description, this.price, this.date, this.city});
+  MockUser user;
+  Event({this.uid, this.userUid, this.pictureUrl, this.title, this.description, this.price, this.date, this.city, this.user});
 }
 
 class EventRequest {

@@ -1,49 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/screens/home/home_screen.dart';
-import 'package:flutter_app/screens/main_menu/add_event.dart';
-import 'package:flutter_app/authenticate/log_in_page.dart';
-import 'package:flutter_app/model/user.dart';
-import 'package:flutter_app/screens/main_menu/my_favorites.dart';
-import 'package:flutter_app/screens/settings/profile.dart';
-import 'package:flutter_app/service/auth.dart';
-import 'package:flutter_app/widgets/sing_in_alert_box.dart';
-import 'package:provider/provider.dart';
-import 'package:convex_bottom_bar/convex_bottom_bar.dart';
-import '../main.dart';
 import '../size_config.dart';
-import '../wrapper.dart';
+
 
 
 mixin BasicMixin<Page extends StatefulWidget> on State<Page> {
+
   Widget appBar(){
-    return AppBar(
-        actions: <Widget>[action()],
-    brightness: Theme.of(context).colorScheme.brightness,
-    centerTitle: true,
-    elevation: 0,
-    textTheme: Theme.of(context).textTheme,
-    title: titleWidget(),
-    backgroundColor: Colors.transparent,
-    );
+    return null;
   }
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-     return Stack(
-      children: <Widget>[
-        Scaffold(
-          extendBody: extendBody(),
-          extendBodyBehindAppBar: extendBehindAppBar(),
-          appBar: appBar(),
-          bottomNavigationBar: bottomNavigationBar(),
-          body: Container(
-            width: MediaQuery.of(context).size.width,
-            child: body(),
-          ),
-        ),
-      ],
-    );
+     return Scaffold(
+       extendBody: extendBody(),
+       extendBodyBehindAppBar: extendBehindAppBar(),
+       appBar: appBar(),
+       bottomNavigationBar: bottomNavigationBar(),
+       body: Container(
+         width: MediaQuery.of(context).size.width,
+         child: body(),
+       ),
+     );
   }
 
   Widget body();

@@ -17,9 +17,9 @@ import '../../model/user.dart';
 import '../../theme.dart';
 
 class Test extends StatefulWidget {
-  final String uid;
+  final Event event;
 
-  Test({Key key, @required this.uid}) : super(key: key);
+  Test({Key key, @required this.event}) : super(key: key);
 
   @override
   _TestState createState() => _TestState();
@@ -31,26 +31,12 @@ class _TestState extends State<Test> {
   @override
   Widget build(BuildContext context) {
     final key = new GlobalKey<ScaffoldState>();
-    final events = Provider.of<List<Event>>(context);
     final authUser = Provider.of<MockUser>(context);
-    Event event;
-    events.forEach((e) {
-
-      if (e.uid == widget.uid) {
-        event = e;
-        print(e.city);
-        print(e.price.toString() + "price");
-        print(e.date);
-        print(e.description);
-      }
-    });
-    MockUser user;
-
 
     return Scaffold(
       key: key,
       appBar: AppBar(
-        title: Text(event.title),
+        title: Text(widget.event.title),
         centerTitle: true,
       ),
       body: notSignedIn ? Container(
@@ -63,13 +49,13 @@ class _TestState extends State<Test> {
               Stack(
                 children: [
                   Hero(
-                    tag: widget.uid,
+                    tag: widget.event.uid,
                     child: Container(
                       height: SizeConfig.blockSizeVertical * 60,
                       width: SizeConfig.blockSizeVertical * 100,
                       child: Image(
                         fit: BoxFit.cover,
-                        image: AssetImage("images/flower2.jpg"),
+                        image: widget.event?.user?.profilePicture != null ? NetworkImage( widget.event.user.profilePicture) : AssetImage("images/flower2.jpg"),
                       ),
                     ),
                   ),
@@ -96,7 +82,7 @@ class _TestState extends State<Test> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      event.title.toString(),
+                      widget.event.title.toString(),
                       style: titleTextStyle,
                     ),
                     Icon(
@@ -110,22 +96,22 @@ class _TestState extends State<Test> {
               // Place info
               InfoHeaderWidget(
                 icon: Icons.place,
-                text: event.city.toString(),
+                text: widget.event.city.toString(),
               ),
               // Date info
               InfoHeaderWidget(
                 icon: Icons.access_time,
-                text: event.date.toString(),
+                text: widget.event.date.toString(),
               ),
               // Price info
               InfoHeaderWidget(
                 icon: Icons.payment,
-                text: event.price.toString(),
+                text: widget.event.price.toString(),
               ),
               // Event description
               AboutText(
                   heading: 'Oplevelsen',
-                  body: event.description.toString()),
+                  body: widget.event.description.toString()),
               // About event creator section
               AboutText(
                 heading: 'Om Pia',
@@ -149,7 +135,7 @@ class _TestState extends State<Test> {
                       color: Theme.of(context).secondaryHeaderColor,
                       iconSize: 40.0,
                       onPressed: () {
-                        authUser == null ? Navigator.push(context, FadeRoute(page: NotSignedIn())) :  Navigator.push(context, FadeRoute(page: AddOrRepostEvent(event: event,)));
+                        authUser == null ? Navigator.push(context, FadeRoute(page: NotSignedIn())) :  Navigator.push(context, FadeRoute(page: AddOrRepostEvent(event: widget.event,)));
                       },
                     ),
                     IconButton(
@@ -162,7 +148,7 @@ class _TestState extends State<Test> {
                             notSignedIn = false;
                           });
                         }else{
-                          dynamic result = await DatabaseService().sendEventRequest(event.uid, event.userUid, authUser.uid);
+                          dynamic result = await DatabaseService().sendEventRequest(widget.event.uid, widget.event.userUid, authUser.uid);
                           key.currentState.showSnackBar(SnackBar(content: Text("Anmodning Sendt")));
                           print("eventRequest sent: {$result}");
                         }

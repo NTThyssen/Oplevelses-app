@@ -80,12 +80,6 @@ class _MyAppState extends State<MyApp> with BasicMixin {
     });
   }
 
-  @override
-  Widget appBar(){
-    return AppBar(
-      backgroundColor: Colors.transparent,
-    );
-  }
 
   @override
   bool extendBody() => true;

@@ -52,25 +52,21 @@ class _ProfileState extends State<Profile> with BasicMixin{
     return age.years;
   }
   String name;
+
+
   @override
-  Widget build(BuildContext context) {
-    name = checkFbData();
-    //convertDateFromString(UserLoginState.instance.getProfile()['birthday']);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Profil"),
-        centerTitle: true,
-        backgroundColor: Theme.of(context).primaryColor,
-      ),
-      body: body(context: context)
+  Widget appBar() {
+    // TODO: implement appBar
+    return AppBar(
+      title: Text("Profil"),
+      centerTitle: true,
+      backgroundColor: Theme.of(context).primaryColor,
     );
   }
 
-
-
   @override
-  Widget body({BuildContext context}) {
-    // TODO: implement body
+  Widget body() {
+     name = checkFbData();
     return Container(
       color: Theme.of(context).primaryColor,
       child: SingleChildScrollView(

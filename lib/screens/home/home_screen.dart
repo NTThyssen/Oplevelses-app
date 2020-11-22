@@ -3,10 +3,13 @@ import 'package:flare_flutter/flare_controls.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/model/user.dart';
 import 'package:flutter_app/service/DatabaseService.dart';
+import 'package:flutter_app/size_config.dart';
 import 'package:flutter_app/widgets/custom_scaffold_with_navBar.dart';
 import 'package:flutter_app/widgets/event_display.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:preload_page_view/preload_page_view.dart';
 import 'package:provider/provider.dart';
+import '../../theme.dart';
 import 'event_details.dart';
 
 
@@ -16,7 +19,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  var isLoading = false;
+  var isLoading = true;
   var items = 5;
   bool isLiked = false;
   MockUser user;
@@ -28,7 +31,7 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     final authUser = Provider.of<MockUser>(context);
     final events = Provider.of<List<Event>>(context) ?? [];
-    List<Event> count = new List();
+    List<Event> eventList = new List();
 
     void preload(BuildContext context, String path) {
       if (path != null) {
@@ -53,19 +56,37 @@ class _MainPageState extends State<MainPage> {
     if (events != null) {
       for (var doc in events) {
         if (doc.userUid != authUser?.uid ?? 1 ) {
-
           if (cnt < 5) {
-            count.add(doc);
+            eventList.add(doc);
+            DatabaseService().getUserFromUid(doc.userUid).then((value) {
+              doc.user = value;
+              print(doc.title);
+
+            });
             //preload(context, doc.pictureUrl);
+
             cnt++;
+
           }
         }
       }
+      isLoading = false;
     }
-    return Stack(
+
+    return isLoading ? Container(
+      width: SizeConfig.blockSizeHorizontal*100,
+      height:  SizeConfig.blockSizeVertical*100,
+      color: appTheme.accentColor,
+      child: Center(
+        child: SpinKitCubeGrid(
+          color: Colors.white,
+          size: 80.0,
+        ),
+      ),
+    ) : Stack(
       children: [
         PreloadPageView.builder(
-          itemCount: count.length,
+          itemCount: eventList.length,
           preloadPagesCount: 5,
           onPageChanged: (index) {
             if (index == items - 1) {
@@ -76,7 +97,7 @@ class _MainPageState extends State<MainPage> {
           },
           // ignore: missing_return
           itemBuilder: (BuildContext context, int position) {
-            for (var i = 0; i < count.length; i++) {
+            for (var i = 0; i < eventList.length; i++) {
               return GestureDetector(
                 onDoubleTap: () {
                   setState(() {
@@ -84,8 +105,8 @@ class _MainPageState extends State<MainPage> {
                     flareControls.play("like");
                     authUser.favorite = Favorite();
                     authUser.favorite.event =
-                        count.elementAt(position);
-                    authUser.favorite.userUid = count.elementAt(position).uid;
+                        eventList.elementAt(position);
+                    authUser.favorite.userUid = eventList.elementAt(position).uid;
                     DatabaseService(uid: authUser.uid)
                         .updateUserData(authUser);
                   });
@@ -95,15 +116,10 @@ class _MainPageState extends State<MainPage> {
                       context,
                       FadeRoute(
                           page: Test(
-                              uid: count.elementAt(position).uid)));
+                              event: eventList.elementAt(position))));
                 },
                 child: EventDisplay(
-                    Event(
-                        uid: count.elementAt(position).uid,
-                        pictureUrl: count.elementAt(position).pictureUrl != null
-                            ? count.elementAt(position).pictureUrl
-                            : "images/big-ice.png"),
-                    flareControls),
+                    eventList.elementAt(position), flareControls),
               );
             }
           },

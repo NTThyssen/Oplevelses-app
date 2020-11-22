@@ -30,12 +30,15 @@ Route<dynamic> generateRoute(RouteSettings settings){
       return MaterialPageRoute(builder: (context) {
         return Wrapper(route: ProfileRoute,);
       });
+    case EventRequestRoute:
+      return MaterialPageRoute(
+          builder: (context) => RequestForEvents());
     default:
       return MaterialPageRoute(builder: (context) => MainPage());
   }
 
 }
-
+const String EventRequestRoute = "eventRequest";
 const String RootRoute = "root";
 const String HomeScreenRoute = "home";
 const String ProfileRoute = "profile";

@@ -32,12 +32,12 @@ class _EventDisplayState extends State<EventDisplay> {
       child: Column(
         children: [
           Container(
-            height: SizeConfig.blockSizeVertical*10,
+            height: SizeConfig.blockSizeVertical*4,
           ),
           Expanded(
             flex: 2,
             child: Padding(
-              padding: EdgeInsets.fromLTRB(10, 15, 0, 10),
+              padding: EdgeInsets.fromLTRB(10, 5, 0, 10),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -45,7 +45,7 @@ class _EventDisplayState extends State<EventDisplay> {
                     tag: widget.event.uid,
                     child: CircleAvatar(
                       radius: 25.0,
-                      backgroundImage: AssetImage("images/flower2.jpg"),
+                      backgroundImage: widget.event?.user?.profilePicture != null ? NetworkImage(widget.event?.user?.profilePicture) : AssetImage("images/flower2.jpg"),
                     ),
                   ),
                   Expanded(
@@ -56,11 +56,11 @@ class _EventDisplayState extends State<EventDisplay> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            " " + (widget.event.price?.toString() ?? "23"),
+                            " " + (widget.event.title),
                             style: subtitleTextStyle,
                           ),
                           Text(
-                            'Aktivitet 5km væk',
+                            widget.event?.user?.name ?? "name" + widget.event?.user?.age?.toString() ?? "23",
                             style: smallGreyHeaderTextStyle,
                           ),
                         ],

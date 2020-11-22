@@ -143,7 +143,18 @@ class DatabaseService {
 
   Future<MockUser> getUserFromUid(String uid) async {
     DocumentSnapshot doc = await userCollection.doc(uid).get();
-    return MockUser(uid: doc.id);
+    try{
+      if(doc.exists && doc.data()["profilePicture"] != null ){
+
+        return MockUser(uid: doc.id, profilePicture: doc.data()["profilePicture"], name: doc.data()["name"] );
+      }else{
+        return MockUser(uid: doc.id);
+      }
+    }catch(e){
+      print(e);
+    }
+
+
   }
 
   Future<Event> getEventFromUid(String uid) async {
