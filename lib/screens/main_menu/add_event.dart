@@ -70,8 +70,6 @@ class _AddEventState extends State<RequestForEvents> with BasicMixin {
               });
         });
   }
-
-
 }
 
 class AddOrRepostEvent extends StatefulWidget {
@@ -83,7 +81,6 @@ class AddOrRepostEvent extends StatefulWidget {
 }
 
 class _AddOrRepostEventState extends State<AddOrRepostEvent> {
-
   String uid = "";
   MockUser currentUser;
   Event event;
@@ -92,7 +89,7 @@ class _AddOrRepostEventState extends State<AddOrRepostEvent> {
   Widget build(BuildContext context) {
     Event newEvent = Event();
 
-    if(widget.event == null){
+    if (widget.event == null) {
       widget.event = newEvent;
     }
 
@@ -139,43 +136,60 @@ class _AddOrRepostEventState extends State<AddOrRepostEvent> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(
-              height: SizeConfig.blockSizeVertical * 8,
-            ),
-            Container(
-              width: SizeConfig.blockSizeHorizontal * 40,
-              height: SizeConfig.blockSizeVertical * 25,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                color: Theme.of(context).secondaryHeaderColor,
-                image: DecorationImage(
-                  fit: BoxFit.fill,
-                  image: widget.event.pictureUrl == null
-                      ? NetworkImage("")
-                      : NetworkImage(widget.event.pictureUrl),
-                ),
-              ),
-              child: widget.event?.pictureUrl != ""
-                  ? IconButton(
-                      onPressed: () {
-                        cameraConnect();
-                      },
-                      icon: Icon(
-                        Icons.edit,
-                        size: 50,
-                        color: Colors.white.withOpacity(0.50),
-                      ),
-                    )
-                  : IconButton(
-                      onPressed: () {
-                        cameraConnect();
-                      },
-                      icon: Icon(
-                        Icons.add,
-                        size: 50,
-                        color: Colors.white,
-                      ),
+            Row(
+              children: [
+                Spacer(),
+                Padding(
+                  padding: const EdgeInsets.only(right: 20, top: 30),
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.close,
+                      size: 30,
                     ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 20),
+              child: Container(
+                width: SizeConfig.blockSizeHorizontal * 40,
+                height: SizeConfig.blockSizeVertical * 25,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                  color: blue,
+                  image: DecorationImage(
+                    fit: BoxFit.fill,
+                    image: widget.event.pictureUrl == null
+                        ? NetworkImage("")
+                        : NetworkImage(widget.event.pictureUrl),
+                  ),
+                ),
+                child: widget.event?.pictureUrl != ""
+                    ? IconButton(
+                        onPressed: () {
+                          cameraConnect();
+                        },
+                        icon: Icon(
+                          Icons.edit,
+                          size: 50,
+                          color: Colors.white.withOpacity(0.50),
+                        ),
+                      )
+                    : IconButton(
+                        onPressed: () {
+                          cameraConnect();
+                        },
+                        icon: Icon(
+                          Icons.add,
+                          size: 50,
+                          color: Colors.white,
+                        ),
+                      ),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -362,7 +376,8 @@ class _AddOrRepostEventState extends State<AddOrRepostEvent> {
                           onChanged: (input) {
                             widget.event.date = (input.day.toString() +
                                 "/" +
-                                input.month.toString() + "/"+
+                                input.month.toString() +
+                                "/" +
                                 input.year.toString());
                           },
                           onShowPicker: (context, currentValue) {
@@ -441,38 +456,44 @@ class _AddOrRepostEventState extends State<AddOrRepostEvent> {
             CategoryGrid(
               selectAll: false,
             ),
-            RaisedButton(
-                child: widget.event != null
-                    ? Text(
-                        "Repost Event",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                        ),
-                      )
-                    : Text(
-                        "Opret Event",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                        ),
-                      ),
-                color: Theme.of(context).secondaryHeaderColor,
-                onPressed: () {
-                  event = Event(
-                      userUid: authUser.uid,
-                      title: widget.event.title,
-                      pictureUrl: widget.event.pictureUrl,
-                      price: widget.event.price,
-                      date: widget.event.date,
-                      city: widget.event.city,
-                      description: widget.event.description);
-                  DatabaseService(uid: authUser.uid)
-                      .createEventWithUser(authUser.uid, event);
-                  key.currentState.showSnackBar(SnackBar(content: Text("Anmodning Sendt")));
-                }),
-            SizedBox(
-              height: SizeConfig.blockSizeVertical * 12,
+            Padding(
+              padding: const EdgeInsets.only(top: 30, bottom: 30),
+              child: SizedBox(
+                height: 50,
+                child: RaisedButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30)),
+                    child: widget.event != null
+                        ? Text(
+                            "Repost Event",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                            ),
+                          )
+                        : Text(
+                            "Opret Event",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                            ),
+                          ),
+                    color: blue,
+                    onPressed: () {
+                      event = Event(
+                          userUid: authUser.uid,
+                          title: widget.event.title,
+                          pictureUrl: widget.event.pictureUrl,
+                          price: widget.event.price,
+                          date: widget.event.date,
+                          city: widget.event.city,
+                          description: widget.event.description);
+                      DatabaseService(uid: authUser.uid)
+                          .createEventWithUser(authUser.uid, event);
+                      key.currentState.showSnackBar(
+                          SnackBar(content: Text("Anmodning Sendt")));
+                    }),
+              ),
             ),
           ],
         ),
@@ -489,72 +510,71 @@ class MenuOverview extends StatefulWidget {
 class _MenuOverviewState extends State<MenuOverview> with BasicMixin {
   bool isFavorite = false;
 
-    @override
-    Widget appBar() {
-      return AppBar(
-          backgroundColor: Color.fromRGBO(30, 30, 60, 1),
-          centerTitle: true,
-          actions: [
-            Padding(
-                padding: EdgeInsets.fromLTRB(0, 0, 15, 0),
+  @override
+  Widget appBar() {
+    return AppBar(
+        backgroundColor: Color.fromRGBO(30, 30, 60, 1),
+        centerTitle: true,
+        actions: [
+          Padding(
+              padding: EdgeInsets.fromLTRB(0, 0, 15, 0),
+              child: GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(this.context, router.EventRequestRoute);
+                  },
+                  child: Icon(Icons.notifications_none)))
+        ],
+        title: Container(
+          width: SizeConfig.blockSizeHorizontal * 40,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Flexible(
+                flex: 1,
                 child: GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(this.context, router.EventRequestRoute);
-                    },
-                    child: Icon(Icons.notifications_none)))
-          ],
-          title: Container(
-            width: SizeConfig.blockSizeHorizontal * 40,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Flexible(
-                  flex: 1,
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        isFavorite = false;
-                      });
-                    },
-                    child: Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(9),
-                                topLeft: Radius.circular(9)),
-                            border: Border.all(color: Colors.blue),
-                            color: isFavorite == false
-                                ? Colors.blue
-                                : Colors.transparent),
-                        child: Icon(Icons.messenger_outline)),
-                  ),
+                  onTap: () {
+                    setState(() {
+                      isFavorite = false;
+                    });
+                  },
+                  child: Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(9),
+                              topLeft: Radius.circular(9)),
+                          border: Border.all(color: Colors.blue),
+                          color: isFavorite == false
+                              ? Colors.blue
+                              : Colors.transparent),
+                      child: Icon(Icons.messenger_outline)),
                 ),
-                Flexible(
-                  flex: 1,
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        isFavorite = true;
-                      });
-                    },
-                    child: Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(9),
-                                bottomRight: Radius.circular(9)),
-                            border: Border.all(color: Colors.blue),
-                            color: isFavorite == false
-                                ? Colors.transparent
-                                : Colors.blue),
-                        child: Icon(Icons.favorite)),
-                  ),
+              ),
+              Flexible(
+                flex: 1,
+                child: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      isFavorite = true;
+                    });
+                  },
+                  child: Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(9),
+                              bottomRight: Radius.circular(9)),
+                          border: Border.all(color: Colors.blue),
+                          color: isFavorite == false
+                              ? Colors.transparent
+                              : Colors.blue),
+                      child: Icon(Icons.favorite)),
                 ),
-              ],
-            ),
-          ));
-    }
-
+              ),
+            ],
+          ),
+        ));
+  }
 
   @override
   Widget body() {
@@ -574,27 +594,33 @@ class _MenuOverviewState extends State<MenuOverview> with BasicMixin {
                   bottom: 100,
                   child: Container(
                     width: SizeConfig.blockSizeHorizontal * 100,
-                    child: RaisedButton(
-                        child: Text(
-                          "Nyt Event",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                          ),
-                        ),
-                        color: Theme.of(this.context).secondaryHeaderColor,
-                        onPressed: () {
-                          Navigator.push(
-                              this.context, FadeRoute(page: AddOrRepostEvent()));
-                        }),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 80),
+                      child: SizedBox(
+                        height: 50,
+                        child: RaisedButton(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30)),
+                            child: Text(
+                              "Nyt Event",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                              ),
+                            ),
+                            color: blue,
+                            onPressed: () {
+                              Navigator.push(this.context,
+                                  FadeRoute(page: AddOrRepostEvent()));
+                            }),
+                      ),
+                    ),
                   ),
                 ),
               ],
             ),
           );
   }
-
-
 }
 
 class InoutBoxWithBottomShadow extends StatefulWidget {
