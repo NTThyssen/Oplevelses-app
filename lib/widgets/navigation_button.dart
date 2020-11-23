@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/theme.dart';
 
 class NavigationButton extends StatelessWidget {
   NavigationButton({this.icon, this.text, this.onPressed});
@@ -9,7 +10,7 @@ class NavigationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return OutlineButton(
+    return FlatButton(
       onPressed: onPressed,
       child: Padding(
         padding: const EdgeInsets.only(bottom: 10, top: 15),
@@ -20,21 +21,18 @@ class NavigationButton extends StatelessWidget {
               padding: const EdgeInsets.only(right: 8),
               child: Icon(
                 icon,
-                color: Colors.grey[600],
-                size: 30,
+                color: Colors.black,
+                size: 25,
               ),
             ),
             Text(
               text,
-              style: TextStyle(
-                color: Colors.grey[600],
-                fontSize: 20,
-              ),
+              style: headerTextStyle.copyWith(color: Colors.black),
             ),
             Spacer(),
             Icon(
               Icons.arrow_forward_ios,
-              color: Colors.grey[600],
+              color: Colors.black,
             ),
           ],
         ),
