@@ -44,7 +44,7 @@ class _EventDisplayState extends State<EventDisplay> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(10, 60, 10, 0),
+            padding: const EdgeInsets.fromLTRB(10, 40, 10, 0),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -69,8 +69,7 @@ class _EventDisplayState extends State<EventDisplay> {
                           style: subtitleTextStyle,
                         ),
                         Text(
-                          widget.event?.user?.name ??
-                              "name" ,
+                          widget.event?.user?.name ?? "name",
                           style: smallGreyHeaderTextStyle,
                         ),
                       ],
