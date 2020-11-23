@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/model/user.dart';
+import 'package:flutter_app/service/DatabaseService.dart';
 import 'package:flutter_app/service/auth.dart';
 import 'package:age/age.dart';
 import 'package:flutter_app/size_config.dart';
@@ -9,6 +11,7 @@ import 'package:flutter_app/widgets/custom_scaffold_with_navBar.dart';
 import 'package:flutter_app/widgets/friends_widget.dart';
 import 'package:flutter_app/widgets/info_header_widget.dart';
 import 'package:flutter_app/widgets/instagram_images_widget.dart';
+import 'package:provider/provider.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -67,98 +70,101 @@ class _ProfileState extends State<Profile> with BasicMixin {
 
   @override
   Widget body() {
+    final authUser = Provider.of<MockUser>(context);
     name = checkFbData();
-    return Container(
-      color: Theme.of(context).primaryColor,
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Profile image with gradient
-            Stack(
+    return FutureBuilder<MockUser>(
+      future: DatabaseService().getUserFromUid(authUser.uid),
+      builder: (BuildContext context, AsyncSnapshot<MockUser> snapshot){
+        return snapshot.hasData ? Container(
+          color: Theme.of(context).primaryColor,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Hero(
-                  tag: "profile",
-                  child: Container(
-                    width: SizeConfig.blockSizeHorizontal * 100,
-                    height: SizeConfig.blockSizeVertical * 70,
-                    child: Image(
-                      fit: BoxFit.cover,
-                      // If the mock data is set, then use mock image.
-                      // Otherwise get the image from facebook.
-                      image: name == "Pia, 22"
-                          ? AssetImage("images/pia-profile-pic.jpg")
-                          : NetworkImage(
-                              UserLoginState.instance.profilePic.url),
+                // Profile image with gradient
+                Stack(
+                  children: [
+                    Hero(
+                      tag: "profile",
+                      child: Container(
+                        width: SizeConfig.blockSizeHorizontal * 100,
+                        height: SizeConfig.blockSizeVertical * 70,
+                        child: Image(
+                          fit: BoxFit.cover,
+                          // If the mock data is set, then use mock image.
+                          // Otherwise get the image from facebook.
+                          image: NetworkImage(
+                              snapshot.data.profilePicture),
+                        ),
+                      ),
                     ),
+                    Container(
+                      height: SizeConfig.blockSizeVertical * 70,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          stops: [0.5, 1.0],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Colors.transparent,
+                            Theme.of(context).primaryColor,
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                // Profile name and age
+                Padding(
+                  padding: EdgeInsets.all(11),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "${snapshot.data.name}, ${snapshot.data.age.toString()}" ,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 30,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                Container(
-                  height: SizeConfig.blockSizeVertical * 70,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      stops: [0.5, 1.0],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Colors.transparent,
-                        Theme.of(context).primaryColor,
-                      ],
-                    ),
-                  ),
+                // Home town info
+                InfoHeaderWidget(
+                  icon: Icons.place,
+                  text: 'København NV',
                 ),
+                // Work info
+                InfoHeaderWidget(
+                  icon: Icons.work,
+                  text: 'Fotograf hos Hansens billeder',
+                ),
+                // School info
+                InfoHeaderWidget(
+                  icon: Icons.school,
+                  text: 'Dansk fotograf institut',
+                ),
+                // About person text
+                AboutText(
+                  heading: 'Om dig',
+                  body:
+                  'Typen der altid løber efter bussen, og altid ender med at komme i alt for god tid.',
+                ),
+                // Common friends
+                // FriendsWidget(text: 'Venner',),
+                // Instagram
+                // Padding(
+                //   padding: const EdgeInsets.only(bottom: 100),
+                //   child: InstagramImagesWidget(),
+                // ),
               ],
             ),
-            // Profile name and age
-            Padding(
-              padding: EdgeInsets.all(11),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    name,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 30,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            // Home town info
-            InfoHeaderWidget(
-              icon: Icons.place,
-              text: 'København NV',
-            ),
-            // Work info
-            InfoHeaderWidget(
-              icon: Icons.work,
-              text: 'Fotograf hos Hansens billeder',
-            ),
-            // School info
-            InfoHeaderWidget(
-              icon: Icons.school,
-              text: 'Dansk fotograf institut',
-            ),
-            // About person text
-            AboutText(
-              heading: 'Om Pia',
-              body:
-                  'Typen der altid løber efter bussen, og altid ender med at komme i alt for god tid.',
-            ),
-            // Common friends
-            FriendsWidget(
-              text: 'Venner',
-            ),
-            // Instagram
-            // Padding(
-            //   padding: const EdgeInsets.only(bottom: 100),
-            //   child: InstagramImagesWidget(),
-            // ),
-          ],
-        ),
-      ),
+          ),
+        ) : Text("test");
+      }
+
     );
   }
 }

@@ -146,7 +146,7 @@ class DatabaseService {
     try{
       if(doc.exists && doc.data()["profilePicture"] != null ){
 
-        return MockUser(uid: doc.id, profilePicture: doc.data()["profilePicture"], name: doc.data()["name"] );
+        return MockUser(uid: doc.id, profilePicture: doc.data()["profilePicture"], name: doc.data()["name"], age: doc.data()["age"] );
       }else{
         return MockUser(uid: doc.id);
       }

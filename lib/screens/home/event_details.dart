@@ -115,7 +115,7 @@ class _TestState extends State<Test> {
                     body: widget.event.description.toString()),
                 // About event creator section
                 AboutText(
-                  heading: 'Om Pia',
+                  heading: 'Om',
                   body:
                       'Typen der altid løber efter bussen, og altid ender med at komme i alt for god tid.',
                 ),
