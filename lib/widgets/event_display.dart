@@ -1,4 +1,3 @@
-
 import 'package:flare_flutter/flare_controls.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/model/user.dart';
@@ -29,49 +28,67 @@ class _EventDisplayState extends State<EventDisplay> {
               : NetworkImage(widget.event.pictureUrl),
         ),
       ),
-      child: Column(
+      child: Stack(
         children: [
           Container(
-            height: SizeConfig.blockSizeVertical*4,
+            height: MediaQuery.of(context).size.height,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    primaryBlue,
+                    Colors.transparent,
+                    primaryBlue,
+                  ]),
+            ),
           ),
-          Expanded(
-            flex: 2,
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(10, 5, 0, 10),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Hero(
-                    tag: widget.event.uid,
-                    child: CircleAvatar(
-                      radius: 25.0,
-                      backgroundImage: widget.event?.user?.profilePicture != null ? NetworkImage(widget.event?.user?.profilePicture) : AssetImage("images/flower2.jpg"),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(10, 60, 10, 0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Hero(
+                  tag: widget.event.uid,
+                  child: CircleAvatar(
+                    radius: 25.0,
+                    backgroundImage: widget.event?.user?.profilePicture != null
+                        ? NetworkImage(widget.event?.user?.profilePicture)
+                        : AssetImage("images/flower2.jpg"),
+                  ),
+                ),
+                Expanded(
+                  flex: 8,
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(15, 5, 0, 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          " " + (widget.event.title),
+                          style: subtitleTextStyle,
+                        ),
+                        Text(
+                          widget.event?.user?.name ??
+                              "name" + widget.event?.user?.age?.toString() ??
+                              "23",
+                          style: smallGreyHeaderTextStyle,
+                        ),
+                      ],
                     ),
                   ),
-                  Expanded(
-                    flex: 8,
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(15, 5, 0, 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            " " + (widget.event.title),
-                            style: subtitleTextStyle,
-                          ),
-                          Text(
-                            widget.event?.user?.name ?? "name" + widget.event?.user?.age?.toString() ?? "23",
-                            style: smallGreyHeaderTextStyle,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    flex : 2,
-                      child: IconButton(icon: Icon(Icons.favorite_border, color: Colors.white,), onPressed: () {auth.signOut();} )),
-                ],
-              ),
+                ),
+                Expanded(
+                    flex: 2,
+                    child: IconButton(
+                        icon: Icon(
+                          Icons.favorite_border,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {
+                          auth.signOut();
+                        })),
+              ],
             ),
           ),
         ],
