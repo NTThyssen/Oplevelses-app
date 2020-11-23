@@ -76,20 +76,17 @@ class _ProfileState extends State<Profile> with BasicMixin{
             // Profile image with gradient
             Stack(
               children: [
-                Hero(
-                  tag: "profile",
-                  child: Container(
-                    width: SizeConfig.blockSizeHorizontal * 100,
-                    height: SizeConfig.blockSizeVertical * 70,
-                    child: Image(
-                      fit: BoxFit.cover,
-                      // If the mock data is set, then use mock image.
-                      // Otherwise get the image from facebook.
-                      image: name == "Pia, 22"
-                          ? AssetImage("images/pia-profile-pic.jpg")
-                          : NetworkImage(
-                          UserLoginState.instance.profilePic.url),
-                    ),
+                Container(
+                  width: SizeConfig.blockSizeHorizontal * 100,
+                  height: SizeConfig.blockSizeVertical * 70,
+                  child: Image(
+                    fit: BoxFit.cover,
+                    // If the mock data is set, then use mock image.
+                    // Otherwise get the image from facebook.
+                    image: name == "Pia, 22"
+                        ? AssetImage("images/pia-profile-pic.jpg")
+                        : NetworkImage(
+                        UserLoginState.instance.profilePic.url),
                   ),
                 ),
                 Container(

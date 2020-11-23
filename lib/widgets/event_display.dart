@@ -60,7 +60,7 @@ class _EventDisplayState extends State<EventDisplay> {
                             style: subtitleTextStyle,
                           ),
                           Text(
-                            widget.event?.user?.name ?? "name" + widget.event?.user?.age?.toString() ?? "23",
+                            widget.event?.user?.name ?? "name" ,
                             style: smallGreyHeaderTextStyle,
                           ),
                         ],

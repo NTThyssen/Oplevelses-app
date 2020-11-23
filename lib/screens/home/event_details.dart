@@ -41,107 +41,120 @@ class _TestState extends State<Test> {
       ),
       body: notSignedIn ? Container(
         color: Theme.of(context).primaryColor,
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Profile image with gradient
-              Stack(
-                children: [
-                  Hero(
-                    tag: widget.event.uid,
-                    child: Container(
-                      height: SizeConfig.blockSizeVertical * 60,
-                      width: SizeConfig.blockSizeVertical * 100,
-                      child: Image(
-                        fit: BoxFit.cover,
-                        image: widget.event?.user?.profilePicture != null ? NetworkImage( widget.event.user.profilePicture) : AssetImage("images/flower2.jpg"),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        stops: [0.5, 1.0],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Colors.transparent,
-                          Theme.of(context).secondaryHeaderColor,
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              // Event header
-              Padding(
-                padding: EdgeInsets.all(11),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Stack(
+          children: [ SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Profile image with gradient
+                Stack(
                   children: [
-                    Text(
-                      widget.event.title.toString(),
-                      style: titleTextStyle,
+                    Hero(
+                      tag: widget.event.uid,
+                      child: Container(
+                        height: SizeConfig.blockSizeVertical * 60,
+                        width: SizeConfig.blockSizeVertical * 100,
+                        child: Image(
+                          fit: BoxFit.cover,
+                          image: widget.event?.user?.profilePicture != null ? NetworkImage( widget.event.user.profilePicture) : AssetImage("images/flower2.jpg"),
+                        ),
+                      ),
                     ),
-                    Icon(
-                      CupertinoIcons.heart,
-                      color: Colors.white,
-                      size: 30,
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          stops: [0.5, 1.0],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Colors.transparent,
+                            Theme.of(context).secondaryHeaderColor,
+                          ],
+                        ),
+                      ),
                     ),
                   ],
                 ),
-              ),
-              // Place info
-              InfoHeaderWidget(
-                icon: Icons.place,
-                text: widget.event.city.toString(),
-              ),
-              // Date info
-              InfoHeaderWidget(
-                icon: Icons.access_time,
-                text: widget.event.date.toString(),
-              ),
-              // Price info
-              InfoHeaderWidget(
-                icon: Icons.payment,
-                text: widget.event.price.toString(),
-              ),
-              // Event description
-              AboutText(
-                  heading: 'Oplevelsen',
-                  body: widget.event.description.toString()),
-              // About event creator section
-              AboutText(
-                heading: 'Om Pia',
-                body:
-                    'Typen der altid løber efter bussen, og altid ender med at komme i alt for god tid.',
-              ),
-              // Common friends
-              FriendsWidget(
-                text: 'Fælles venner',
-              ),
-              // Instagram
-              InstagramImagesWidget(),
-              // Bottom icons
-              Container(
-                padding: EdgeInsets.only(bottom: 40.0, top: 20.0),
+                // Event header
+                Padding(
+                  padding: EdgeInsets.all(11),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        widget.event.title.toString(),
+                        style: titleTextStyle,
+                      ),
+                      Icon(
+                        CupertinoIcons.heart,
+                        color: Colors.white,
+                        size: 30,
+                      ),
+                    ],
+                  ),
+                ),
+                // Place info
+                InfoHeaderWidget(
+                  icon: Icons.place,
+                  text: widget.event.city.toString(),
+                ),
+                // Date info
+                InfoHeaderWidget(
+                  icon: Icons.access_time,
+                  text: widget.event.date.toString(),
+                ),
+                // Price info
+                InfoHeaderWidget(
+                  icon: Icons.payment,
+                  text: widget.event.price.toString(),
+                ),
+                // Event description
+                AboutText(
+                    heading: 'Oplevelsen',
+                    body: widget.event.description.toString()),
+                // About event creator section
+                AboutText(
+                  heading: 'Om Pia',
+                  body:
+                      'Typen der altid løber efter bussen, og altid ender med at komme i alt for god tid.',
+                ),
+                // Common friends
+                FriendsWidget(
+                  text: 'Fælles venner',
+                ),
+                // Instagram
+                InstagramImagesWidget(),
+                // Bottom icons
+
+                Container(
+                  height: SizeConfig.blockSizeVertical * 16,
+                )
+              ],
+            ),
+          ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(0, 0, 0, SizeConfig.blockSizeVertical*7),
+              child: Align(
+                alignment: FractionalOffset.bottomCenter,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    IconButton(
-                      icon: Icon(Icons.repeat),
-                      color: Theme.of(context).secondaryHeaderColor,
-                      iconSize: 40.0,
+                    FloatingActionButton(
                       onPressed: () {
                         authUser == null ? Navigator.push(context, FadeRoute(page: NotSignedIn())) :  Navigator.push(context, FadeRoute(page: AddOrRepostEvent(event: widget.event,)));
                       },
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.add_box),
-                      color: Theme.of(context).secondaryHeaderColor,
-                      iconSize: 40.0,
+                      heroTag: null,
+                      child: Icon(Icons.repeat, color: Theme.of(context).secondaryHeaderColor,
+                        size: 40.0,),
+
+                      ),
+
+                    FloatingActionButton(
+                      heroTag:  null,
+                      child:
+                      Icon(Icons.add_box, color: Theme.of(context).secondaryHeaderColor,  size: 40.0, ),
+
                       onPressed: () async {
                         if(authUser == null) {
                           setState(() {
@@ -158,11 +171,8 @@ class _TestState extends State<Test> {
                   ],
                 ),
               ),
-              Container(
-                height: SizeConfig.blockSizeVertical * 7,
-              )
-            ],
-          ),
+            ),
+          ],
         ),
       ) : NotSignedIn()
     );

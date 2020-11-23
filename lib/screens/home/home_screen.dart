@@ -61,7 +61,6 @@ class _MainPageState extends State<MainPage> {
             DatabaseService().getUserFromUid(doc.userUid).then((value) {
               doc.user = value;
               print(doc.title);
-
             });
             //preload(context, doc.pictureUrl);
 

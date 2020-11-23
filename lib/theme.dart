@@ -37,8 +37,8 @@ ThemeData appTheme = ThemeData(
 
     /* Subtitle */
     headline2: GoogleFonts.roboto().copyWith(
-      fontSize: 20,
-      fontWeight: FontWeight.w700,
+      fontSize: 12,
+      fontWeight: FontWeight.w300,
       fontStyle: FontStyle.normal,
     ),
 
