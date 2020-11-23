@@ -50,9 +50,7 @@ class _CategoryCardState extends State<CategoryCard> {
               Center(
                 child: Text(
                   widget.text,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: cardTitleTextStyle,
                 ),
               ),
             ],

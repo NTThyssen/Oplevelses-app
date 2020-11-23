@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/service/auth.dart';
 import 'package:age/age.dart';
 import 'package:flutter_app/size_config.dart';
+import 'package:flutter_app/theme.dart';
 import 'package:flutter_app/widgets/about_text.dart';
 import 'package:flutter_app/widgets/custom_scaffold_with_navBar.dart';
 import 'package:flutter_app/widgets/friends_widget.dart';
@@ -14,7 +15,7 @@ class Profile extends StatefulWidget {
   _ProfileState createState() => _ProfileState();
 }
 
-class _ProfileState extends State<Profile> with BasicMixin{
+class _ProfileState extends State<Profile> with BasicMixin {
   // Check if we can get some info from facebook.
   // Otherwise, set the name and age to mack data.
   String checkFbData() {
@@ -51,8 +52,8 @@ class _ProfileState extends State<Profile> with BasicMixin{
     print('Your age is {$age}'); // Your ag
     return age.years;
   }
-  String name;
 
+  String name;
 
   @override
   Widget appBar() {
@@ -60,13 +61,13 @@ class _ProfileState extends State<Profile> with BasicMixin{
     return AppBar(
       title: Text("Profil"),
       centerTitle: true,
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: primaryBlue,
     );
   }
 
   @override
   Widget body() {
-     name = checkFbData();
+    name = checkFbData();
     return Container(
       color: Theme.of(context).primaryColor,
       child: SingleChildScrollView(
@@ -76,17 +77,20 @@ class _ProfileState extends State<Profile> with BasicMixin{
             // Profile image with gradient
             Stack(
               children: [
-                Container(
-                  width: SizeConfig.blockSizeHorizontal * 100,
-                  height: SizeConfig.blockSizeVertical * 70,
-                  child: Image(
-                    fit: BoxFit.cover,
-                    // If the mock data is set, then use mock image.
-                    // Otherwise get the image from facebook.
-                    image: name == "Pia, 22"
-                        ? AssetImage("images/pia-profile-pic.jpg")
-                        : NetworkImage(
-                        UserLoginState.instance.profilePic.url),
+                Hero(
+                  tag: "profile",
+                  child: Container(
+                    width: SizeConfig.blockSizeHorizontal * 100,
+                    height: SizeConfig.blockSizeVertical * 70,
+                    child: Image(
+                      fit: BoxFit.cover,
+                      // If the mock data is set, then use mock image.
+                      // Otherwise get the image from facebook.
+                      image: name == "Pia, 22"
+                          ? AssetImage("images/pia-profile-pic.jpg")
+                          : NetworkImage(
+                              UserLoginState.instance.profilePic.url),
+                    ),
                   ),
                 ),
                 Container(
@@ -141,21 +145,20 @@ class _ProfileState extends State<Profile> with BasicMixin{
             AboutText(
               heading: 'Om Pia',
               body:
-              'Typen der altid løber efter bussen, og altid ender med at komme i alt for god tid.',
+                  'Typen der altid løber efter bussen, og altid ender med at komme i alt for god tid.',
             ),
             // Common friends
             FriendsWidget(
               text: 'Venner',
             ),
             // Instagram
-            Padding(
-              padding: const EdgeInsets.only(bottom: 100),
-              child: InstagramImagesWidget(),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.only(bottom: 100),
+            //   child: InstagramImagesWidget(),
+            // ),
           ],
         ),
       ),
     );
   }
-
 }
