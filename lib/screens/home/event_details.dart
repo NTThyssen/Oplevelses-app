@@ -12,6 +12,7 @@ import 'package:flutter_app/widgets/friends_widget.dart';
 import 'package:flutter_app/widgets/info_header_widget.dart';
 import 'package:flutter_app/widgets/instagram_images_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_app/navigation/route_manager.dart' as router;
 
 import '../../model/user.dart';
 import '../../theme.dart';
@@ -26,7 +27,6 @@ class Test extends StatefulWidget {
 }
 
 class _TestState extends State<Test> {
-  bool notSignedIn = true;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class _TestState extends State<Test> {
         title: Text(widget.event.title),
         centerTitle: true,
       ),
-      body: notSignedIn ? Container(
+      body: Container(
         color: Theme.of(context).primaryColor,
         child: Stack(
           children: [ SingleChildScrollView(
@@ -120,11 +120,9 @@ class _TestState extends State<Test> {
                       'Typen der altid løber efter bussen, og altid ender med at komme i alt for god tid.',
                 ),
                 // Common friends
-                FriendsWidget(
-                  text: 'Fælles venner',
-                ),
+                //FriendsWidget(text: 'Fælles venner',),
                 // Instagram
-                InstagramImagesWidget(),
+                //InstagramImagesWidget(),
                 // Bottom icons
 
                 Container(
@@ -142,7 +140,7 @@ class _TestState extends State<Test> {
                   children: [
                     FloatingActionButton(
                       onPressed: () {
-                        authUser == null ? Navigator.push(context, FadeRoute(page: NotSignedIn())) :  Navigator.push(context, FadeRoute(page: AddOrRepostEvent(event: widget.event,)));
+                        authUser == null ? Navigator.pushNamed(context, router.NotSignedInRoute) :  Navigator.push(context, FadeRoute(page: AddOrRepostEvent(event: widget.event,)));
                       },
                       heroTag: null,
                       child: Icon(Icons.repeat, color: Theme.of(context).secondaryHeaderColor,
@@ -154,12 +152,9 @@ class _TestState extends State<Test> {
                       heroTag:  null,
                       child:
                       Icon(Icons.add_box, color: Theme.of(context).secondaryHeaderColor,  size: 40.0, ),
-
                       onPressed: () async {
                         if(authUser == null) {
-                          setState(() {
-                            notSignedIn = false;
-                          });
+                          Navigator.pushNamed(context, router.NotSignedInRoute);
                         }else{
                           dynamic result = await DatabaseService().sendEventRequest(widget.event.uid, widget.event.userUid, authUser.uid);
                           key.currentState.showSnackBar(SnackBar(content: Text("Anmodning Sendt")));
@@ -174,7 +169,7 @@ class _TestState extends State<Test> {
             ),
           ],
         ),
-      ) : NotSignedIn()
+      )
     );
   }
 }

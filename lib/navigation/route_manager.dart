@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/authenticate/log_in_page.dart';
+import 'package:flutter_app/authenticate/not_signed_in.dart';
 import 'package:flutter_app/model/user.dart';
 import 'package:flutter_app/screens/home/home_screen.dart';
 import 'package:flutter_app/screens/main_menu/add_event.dart';
@@ -33,6 +35,12 @@ Route<dynamic> generateRoute(RouteSettings settings){
     case EventRequestRoute:
       return MaterialPageRoute(
           builder: (context) => RequestForEvents());
+    case SignInRoute:
+      return MaterialPageRoute(
+          builder: (context) => Login());
+    case NotSignedInRoute:
+      return MaterialPageRoute(
+          builder: (context) => NotSignedIn());
     default:
       return MaterialPageRoute(builder: (context) => MainPage());
   }
@@ -44,3 +52,5 @@ const String HomeScreenRoute = "home";
 const String ProfileRoute = "profile";
 const String MenuOverviewRoute = "menu";
 const String SettingsRoute = "settings";
+const String SignInRoute = "signIn";
+const String NotSignedInRoute = "notSignedIn";

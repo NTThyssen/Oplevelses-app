@@ -61,7 +61,7 @@ class DatabaseService {
     };
     return await favoriteSnap.set({
       'userUid': user.favorite.userUid,
-      'favorites' : FieldValue.arrayUnion([map])
+      'favorites' : map
 
     }, );
   }
@@ -153,7 +153,23 @@ class DatabaseService {
     }catch(e){
       print(e);
     }
+    return null;
 
+  }
+
+
+  Future<List<Favorite>> getUserFavoritesFromUid(String uid) async {
+    QuerySnapshot doc = await userCollection.doc(uid).collection("favorites").get();
+    return doc.docs.map((doc)  {
+      print(doc.id);
+      return Favorite(event: Event(pictureUrl: doc.data()['favorites']['pictureUrl'] ,
+          title: doc.data()['favorites']['title'],
+          price: doc.data()['favorites']['price'],
+          date: doc.data()['favorites']['date'],
+          description: doc.data()['favorites']['description'],
+          city: doc.data()['favorites']['city']),
+      );
+    }).toList();
 
   }
 

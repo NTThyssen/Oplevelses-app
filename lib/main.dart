@@ -90,10 +90,15 @@ class _MyAppState extends State<MyApp> with BasicMixin {
   @override
   Widget body() {
     SizeConfig().init(context);
-    return Scaffold(
-      extendBody: true,
-      extendBodyBehindAppBar: true,
-      body: widgetList.elementAt(_selectedPage),
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: Scaffold(
+        extendBody: true,
+        extendBodyBehindAppBar: true,
+        body: widgetList.elementAt(_selectedPage),
+      ),
     );
   }
 

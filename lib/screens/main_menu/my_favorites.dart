@@ -1,6 +1,7 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/service/DatabaseService.dart';
 import 'package:flutter_app/widgets/custom_scaffold_with_navBar.dart';
 import 'package:flutter_app/size_config.dart';
 import 'package:provider/provider.dart';
@@ -17,29 +18,41 @@ class MyFavorites extends StatefulWidget {
 
 class _MyFavoritesState extends State<MyFavorites> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     MockUser authUser = Provider.of<MockUser>(context);
-    final users = Provider.of<List<MockUser>>(context) ?? [];
-    for(var user in users ){
-      if(user.uid == authUser.uid){
-        authUser = user;
+
+    return FutureBuilder<List<Favorite>>(
+      future: DatabaseService().getUserFavoritesFromUid(authUser.uid), // a previously-obtained Future<String> or null
+      builder: (BuildContext context, AsyncSnapshot<List<Favorite>> snapshot) {
+
+          if (snapshot.hasError) {
+            print("errrror");
+            print(snapshot.error.toString());
+          }
+          print(snapshot.data);
+          if (snapshot.hasData) {
+
+            return snapshot.data.elementAt(0).event != null ? Scaffold(
+                body: SingleChildScrollView(
+                  child: Column(
+                      children:
+                      snapshot.data.map((e) => FadeIn(0.5,FavoriteCardView(favorite: e,)),).toList(),
+                )
+            )) : Center(child: Text("Du har ingen Favoritter"),);
+          }else {
+            return Container(child: Text("LOADING"),);
+        }
       }
-    }
+    );
 
-
-    return authUser.favorite != null ?  Scaffold(
-        body : SingleChildScrollView(
-      child: Column(
-        children: [
-          FadeIn(
-              0.5,
-              FavoriteCardView(
-                eventUrl: authUser.favorite.event.pictureUrl,
-              )),
-        ],
-      ),
-    )) : Center(child: Text("Du har ingen Favoritter"),);
   }
+
 }
 
 enum _AniProps { opacity, translateX }
@@ -73,9 +86,9 @@ class FadeIn extends StatelessWidget {
 }
 
 class FavoriteCardView extends StatefulWidget {
-  String eventUrl;
+  Favorite favorite;
 
-  FavoriteCardView({this.eventUrl});
+  FavoriteCardView({this.favorite});
 
   @override
   _FavoriteCardViewState createState() => _FavoriteCardViewState();
@@ -112,7 +125,7 @@ class _FavoriteCardViewState extends State<FavoriteCardView> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Søndags is',
+                              widget.favorite.event.title,
                               style: TextStyle(
                                   color: Colors.black,
                                   letterSpacing: 1.0,
@@ -123,7 +136,7 @@ class _FavoriteCardViewState extends State<FavoriteCardView> {
                               height: 4,
                             ),
                             Text(
-                              'med Futte, 23',
+                              "med person",
                               style: TextStyle(
                                   color: Colors.grey,
                                   letterSpacing: 0.7,
@@ -182,8 +195,8 @@ class _FavoriteCardViewState extends State<FavoriteCardView> {
                           image: new DecorationImage(
                             fit: BoxFit.fitWidth,
                             alignment: FractionalOffset.centerLeft,
-                            image: widget.eventUrl != null
-                                ? NetworkImage(widget.eventUrl)
+                            image: widget.favorite.event.pictureUrl != null
+                                ? NetworkImage(widget.favorite.event.pictureUrl)
                                 : AssetImage('images/big-ice.png'),
                           ),
                         )),
