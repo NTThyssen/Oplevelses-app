@@ -30,10 +30,6 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blue,
-      appBar: AppBar(
-        backgroundColor: Color.fromRGBO(30, 30, 60, 1),
-        title: Text("Login"),
-      ),
       body: (isLoggingIn)
           ? Center(
               child: SpinKitCubeGrid(
@@ -52,14 +48,20 @@ class _LoginState extends State<Login> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Padding(
-                      padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                      child: CircleAvatar(
-                        backgroundColor: Colors.transparent,
-                        radius: 80,
-                        child: Icon(
-                          Icons.access_alarms,
-                          size: 80,
+                      padding: const EdgeInsets.only(top: 50),
+                      child: Container(
+                        height: 150,
+                        child: Image.asset(
+                          "images/balloon.png",
                         ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: Text(
+                        "We Do Activities",
+                        textAlign: TextAlign.center,
+                        style: titleTextStyle.copyWith(fontSize: 60),
                       ),
                     ),
                     Form(
@@ -73,15 +75,15 @@ class _LoginState extends State<Login> {
                               decoration: BoxDecoration(
                                   color: Colors.transparent,
                                   border: Border(
-                                      bottom: BorderSide(
-                                          width: 2.0, color: Colors.blueGrey))),
+                                      bottom:
+                                          BorderSide(width: 2.0, color: blue))),
                               width: SizeConfig.blockSizeHorizontal * 80,
                               child: Theme(
                                 data: Theme.of(context).copyWith(
-                                  primaryColor:
-                                      Theme.of(context).secondaryHeaderColor,
+                                  primaryColor: blue,
                                 ),
                                 child: TextFormField(
+                                  style: TextStyle(color: white),
                                   textAlign: TextAlign.left,
                                   validator: (val) =>
                                       val.isEmpty ? "enter email" : null,
@@ -92,7 +94,7 @@ class _LoginState extends State<Login> {
                                     });
                                   },
                                   decoration: InputDecoration(
-                                      prefixIcon: Icon(Icons.person_outline),
+                                      prefixIcon: Icon(Icons.email_outlined),
                                       hintStyle: inputFieldTextStyle,
                                       border: InputBorder.none,
                                       hintText: 'Email'),
@@ -101,20 +103,20 @@ class _LoginState extends State<Login> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                            padding: const EdgeInsets.only(top: 10),
                             child: Container(
                               decoration: BoxDecoration(
                                   color: Colors.transparent,
                                   border: Border(
-                                      bottom: BorderSide(
-                                          width: 2.0, color: Colors.blueGrey))),
+                                      bottom:
+                                          BorderSide(width: 2.0, color: blue))),
                               width: SizeConfig.blockSizeHorizontal * 80,
                               child: Theme(
                                 data: Theme.of(context).copyWith(
-                                  primaryColor:
-                                      Theme.of(context).secondaryHeaderColor,
+                                  primaryColor: blue,
                                 ),
                                 child: TextFormField(
+                                  style: TextStyle(color: white),
                                   textAlign: TextAlign.left,
                                   obscureText: true,
                                   validator: (val) => val.length < 6
@@ -128,7 +130,7 @@ class _LoginState extends State<Login> {
                                   },
                                   decoration: InputDecoration(
                                       hintStyle: inputFieldTextStyle,
-                                      prefixIcon: Icon(Icons.vpn_key),
+                                      prefixIcon: Icon(Icons.lock_outline),
                                       border: InputBorder.none,
                                       hintText: 'Password'),
                                 ),
@@ -136,11 +138,14 @@ class _LoginState extends State<Login> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                            padding: const EdgeInsets.only(top: 30, bottom: 20),
                             child: Container(
+                              height: 55,
                               width: SizeConfig.blockSizeHorizontal * 80,
                               child: RaisedButton(
-                                color: Theme.of(context).secondaryHeaderColor,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                                color: blue,
                                 onPressed: () async {
                                   if (_formKey.currentState.validate()) {
                                     dynamic result = await _auth
@@ -151,60 +156,51 @@ class _LoginState extends State<Login> {
                                   }
                                 },
                                 child: Center(
-                                    child: Text("SIGN IN",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            letterSpacing: 0.8,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16))),
+                                  child: Text(
+                                    "Log ind",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      letterSpacing: 0.8,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                            child: Container(
-                              width: SizeConfig.blockSizeHorizontal * 80,
-                              child: RaisedButton(
-                                color: Theme.of(context).secondaryHeaderColor,
-                                onPressed: () async {
-                                  await _auth.signInAnon();
-                                  Navigator.pop(context);
-                                },
-                                child: Center(
-                                    child: Text("SIGN IN ANONYMOUSLY",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            letterSpacing: 0.8,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16))),
+                          Container(
+                            height: 55,
+                            width: SizeConfig.blockSizeHorizontal * 80,
+                            child: RaisedButton(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                              color: blue,
+                              onPressed: () async {
+                                await _auth.signInAnon();
+                                Navigator.pop(context);
+                              },
+                              child: Center(
+                                child: Text(
+                                  "Log ind anonymt",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    letterSpacing: 0.8,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
                         ],
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(context, '/');
-                        },
-                        child: Text("Continue for now",
-                            style: TextStyle(
-                                color: Colors.white,
-                                letterSpacing: 0.8,
-                                fontWeight: FontWeight.normal,
-                                fontSize: 12)),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                      child: Divider(
-                        height: 10,
-                        indent: SizeConfig.blockSizeHorizontal * 5,
-                        endIndent: SizeConfig.blockSizeHorizontal * 5,
-                        thickness: 2,
-                      ),
+                    Divider(
+                      height: 10,
+                      indent: SizeConfig.blockSizeHorizontal * 5,
+                      endIndent: SizeConfig.blockSizeHorizontal * 5,
+                      thickness: 2,
                     ),
                     GestureDetector(
                       onTap: () {
@@ -214,31 +210,64 @@ class _LoginState extends State<Login> {
                                 builder: (BuildContext context) => SignUp()));
                       },
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                        child: Text("Or sign in with",
-                            style: TextStyle(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Container(
+                                margin: EdgeInsets.symmetric(horizontal: 20),
+                                child: Divider(
+                                  color: white,
+                                  height: 36,
+                                ),
+                              ),
+                            ),
+                            Text(
+                              "Eller",
+                              style: TextStyle(
                                 color: Colors.white,
                                 letterSpacing: 0.8,
                                 fontWeight: FontWeight.normal,
-                                fontSize: 12)),
+                                fontSize: 12,
+                              ),
+                            ),
+                            Expanded(
+                              child: Container(
+                                margin: EdgeInsets.symmetric(horizontal: 20),
+                                child: Divider(
+                                  color: white,
+                                  height: 36,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                    FacebookSignInButton(onPressed: () async {
-                      setState(() {
-                        isLoggingIn = true;
-                      });
-                      var result = await _auth.facebookSignIn();
-                      print(result);
-                      if (result != null) {
-                        Navigator.pop(context);
-
-                      } else {
-                        print("you have to sign in");
-                        setState(() {
-                          isLoggingIn = false;
-                        });
-                      }
-                    }),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 30),
+                      child: Container(
+                        height: 55,
+                        width: SizeConfig.blockSizeHorizontal * 80,
+                        child: FacebookSignInButton(
+                            borderRadius: 10,
+                            onPressed: () async {
+                              setState(() {
+                                isLoggingIn = true;
+                              });
+                              var result = await _auth.facebookSignIn();
+                              print(result);
+                              if (result != null) {
+                                Navigator.pop(context);
+                              } else {
+                                print("you have to sign in");
+                                setState(() {
+                                  isLoggingIn = false;
+                                });
+                              }
+                            }),
+                      ),
+                    ),
                   ],
                 ),
               ),
