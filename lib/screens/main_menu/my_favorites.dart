@@ -37,30 +37,23 @@ class _MyFavoritesState extends State<MyFavorites> {
             print(snapshot.error.toString());
           }
           print(snapshot.data);
-          if (snapshot.hasData) {
-            return snapshot.data.elementAt(0).event != null
-                ? Scaffold(
-                    body: SingleChildScrollView(
-                        child: Column(
-                    children: snapshot.data
-                        .map(
-                          (e) => FadeIn(
-                              0.5,
-                              FavoriteCardView(
-                                favorite: e,
-                              )),
-                        )
-                        .toList(),
-                  )))
-                : Center(
-                    child: Text("Du har ingen Favoritter"),
-                  );
-          } else {
+          if (snapshot.hasData && snapshot.data.isNotEmpty) {
+
+            return snapshot.data.elementAt(0).event != null ? Scaffold(
+                body: SingleChildScrollView(
+                  child: Column(
+                      children:
+                      snapshot.data.map((e) => FadeIn(0.5,FavoriteCardView(favorite: e,)),).toList(),
+                )
+            )) : Center(child: Text("Du har ingen Favoritter"),);
+          }else {
             return Center(
               child: CircularProgressIndicator(),
             );
-          }
-        });
+        }
+      }
+    );
+
   }
 }
 

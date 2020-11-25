@@ -11,13 +11,10 @@ class DatabaseService {
 
 
   Future updateUserDataOnSignUp(MockUser user) async {
-    print(uid);
-    return await userCollection.doc(uid).set({
-      'profile':{
+    return await userCollection.doc(user.uid).set({
         'name' : user.name,
         'age' : user.age.toString(),
         'profilePicture' : user.profilePicture.toString()
-      },
 
     });
   }
@@ -93,18 +90,24 @@ class DatabaseService {
 
 
   List<Event> _eventListFromSnapshot(QuerySnapshot snapshot){
-    return snapshot.docs.map((doc) {
+    try{
+      return snapshot.docs.map((doc) {
+
         return Event(
-          uid : doc.id,
-          userUid: doc.data()['userUid'],
-          pictureUrl:  doc.data()['event']['pictureUrl'],
+            uid : doc.id,
+            userUid: doc.data()['userUid'],
+            pictureUrl:  doc.data()['event']['pictureUrl'],
             title: doc.data()['event']['title'],
-              price: doc.data()['event']['price'],
-              date: doc.data()['event']['date'],
-              description: doc.data()['event']['description'],
-              city: doc.data()['event']['city']
-          );
-    }).toList();
+            price: doc.data()['event']['price'],
+            date: doc.data()['event']['date'],
+            description: doc.data()['event']['description'],
+            city: doc.data()['event']['city']
+        );
+      }).toList();
+    }catch(e){
+      print(e.toString());
+    }
+
     }
 
 

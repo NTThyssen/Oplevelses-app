@@ -23,7 +23,7 @@ class Wrapper extends StatelessWidget {
       case router.ProfileRoute:
         return widget = authUser != null ? Profile() :  NotSignedIn();
       case router.MenuOverviewRoute:
-        return widget = authUser != null ? MenuOverview() : NotSignedIn();
+        return widget = authUser != null ? MenuOverview() : NotSignedIn(isPage: false,);
       default:
         return widget;
     }

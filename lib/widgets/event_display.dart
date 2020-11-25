@@ -31,17 +31,18 @@ class _EventDisplayState extends State<EventDisplay> {
   @override
   Widget build(BuildContext context) {
     return Stack(
-      children: [
-        Container(
-          width: SizeConfig.blockSizeHorizontal * 100,
-          height: SizeConfig.blockSizeVertical * 100,
-          child: CachedNetworkImage(
-            imageUrl: widget.event.pictureUrl,
-            imageBuilder: (context, imageProvider) => Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: imageProvider,
-                  fit: BoxFit.cover,
+        children: [
+          Container(
+            width: SizeConfig.blockSizeHorizontal*100,
+            height: SizeConfig.blockSizeVertical*100,
+            child: CachedNetworkImage(
+              imageUrl: widget.event.pictureUrl ?? "images/ice.png",
+              imageBuilder: (context, imageProvider) => Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: imageProvider,
+                      fit: BoxFit.cover,
+                      ),
                 ),
               ),
             ),
@@ -79,9 +80,9 @@ class _EventDisplayState extends State<EventDisplay> {
                 tag: widget.event.uid,
                 child: CircleAvatar(
                   radius: 30.0,
-                  backgroundImage: widget.event?.user?.profilePicture != null
-                      ? NetworkImage(widget.event?.user?.profilePicture)
-                      : AssetImage("images/flower2.jpg"),
+                   backgroundImage: widget.event?.user?.profilePicture != null
+                        ? CachedNetworkImageProvider(widget.event?.user?.profilePicture)
+                        : AssetImage("images/flower2.jpg"),
                 ),
               ),
               Expanded(
@@ -123,6 +124,7 @@ class _EventDisplayState extends State<EventDisplay> {
           ),
         ),
       ],
+
     );
   }
 }

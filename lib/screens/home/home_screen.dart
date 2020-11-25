@@ -59,14 +59,8 @@ class _MainPageState extends State<MainPage> {
             eventList.add(doc);
             DatabaseService().getUserFromUid(doc.userUid).then((value) {
               doc.user = value;
-
             });
-            print(initPreload);
-            if(initPreload){
-             // preload(context, doc.pictureUrl);
-            }
         }
-        initPreload = false;
       }
 
     }

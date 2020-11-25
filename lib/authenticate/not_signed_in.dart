@@ -4,6 +4,10 @@ import 'package:flutter_app/size_config.dart';
 import 'log_in_page.dart';
 
 class NotSignedIn extends StatelessWidget {
+  bool isPage;
+
+  NotSignedIn({this.isPage});
+
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -28,9 +32,12 @@ class NotSignedIn extends StatelessWidget {
             color: Theme.of(context).secondaryHeaderColor,
             child: Text("CLICK TO SIGN IN"),
               onPressed: () {
+              if(isPage != null && isPage){
                 Navigator.pushReplacement(context,  MaterialPageRoute(builder: (context) => Login()));
-              })
-          ,
+              }else{
+                 Navigator.push(context,  MaterialPageRoute(builder: (context) => Login()));
+              }
+              }),
           Spacer(flex: 5,)
         ],
       ),

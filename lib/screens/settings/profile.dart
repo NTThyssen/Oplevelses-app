@@ -75,6 +75,10 @@ class _ProfileState extends State<Profile> with BasicMixin {
     return FutureBuilder<MockUser>(
       future: DatabaseService().getUserFromUid(authUser.uid),
       builder: (BuildContext context, AsyncSnapshot<MockUser> snapshot){
+        if(snapshot.hasData){
+          print(snapshot.data.uid);
+        }
+
         return snapshot.hasData ? Container(
           color: Theme.of(context).primaryColor,
           child: SingleChildScrollView(
@@ -93,8 +97,8 @@ class _ProfileState extends State<Profile> with BasicMixin {
                           fit: BoxFit.cover,
                           // If the mock data is set, then use mock image.
                           // Otherwise get the image from facebook.
-                          image: NetworkImage(
-                              snapshot.data.profilePicture),
+                          image: snapshot.data.profilePicture != null ? NetworkImage(
+                              snapshot.data.profilePicture) : AssetImage("images/pia-profile-pic.jpg")
                         ),
                       ),
                     ),
@@ -162,7 +166,7 @@ class _ProfileState extends State<Profile> with BasicMixin {
               ],
             ),
           ),
-        ) : Text("test");
+        ) : Text("ERROR");
       }
 
     );

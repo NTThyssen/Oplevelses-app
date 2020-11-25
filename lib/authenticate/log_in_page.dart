@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/authenticate/sing_up.dart';
@@ -25,9 +27,16 @@ class _LoginState extends State<Login> {
   bool isLoggingIn = false;
   AuthService _auth = AuthService();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  List pics = List();
+
 
   @override
   Widget build(BuildContext context) {
+    pics.add("https://firebasestorage.googleapis.com/v0/b/oplevelse-179d8.appspot.com/o/profilePicture%2Fsasha.png?alt=media&token=47e15f00-2e58-442d-90eb-0203e7f9c5ae");
+    pics.add("https://firebasestorage.googleapis.com/v0/b/oplevelse-179d8.appspot.com/o/profilePicture%2Fjimmy.png?alt=media&token=af06acb4-97f9-4bcd-a0fc-02d59657b857");
+    pics.add("https://firebasestorage.googleapis.com/v0/b/oplevelse-179d8.appspot.com/o/profilePicture%2Fpia.png?alt=media&token=8371aaaa-85e4-4fb8-a7fc-10f74f483a91");
+    pics.add("https://firebasestorage.googleapis.com/v0/b/oplevelse-179d8.appspot.com/o/profilePicture%2Fandrea.png?alt=media&token=c6320b0e-9e51-4a5d-b1ea-e975295d6a0c");
+
     return Scaffold(
       backgroundColor: Colors.blue,
       body: (isLoggingIn)
@@ -177,7 +186,13 @@ class _LoginState extends State<Login> {
                                   borderRadius: BorderRadius.circular(10)),
                               color: blue,
                               onPressed: () async {
-                                await _auth.signInAnon();
+                                MockUser user =  await _auth.signInAnon();
+                                Random ran = Random();
+                                int i = ran.nextInt(1000);
+                                int agei = ran.nextInt(50);
+                                int pic = ran.nextInt(4);
+                                await DatabaseService().updateUserDataOnSignUp(MockUser(age: agei.toString(), profilePicture: pics.elementAt(pic)
+                                  ,name: "Test-Person-${i}", uid: user.uid));
                                 Navigator.pop(context);
                               },
                               child: Center(
