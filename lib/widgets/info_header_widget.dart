@@ -22,7 +22,7 @@ class InfoHeaderWidget extends StatelessWidget {
           ),
           Text(
             text,
-            style: inputFieldTextStyle,
+            style: bodyTextStyle,
           ),
         ],
       ),

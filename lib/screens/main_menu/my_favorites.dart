@@ -28,31 +28,40 @@ class _MyFavoritesState extends State<MyFavorites> {
     MockUser authUser = Provider.of<MockUser>(context);
 
     return FutureBuilder<List<Favorite>>(
-      future: DatabaseService().getUserFavoritesFromUid(authUser.uid), // a previously-obtained Future<String> or null
-      builder: (BuildContext context, AsyncSnapshot<List<Favorite>> snapshot) {
-
+        future: DatabaseService().getUserFavoritesFromUid(
+            authUser.uid), // a previously-obtained Future<String> or null
+        builder:
+            (BuildContext context, AsyncSnapshot<List<Favorite>> snapshot) {
           if (snapshot.hasError) {
             print("errrror");
             print(snapshot.error.toString());
           }
           print(snapshot.data);
           if (snapshot.hasData) {
-
-            return snapshot.data.elementAt(0).event != null ? Scaffold(
-                body: SingleChildScrollView(
-                  child: Column(
-                      children:
-                      snapshot.data.map((e) => FadeIn(0.5,FavoriteCardView(favorite: e,)),).toList(),
-                )
-            )) : Center(child: Text("Du har ingen Favoritter"),);
-          }else {
-            return Container(child: Text("LOADING"),);
-        }
-      }
-    );
-
+            return snapshot.data.elementAt(0).event != null
+                ? Scaffold(
+                    body: SingleChildScrollView(
+                        child: Column(
+                    children: snapshot.data
+                        .map(
+                          (e) => FadeIn(
+                              0.5,
+                              FavoriteCardView(
+                                favorite: e,
+                              )),
+                        )
+                        .toList(),
+                  )))
+                : Center(
+                    child: Text("Du har ingen Favoritter"),
+                  );
+          } else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        });
   }
-
 }
 
 enum _AniProps { opacity, translateX }
@@ -149,34 +158,20 @@ class _FavoriteCardViewState extends State<FavoriteCardView> {
                     ),
                     Expanded(
                       flex: 3,
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(0, 0, 15, 0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                print("Favorit!");
-                              },
-                              child: Icon(
-                                Icons.favorite,
-                                color: Colors.grey,
-                                size: 30,
-                              ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              print("Favorit!");
+                            },
+                            child: Icon(
+                              Icons.favorite,
+                              color: Colors.grey,
+                              size: 30,
                             ),
-                            Spacer(),
-                            GestureDetector(
-                              onTap: () {
-                                print("Favorit!");
-                              },
-                              child: Icon(
-                                CupertinoIcons.share,
-                                color: Colors.grey,
-                                size: 30,
-                              ),
-                            )
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ],

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../theme.dart';
+
 class AboutText extends StatelessWidget {
   AboutText({this.key, @required this.heading, @required this.body});
 
@@ -24,13 +26,10 @@ class AboutText extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: EdgeInsets.fromLTRB(11, 0, 11, 30),
+          padding: EdgeInsets.fromLTRB(11, 0, 11, 15),
           child: Text(
             body,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 17,
-            ),
+            style: bodyTextStyle,
           ),
         ),
       ],
