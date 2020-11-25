@@ -21,66 +21,67 @@ ThemeData appTheme = ThemeData(
   ),
   scaffoldBackgroundColor: white,
   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-  textTheme: GoogleFonts.robotoTextTheme().copyWith(
-    button: GoogleFonts.roboto().copyWith(
+  textTheme: GoogleFonts.latoTextTheme().copyWith(
+    button: GoogleFonts.lato().copyWith(
       color: white,
       fontSize: 16,
       fontWeight: FontWeight.w700,
     ),
 
     /* Title */
-    headline1: GoogleFonts.roboto().copyWith(
+    headline1: GoogleFonts.lato().copyWith(
       fontSize: 30,
       fontWeight: FontWeight.w700,
       fontStyle: FontStyle.normal,
     ),
 
     /* Subtitle */
-    headline2: GoogleFonts.roboto().copyWith(
-      fontSize: 20,
+    headline2: GoogleFonts.lato().copyWith(
+      fontSize: 25,
       fontWeight: FontWeight.w700,
       fontStyle: FontStyle.normal,
     ),
 
     /* Header */
-    headline3: GoogleFonts.roboto().copyWith(
+    headline3: GoogleFonts.lato().copyWith(
       fontSize: 17,
       fontWeight: FontWeight.w700,
       fontStyle: FontStyle.normal,
     ),
 
     /* Body text */
-    bodyText1: GoogleFonts.roboto().copyWith(
+    bodyText1: GoogleFonts.lato().copyWith(
       fontSize: 17,
       fontWeight: FontWeight.w400,
       fontStyle: FontStyle.normal,
+      height: 1.5,
     ),
 
     /* Input field placeholder */
-    bodyText2: GoogleFonts.roboto().copyWith(
+    bodyText2: GoogleFonts.lato().copyWith(
       fontSize: 20,
       fontWeight: FontWeight.w400,
       fontStyle: FontStyle.normal,
     ),
 
     /* Card title */
-    headline4: GoogleFonts.roboto().copyWith(
-      fontSize: 12,
+    headline4: GoogleFonts.lato().copyWith(
+      fontSize: 14,
       fontWeight: FontWeight.w700,
       fontStyle: FontStyle.normal,
     ),
 
     /* Small header */
-    headline5: GoogleFonts.roboto().copyWith(
-      fontSize: 16,
+    headline5: GoogleFonts.lato().copyWith(
+      fontSize: 17,
       letterSpacing: 0.7,
       fontWeight: FontWeight.w300,
       fontStyle: FontStyle.normal,
     ),
 
     /* Small grey header */
-    headline6: GoogleFonts.roboto().copyWith(
-      fontSize: 12,
+    headline6: GoogleFonts.lato().copyWith(
+      fontSize: 17,
       letterSpacing: 1.2,
       fontWeight: FontWeight.w300,
       fontStyle: FontStyle.normal,

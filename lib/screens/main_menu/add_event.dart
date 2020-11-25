@@ -32,7 +32,7 @@ class _AddEventState extends State<RequestForEvents> with BasicMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("title"),
+        title: Text("Notifikationer"),
       ),
       body: body(context: context),
     );
@@ -222,7 +222,7 @@ class _AddOrRepostEventState extends State<AddOrRepostEvent> {
                         decoration: InputDecoration(
                           hintStyle: inputFieldTextStyle,
                           border: InputBorder.none,
-                          labelText: "Overskrift",
+                          labelText: "Titel",
                           counterText: "",
                         ),
                       ),
@@ -428,7 +428,7 @@ class _AddOrRepostEventState extends State<AddOrRepostEvent> {
                         decoration: InputDecoration(
                           hintStyle: inputFieldTextStyle,
                           border: InputBorder.none,
-                          labelText: "by",
+                          labelText: "By",
                           counterText: "",
                         ),
                       ),
@@ -585,9 +585,15 @@ class _MenuOverviewState extends State<MenuOverview> with BasicMixin {
             height: SizeConfig.blockSizeVertical * 100,
             child: Stack(
               children: [
-                SingleChildScrollView(
-                  child: Column(
-                    children: [Container()],
+                // SingleChildScrollView(
+                //   child: Column(
+                //     children: [Container()],
+                //   ),
+                // ),
+                Center(
+                  child: Text(
+                    "Ingen beskeder",
+                    style: TextStyle(color: Colors.grey, fontSize: 30),
                   ),
                 ),
                 Positioned(

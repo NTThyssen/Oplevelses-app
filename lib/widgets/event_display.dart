@@ -45,79 +45,86 @@ class _EventDisplayState extends State<EventDisplay> {
                       ),
                 ),
               ),
-              placeholder: (context, url) =>Container(
-                color: appTheme.accentColor,
-                child: Center(
-                  child: SpinKitCubeGrid(
-                    color: Colors.white,
-                    size: 80.0,
+            ),
+            placeholder: (context, url) => Container(
+              color: appTheme.accentColor,
+              child: Center(
+                child: SpinKitCubeGrid(
+                  color: Colors.white,
+                  size: 80.0,
+                ),
+              ),
+            ),
+            errorWidget: (context, url, error) => Icon(Icons.error),
+          ),
+        ),
+        Container(
+          height: MediaQuery.of(context).size.height,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  primaryBlue,
+                  Colors.transparent,
+                  primaryBlue,
+                ]),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(10, 40, 10, 0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Hero(
+                tag: widget.event.uid,
+                child: CircleAvatar(
+                  radius: 30.0,
+                   backgroundImage: widget.event?.user?.profilePicture != null
+                        ? CachedNetworkImageProvider(widget.event?.user?.profilePicture)
+                        : AssetImage("images/flower2.jpg"),
+                ),
+              ),
+              Expanded(
+                flex: 8,
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(15, 5, 0, 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.event.title ?? "ukendt",
+                        style: subtitleTextStyle,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 5),
+                        child: Text(
+                          "${widget.event?.user?.name ?? "ukendt"}, ${widget.event?.user?.age ?? "ukendt"}",
+                          style: smallGreyHeaderTextStyle,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-              errorWidget: (context, url, error) => Icon(Icons.error),
-            ),
-          ),
-          Container(
-            height: MediaQuery.of(context).size.height,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    primaryBlue,
-                    Colors.transparent,
-                    primaryBlue,
-                  ]),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(10, 40, 10, 0),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Hero(
-                  tag: widget.event.uid,
-                  child: CircleAvatar(
-                    radius: 25.0,
-                    backgroundImage: widget.event?.user?.profilePicture != null
-                        ? CachedNetworkImageProvider(widget.event?.user?.profilePicture)
-                        : AssetImage("images/flower2.jpg"),
+              Expanded(
+                flex: 2,
+                child: IconButton(
+                  icon: Icon(
+                    Icons.favorite_border,
+                    color: Colors.white,
+                    size: 35,
                   ),
+                  onPressed: () {
+                    auth.signOut();
+                  },
                 ),
-                Expanded(
-                  flex: 8,
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(15, 5, 0, 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          " " + (widget.event.title),
-                          style: subtitleTextStyle,
-                        ),
-                        Text(
-                          widget.event?.user?.name ?? "name",
-                          style: smallGreyHeaderTextStyle,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Expanded(
-                    flex: 2,
-                    child: IconButton(
-                        icon: Icon(
-                          Icons.favorite_border,
-                          color: Colors.white,
-                        ),
-                        onPressed: () {
-                          auth.signOut();
-                        })),
-              ],
-            ),
+              ),
+            ],
           ),
+        ),
+      ],
 
-        ],
     );
   }
 }

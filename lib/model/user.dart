@@ -2,11 +2,17 @@ class MockUser {
   String name;
   String uid;
   String age;
+  String description;
   String profilePicture;
   Favorite favorite;
 
-  MockUser({this.uid, this.name, this.profilePicture, this.favorite, this.age});
-
+  MockUser(
+      {this.uid,
+      this.name,
+      this.description,
+      this.profilePicture,
+      this.favorite,
+      this.age});
 }
 
 class Favorite {
@@ -26,7 +32,16 @@ class Event {
   String date;
   String city;
   MockUser user;
-  Event({this.uid, this.userUid, this.pictureUrl, this.title, this.description, this.price, this.date, this.city, this.user});
+  Event(
+      {this.uid,
+      this.userUid,
+      this.pictureUrl,
+      this.title,
+      this.description,
+      this.price,
+      this.date,
+      this.city,
+      this.user});
 }
 
 class EventRequest {

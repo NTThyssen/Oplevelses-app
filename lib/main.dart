@@ -1,4 +1,3 @@
-
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -37,9 +36,9 @@ Future<void> main() async {
               create: (_) => CategoryManager()),
         ],
         child: MaterialApp(
-          initialRoute: router.RootRoute,
-          onGenerateRoute: router.generateRoute,
-          theme: appTheme,
+            initialRoute: router.RootRoute,
+            onGenerateRoute: router.generateRoute,
+            theme: appTheme,
             home: MyApp())),
   );
 
@@ -69,9 +68,10 @@ class _MyAppState extends State<MyApp> with BasicMixin {
   int _selectedPage = 0;
   List<Widget> widgetList = [
     MainPage(),
-    Wrapper(route: router.MenuOverviewRoute,),
+    Wrapper(
+      route: router.MenuOverviewRoute,
+    ),
     SettingsPage()
-
   ];
 
   void _select(PopUpItem item) {
@@ -79,7 +79,6 @@ class _MyAppState extends State<MyApp> with BasicMixin {
       selectedItem = item;
     });
   }
-
 
   @override
   bool extendBody() => true;
@@ -105,11 +104,11 @@ class _MyAppState extends State<MyApp> with BasicMixin {
   @override
   Widget bottomNavigationBar() {
     return ConvexAppBar(
-      color: Theme.of(context).secondaryHeaderColor,
+      color: blue,
       activeColor: Colors.indigo,
       style: TabStyle.fixedCircle,
       initialActiveIndex: _selectedPage,
-            backgroundColor: Theme.of(context).primaryColor.withOpacity(0.7),
+      backgroundColor: primaryBlue,
       items: [
         TabItem(
           icon: Icons.home,
@@ -123,7 +122,6 @@ class _MyAppState extends State<MyApp> with BasicMixin {
           ),
           title: 'Add',
         ),
-
         TabItem(
           icon: Icons.settings,
           title: 'Instillinger',
@@ -135,8 +133,5 @@ class _MyAppState extends State<MyApp> with BasicMixin {
         });
       },
     );
-
   }
 }
-
-
