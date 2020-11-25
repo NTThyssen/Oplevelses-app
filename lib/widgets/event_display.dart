@@ -45,19 +45,18 @@ class _EventDisplayState extends State<EventDisplay> {
                       ),
                 ),
               ),
-            ),
-            placeholder: (context, url) => Container(
-              color: appTheme.accentColor,
-              child: Center(
-                child: SpinKitCubeGrid(
-                  color: Colors.white,
-                  size: 80.0,
+              placeholder: (context, url) => Container(
+                color: appTheme.accentColor,
+                child: Center(
+                  child: SpinKitCubeGrid(
+                    color: Colors.white,
+                    size: 80.0,
+                  ),
                 ),
               ),
+              errorWidget: (context, url, error) => Icon(Icons.error),
             ),
-            errorWidget: (context, url, error) => Icon(Icons.error),
           ),
-        ),
         Container(
           height: MediaQuery.of(context).size.height,
           decoration: BoxDecoration(
@@ -116,7 +115,7 @@ class _EventDisplayState extends State<EventDisplay> {
                     size: 35,
                   ),
                   onPressed: () {
-                    auth.signOut();
+                   // auth.signOut();
                   },
                 ),
               ),
