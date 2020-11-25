@@ -36,7 +36,7 @@ class _EventDisplayState extends State<EventDisplay> {
             width: SizeConfig.blockSizeHorizontal*100,
             height: SizeConfig.blockSizeVertical*100,
             child: CachedNetworkImage(
-              imageUrl: widget.event.pictureUrl,
+              imageUrl: widget.event.pictureUrl ?? "images/ice.png",
               imageBuilder: (context, imageProvider) => Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(
@@ -80,7 +80,7 @@ class _EventDisplayState extends State<EventDisplay> {
                   child: CircleAvatar(
                     radius: 25.0,
                     backgroundImage: widget.event?.user?.profilePicture != null
-                        ? NetworkImage(widget.event?.user?.profilePicture)
+                        ? CachedNetworkImageProvider(widget.event?.user?.profilePicture)
                         : AssetImage("images/flower2.jpg"),
                   ),
                 ),
@@ -116,6 +116,7 @@ class _EventDisplayState extends State<EventDisplay> {
               ],
             ),
           ),
+
         ],
     );
   }

@@ -36,7 +36,7 @@ class _MyFavoritesState extends State<MyFavorites> {
             print(snapshot.error.toString());
           }
           print(snapshot.data);
-          if (snapshot.hasData) {
+          if (snapshot.hasData && snapshot.data.isNotEmpty) {
 
             return snapshot.data.elementAt(0).event != null ? Scaffold(
                 body: SingleChildScrollView(
