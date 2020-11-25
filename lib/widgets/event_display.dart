@@ -1,7 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flare_flutter/flare_controls.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/model/user.dart';
 import 'package:flutter_app/service/auth.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import '../size_config.dart';
 import '../theme.dart';
@@ -17,19 +19,44 @@ class EventDisplay extends StatefulWidget {
 
 class _EventDisplayState extends State<EventDisplay> {
   AuthService auth = AuthService();
-  @override
-  Widget build(BuildContext context) {
-    return Container(
+  /* Container(
       decoration: BoxDecoration(
         image: DecorationImage(
           fit: BoxFit.cover,
-          image: widget.event.pictureUrl == "images/big-ice.png"
-              ? AssetImage(widget.event.pictureUrl)
+          image: widget.event.pictureUrl == null
+              ? AssetImage("images/big-ice.png")
               : NetworkImage(widget.event.pictureUrl),
         ),
-      ),
-      child: Stack(
+      ),*/
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
         children: [
+          Container(
+            width: SizeConfig.blockSizeHorizontal*100,
+            height: SizeConfig.blockSizeVertical*100,
+            child: CachedNetworkImage(
+              imageUrl: widget.event.pictureUrl,
+              imageBuilder: (context, imageProvider) => Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: imageProvider,
+                      fit: BoxFit.cover,
+                      ),
+                ),
+              ),
+              placeholder: (context, url) =>Container(
+                color: appTheme.accentColor,
+                child: Center(
+                  child: SpinKitCubeGrid(
+                    color: Colors.white,
+                    size: 80.0,
+                  ),
+                ),
+              ),
+              errorWidget: (context, url, error) => Icon(Icons.error),
+            ),
+          ),
           Container(
             height: MediaQuery.of(context).size.height,
             decoration: BoxDecoration(
@@ -90,7 +117,6 @@ class _EventDisplayState extends State<EventDisplay> {
             ),
           ),
         ],
-      ),
     );
   }
 }

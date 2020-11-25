@@ -23,8 +23,9 @@ class _MainPageState extends State<MainPage> {
   var items = 5;
   bool isLiked = false;
   MockUser user;
-
+  bool initPreload = true;
   final FlareControls flareControls = FlareControls();
+
 
 
   @override
@@ -52,26 +53,24 @@ class _MainPageState extends State<MainPage> {
       }
     }
 
-    var cnt = 0;
     if (events != null) {
       for (var doc in events) {
         if (doc.userUid != authUser?.uid ?? 1 ) {
-          if (cnt < 5) {
             eventList.add(doc);
             DatabaseService().getUserFromUid(doc.userUid).then((value) {
               doc.user = value;
-              print(doc.title);
+
             });
-            //preload(context, doc.pictureUrl);
-
-            cnt++;
-
-          }
+            print(initPreload);
+            if(initPreload){
+             // preload(context, doc.pictureUrl);
+            }
         }
+        initPreload = false;
       }
-      isLoading = false;
-    }
 
+    }
+  isLoading=false;
     return isLoading ? Container(
       width: SizeConfig.blockSizeHorizontal*100,
       height:  SizeConfig.blockSizeVertical*100,
@@ -90,7 +89,6 @@ class _MainPageState extends State<MainPage> {
           onPageChanged: (index) {
             if (index == items - 1) {
               print("last page");
-              setState(() {});
               print(index);
             }
           },
