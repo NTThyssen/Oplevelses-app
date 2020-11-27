@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:flare_flutter/flare_controls.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/model/user.dart';
@@ -12,7 +13,8 @@ import '../theme.dart';
 class EventDisplay extends StatefulWidget {
   final Event event;
   final FlareControls flareControls;
-  EventDisplay(this.event, this.flareControls);
+  final MockUser currentUser;
+  EventDisplay(this.event, this.flareControls, {this.currentUser});
 
   @override
   _EventDisplayState createState() => _EventDisplayState();
@@ -34,14 +36,14 @@ class _EventDisplayState extends State<EventDisplay> {
     return FutureBuilder<MockUser>(
       future: DatabaseService().getUserFromUid(widget.event.userUid),
       builder:  (BuildContext context, AsyncSnapshot<MockUser> snapshot){
-        if(snapshot.hasData){
+        if(snapshot.hasData && widget.event.pictureUrl != null){
           return Stack(
             children: [
               Container(
                 width: SizeConfig.blockSizeHorizontal*100,
                 height: SizeConfig.blockSizeVertical*100,
                 child: CachedNetworkImage(
-                  imageUrl: widget.event.pictureUrl ?? "images/ice.png",
+                  imageUrl: widget.event.pictureUrl,
                   imageBuilder: (context, imageProvider) => Container(
                     decoration: BoxDecoration(
                       image: DecorationImage(
@@ -121,6 +123,11 @@ class _EventDisplayState extends State<EventDisplay> {
                         ),
                         onPressed: () {
                           // auth.signOut();
+                          widget.flareControls.play("like");
+                          widget.currentUser.favorite = Favorite();
+                          widget.currentUser.favorite = Favorite(event: widget.event, userUid: widget.event.userUid);
+                          DatabaseService(uid: widget.currentUser.uid)
+                              .updateUserData(widget.currentUser);
                         },
                       ),
                     ),

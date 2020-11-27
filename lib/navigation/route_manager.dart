@@ -41,11 +41,16 @@ Route<dynamic> generateRoute(RouteSettings settings){
     case NotSignedInRoute:
       return MaterialPageRoute(
           builder: (context) => NotSignedIn());
+    case InitRoute:
+      return MaterialPageRoute(
+          builder: (context) => InitScreen());
     default:
       return MaterialPageRoute(builder: (context) => MainPage());
   }
 
 }
+
+const String InitRoute = "init";
 const String EventRequestRoute = "eventRequest";
 const String RootRoute = "root";
 const String HomeScreenRoute = "home";

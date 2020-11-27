@@ -12,7 +12,6 @@ import 'package:provider/provider.dart';
 import '../../theme.dart';
 import 'event_details.dart';
 
-
 class MainPage extends StatefulWidget {
   @override
   _MainPageState createState() => _MainPageState();
@@ -78,6 +77,7 @@ class _MainPageState extends State<MainPage> {
     ) : Stack(
       children: [
         PreloadPageView.builder(
+
           itemCount: eventList.length,
           preloadPagesCount: 5,
           onPageChanged: (index) {
@@ -88,19 +88,20 @@ class _MainPageState extends State<MainPage> {
           },
           // ignore: missing_return
           itemBuilder: (BuildContext context, int position) {
-            for (var i = 0; i < eventList.length; i++) {
               return GestureDetector(
                 onDoubleTap: () {
-                  setState(() {
-                    isLiked = true;
-                    flareControls.play("like");
-                    authUser.favorite = Favorite();
-                    authUser.favorite.event =
-                        eventList.elementAt(position);
-                    authUser.favorite.userUid = eventList.elementAt(position).uid;
-                    DatabaseService(uid: authUser.uid)
-                        .updateUserData(authUser);
-                  });
+                  if(authUser != null){
+                    setState(() {
+                      isLiked = true;
+                      flareControls.play("like");
+                      authUser.favorite = Favorite();
+                      authUser.favorite.event =
+                          eventList.elementAt(position);
+                      authUser.favorite.userUid = eventList.elementAt(position).uid;
+                      DatabaseService(uid: authUser.uid)
+                          .updateUserData(authUser);
+                    });
+                  }
                 },
                 onTap: () {
                   Navigator.push(
@@ -110,9 +111,8 @@ class _MainPageState extends State<MainPage> {
                               event: eventList.elementAt(position))));
                 },
                 child: EventDisplay(
-                    eventList.elementAt(position), flareControls),
+                    eventList.elementAt(position), flareControls, currentUser: authUser,),
               );
-            }
           },
           controller: PreloadPageController(),
         ),

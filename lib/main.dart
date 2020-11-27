@@ -17,7 +17,7 @@ import 'model/user.dart';
 import 'widgets/custom_scaffold_with_navBar.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
-
+import 'package:flare_splash_screen/flare_splash_screen.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -52,6 +52,22 @@ Future<void> main() async {
     await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
   }
 }
+
+class InitScreen extends StatefulWidget {
+  @override
+  _InitScreenState createState() => _InitScreenState();
+}
+
+class _InitScreenState extends State<InitScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+
+      home: Container(),
+    );
+  }
+}
+
 
 class MyApp extends StatefulWidget {
   @override

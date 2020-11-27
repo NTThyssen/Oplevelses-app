@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/model/user.dart';
@@ -11,6 +12,7 @@ import 'package:flutter_app/widgets/custom_scaffold_with_navBar.dart';
 import 'package:flutter_app/widgets/friends_widget.dart';
 import 'package:flutter_app/widgets/info_header_widget.dart';
 import 'package:flutter_app/widgets/instagram_images_widget.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
 class Profile extends StatefulWidget {
@@ -62,11 +64,16 @@ class _ProfileState extends State<Profile> with BasicMixin {
   Widget appBar() {
     // TODO: implement appBar
     return AppBar(
+      actions: [IconButton(icon: Icon(Icons.logout), onPressed: () {
+        AuthService auth = AuthService();
+        auth.signOut();
+      })],
       title: Text("Profil"),
       centerTitle: true,
       backgroundColor: primaryBlue,
     );
   }
+
 
   @override
   Widget body() {
@@ -88,19 +95,20 @@ class _ProfileState extends State<Profile> with BasicMixin {
                 // Profile image with gradient
                 Stack(
                   children: [
-                    Hero(
-                      tag: "profile",
-                      child: Container(
-                        width: SizeConfig.blockSizeHorizontal * 100,
-                        height: SizeConfig.blockSizeVertical * 70,
-                        child: Image(
-                          fit: BoxFit.cover,
-                          // If the mock data is set, then use mock image.
-                          // Otherwise get the image from facebook.
-                          image: snapshot.data.profilePicture != null ? NetworkImage(
-                              snapshot.data.profilePicture) : AssetImage("images/pia-profile-pic.jpg")
+                    Container(
+                      width: SizeConfig.blockSizeHorizontal * 100,
+                      height: SizeConfig.blockSizeVertical * 70,
+                      child: snapshot.data.profilePicture != null ? CachedNetworkImage(
+                          imageUrl: snapshot.data.profilePicture,
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) => Container(
+
+                          child: SpinKitCubeGrid(
+                            color: appTheme.accentColor,
+                            size: 80,
+                          ),
                         ),
-                      ),
+                      ) : AssetImage("images/pia-profile-pic.jpg")
                     ),
                     Container(
                       height: SizeConfig.blockSizeVertical * 70,

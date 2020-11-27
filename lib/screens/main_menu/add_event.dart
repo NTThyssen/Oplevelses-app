@@ -463,7 +463,7 @@ class _AddOrRepostEventState extends State<AddOrRepostEvent> {
                 child: RaisedButton(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30)),
-                    child: widget.event != null
+                    child: widget.event == null
                         ? Text(
                             "Repost Event",
                             style: TextStyle(
@@ -491,7 +491,7 @@ class _AddOrRepostEventState extends State<AddOrRepostEvent> {
                       DatabaseService(uid: authUser.uid)
                           .createEventWithUser(authUser.uid, event);
                       key.currentState.showSnackBar(
-                          SnackBar(content: Text("Anmodning Sendt")));
+                          SnackBar(content: Text("Event Oprettet")));
                     }),
               ),
             ),

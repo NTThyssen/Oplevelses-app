@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +49,7 @@ class _MyFavoritesState extends State<MyFavorites> {
             )) : Center(child: Text("Du har ingen Favoritter"),);
           }else {
             return Center(
-              child: CircularProgressIndicator(),
+              child: Center(child: Text("Du har ingen Favoritter"),),
             );
         }
       }
@@ -184,7 +185,7 @@ class _FavoriteCardViewState extends State<FavoriteCardView> {
                             fit: BoxFit.fitWidth,
                             alignment: FractionalOffset.centerLeft,
                             image: widget.favorite.event.pictureUrl != null
-                                ? NetworkImage(widget.favorite.event.pictureUrl)
+                                ? CachedNetworkImageProvider(widget.favorite.event.pictureUrl)
                                 : AssetImage('images/big-ice.png'),
                           ),
                         )),
