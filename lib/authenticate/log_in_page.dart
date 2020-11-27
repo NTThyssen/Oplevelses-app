@@ -28,7 +28,7 @@ class _LoginState extends State<Login> {
   AuthService _auth = AuthService();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   List pics = List();
-
+  final key = new GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +38,7 @@ class _LoginState extends State<Login> {
     pics.add("https://firebasestorage.googleapis.com/v0/b/oplevelse-179d8.appspot.com/o/profilePicture%2Fandrea.png?alt=media&token=c6320b0e-9e51-4a5d-b1ea-e975295d6a0c");
 
     return Scaffold(
+      key: key,
       backgroundColor: Colors.blue,
       body: (isLoggingIn)
           ? Center(
@@ -267,7 +268,9 @@ class _LoginState extends State<Login> {
                         child: FacebookSignInButton(
                             borderRadius: 10,
                             onPressed: () async {
-                              setState(() {
+                              key.currentState.showSnackBar(
+                                  SnackBar(content: Text("Facebook virker ikke midlertidligt")));
+                             /* setState(() {
                                 isLoggingIn = true;
                               });
                               var result = await _auth.facebookSignIn();
@@ -279,7 +282,7 @@ class _LoginState extends State<Login> {
                                 setState(() {
                                   isLoggingIn = false;
                                 });
-                              }
+                              }*/
                             }),
                       ),
                     ),
