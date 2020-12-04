@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/service/DatabaseService.dart';
 import 'package:flutter_app/size_config.dart';
 import 'package:flutter_app/widgets/category_grid.dart';
-import 'package:flutter_app/widgets/custom_scaffold_with_navBar.dart';
+import 'package:flutter_app/mixins/basic_mixin.dart';
 import 'package:flutter_app/widgets/event_request_widget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';

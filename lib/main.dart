@@ -14,10 +14,11 @@ import 'package:flutter_app/widgets/pop_up_menu.dart';
 import 'package:flutter_app/wrapper.dart';
 import 'package:provider/provider.dart';
 import 'model/user.dart';
-import 'widgets/custom_scaffold_with_navBar.dart';
+import 'mixins/basic_mixin.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flare_splash_screen/flare_splash_screen.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -62,12 +63,10 @@ class _InitScreenState extends State<InitScreen> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-
       home: Container(),
     );
   }
 }
-
 
 class MyApp extends StatefulWidget {
   @override

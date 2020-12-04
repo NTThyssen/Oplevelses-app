@@ -5,7 +5,7 @@ import 'package:flutter_app/model/user.dart';
 import 'package:flutter_app/service/DatabaseService.dart';
 import 'package:flutter_app/service/auth.dart';
 import 'package:flutter_app/theme.dart';
-import 'package:flutter_app/widgets/custom_scaffold_with_navBar.dart';
+import 'package:flutter_app/mixins/basic_mixin.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:image_picker/image_picker.dart';
@@ -19,7 +19,6 @@ class SignUp extends StatefulWidget {
   String email;
   String password;
 
-
   @override
   _SignUpState createState() => _SignUpState();
 }
@@ -32,7 +31,7 @@ class _SignUpState extends State<SignUp> {
   MockUser user = MockUser();
   @override
   Widget build(BuildContext context) {
-  File tempImage = image;
+    File tempImage = image;
 
     Future uploadFile() async {
       StorageReference storageReference = FirebaseStorage.instance
@@ -58,13 +57,13 @@ class _SignUpState extends State<SignUp> {
         File img = await ImagePicker.pickImage(source: ImageSource.camera);
         if (img != null) {
           image = img;
-          setState(() {
-          });
+          setState(() {});
         }
       }
     }
+
     return GestureDetector(
-      onTap:() {
+      onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
       },
       child: Scaffold(
@@ -83,7 +82,8 @@ class _SignUpState extends State<SignUp> {
             : Container(
                 width: SizeConfig.screenWidth,
                 height: SizeConfig.screenHeight,
-                decoration: BoxDecoration(color: Theme.of(context).primaryColor),
+                decoration:
+                    BoxDecoration(color: Theme.of(context).primaryColor),
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -93,19 +93,21 @@ class _SignUpState extends State<SignUp> {
                         child: GestureDetector(
                           onTap: () async {
                             await cameraConnect();
-                            setState(() {
-                            });
+                            setState(() {});
                           },
                           child: CircleAvatar(
                             backgroundColor: Colors.transparent,
-                            backgroundImage: image != null ? AssetImage(image.path) : AssetImage("images/no-profile-img.jpg"),
+                            backgroundImage: image != null
+                                ? AssetImage(image.path)
+                                : AssetImage("images/no-profile-img.jpg"),
                             radius: 80,
-                            ),
+                          ),
                         ),
-                        ),
-                      Text("Tryk for at tilføje billede", style: TextStyle(
-                        color: Colors.white
-                      ),),
+                      ),
+                      Text(
+                        "Tryk for at tilføje billede",
+                        style: TextStyle(color: Colors.white),
+                      ),
                       Form(
                         key: _formKey,
                         child: Column(
@@ -256,16 +258,19 @@ class _SignUpState extends State<SignUp> {
                                       print(widget.email + widget.password);
                                       dynamic result =
                                           await _auth.registerWithEmail(
-                                              widget.email, widget.password, user);
-                                      dynamic status =  await uploadFile();
-                                      print(status.toString() + " this is status ");
+                                              widget.email,
+                                              widget.password,
+                                              user);
+                                      dynamic status = await uploadFile();
+                                      print(status.toString() +
+                                          " this is status ");
                                       print(user.profilePicture);
 
-                                      DatabaseService().updateUserDataOnSignUp(user);
+                                      DatabaseService()
+                                          .updateUserDataOnSignUp(user);
                                       Navigator.pushReplacement(
                                           context, FadeRoute(page: MyApp()));
                                     }
-
                                   },
                                   child: Center(
                                       child: Text("SIGN UP",
