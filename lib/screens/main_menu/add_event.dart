@@ -13,7 +13,6 @@ import 'package:provider/provider.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import '../../model/user.dart';
 import 'package:intl/intl.dart';
-import 'package:path/path.dart';
 import '../../theme.dart';
 import 'my_favorites.dart';
 import 'package:flutter_app/navigation/route_manager.dart' as router;
@@ -205,7 +204,7 @@ class _AddOrRepostEventState extends State<AddOrRepostEvent> {
               height: SizeConfig.blockSizeVertical * 3,
             ),
             Padding(
-              padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
+              padding: EdgeInsets.only(top: 8),
               child: Center(
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
@@ -244,13 +243,13 @@ class _AddOrRepostEventState extends State<AddOrRepostEvent> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
+              padding: EdgeInsets.only(top: 8),
               child: Center(
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
                   child: Container(
                     child: Padding(
-                      padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
+                      padding: EdgeInsets.only(left: 8),
                       child: TextFormField(
                         textInputAction: TextInputAction.next,
                         onFieldSubmitted: (_) =>
@@ -283,13 +282,13 @@ class _AddOrRepostEventState extends State<AddOrRepostEvent> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
+              padding: EdgeInsets.only(top: 8),
               child: Center(
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
                   child: Container(
                     child: Padding(
-                      padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
+                      padding: EdgeInsets.only(left: 8),
                       child: TextFormField(
                         textInputAction: TextInputAction.next,
                         onFieldSubmitted: (_) =>
@@ -322,13 +321,13 @@ class _AddOrRepostEventState extends State<AddOrRepostEvent> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
+              padding: EdgeInsets.only(top: 8),
               child: Center(
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
                   child: Container(
                     child: Padding(
-                        padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
+                        padding: EdgeInsets.only(left: 8),
                         child: DateTimeField(
                           initialValue: widget.event?.date != null
                               ? DateFormat("dd/MM/yyyy")
@@ -372,13 +371,13 @@ class _AddOrRepostEventState extends State<AddOrRepostEvent> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.fromLTRB(0, 8, 0, 15),
+              padding: EdgeInsets.only(top: 8, bottom: 15),
               child: Center(
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
                   child: Container(
                     child: Padding(
-                      padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
+                      padding: EdgeInsets.only(left: 8),
                       child: TextFormField(
                         onChanged: (input) {
                           widget.event.city = input;
@@ -472,12 +471,14 @@ class _MenuOverviewState extends State<MenuOverview> with BasicMixin {
         centerTitle: true,
         actions: [
           Padding(
-              padding: EdgeInsets.fromLTRB(0, 0, 15, 0),
-              child: GestureDetector(
-                  onTap: () {
-                    Navigator.pushNamed(this.context, router.EventRequestRoute);
-                  },
-                  child: Icon(Icons.notifications_none)))
+            padding: EdgeInsets.only(right: 8),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(this.context, router.EventRequestRoute);
+              },
+              child: Icon(Icons.notifications_none),
+            ),
+          ),
         ],
         title: Container(
           width: SizeConfig.blockSizeHorizontal * 40,
@@ -493,16 +494,17 @@ class _MenuOverviewState extends State<MenuOverview> with BasicMixin {
                     });
                   },
                   child: Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(9),
-                              topLeft: Radius.circular(9)),
-                          border: Border.all(color: Colors.blue),
-                          color: isFavorite == false
-                              ? Colors.blue
-                              : Colors.transparent),
-                      child: Icon(Icons.messenger_outline)),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(9),
+                            topLeft: Radius.circular(9)),
+                        border: Border.all(color: Colors.blue),
+                        color: isFavorite == false
+                            ? Colors.blue
+                            : Colors.transparent),
+                    child: Icon(Icons.messenger_outline),
+                  ),
                 ),
               ),
               Flexible(
@@ -514,16 +516,17 @@ class _MenuOverviewState extends State<MenuOverview> with BasicMixin {
                     });
                   },
                   child: Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(9),
-                              bottomRight: Radius.circular(9)),
-                          border: Border.all(color: Colors.blue),
-                          color: isFavorite == false
-                              ? Colors.transparent
-                              : Colors.blue),
-                      child: Icon(Icons.favorite)),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(9),
+                            bottomRight: Radius.circular(9)),
+                        border: Border.all(color: Colors.blue),
+                        color: isFavorite == false
+                            ? Colors.transparent
+                            : Colors.blue),
+                    child: Icon(Icons.favorite),
+                  ),
                 ),
               ),
             ],
@@ -540,11 +543,6 @@ class _MenuOverviewState extends State<MenuOverview> with BasicMixin {
             height: SizeConfig.blockSizeVertical * 100,
             child: Stack(
               children: [
-                // SingleChildScrollView(
-                //   child: Column(
-                //     children: [Container()],
-                //   ),
-                // ),
                 Center(
                   child: Text(
                     "Ingen beskeder",
@@ -560,20 +558,26 @@ class _MenuOverviewState extends State<MenuOverview> with BasicMixin {
                       child: SizedBox(
                         height: 50,
                         child: RaisedButton(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30)),
-                            child: Text(
-                              "Nyt Event",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                              ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          child: Text(
+                            "Nyt Event",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
                             ),
-                            color: blue,
-                            onPressed: () {
-                              Navigator.push(this.context,
-                                  FadeRoute(page: AddOrRepostEvent()));
-                            }),
+                          ),
+                          color: blue,
+                          onPressed: () {
+                            Navigator.push(
+                              this.context,
+                              FadeRoute(
+                                page: AddOrRepostEvent(),
+                              ),
+                            );
+                          },
+                        ),
                       ),
                     ),
                   ),
@@ -581,67 +585,5 @@ class _MenuOverviewState extends State<MenuOverview> with BasicMixin {
               ],
             ),
           );
-  }
-}
-
-class InoutBoxWithBottomShadow extends StatefulWidget {
-  final String labelText;
-  final bool bigBox;
-  InoutBoxWithBottomShadow(this.labelText, {this.bigBox});
-
-  @override
-  _InoutBoxWithBottomShadowState createState() =>
-      _InoutBoxWithBottomShadowState();
-}
-
-class _InoutBoxWithBottomShadowState extends State<InoutBoxWithBottomShadow> {
-  String textInput;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
-      child: Center(
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(8.0),
-          child: Container(
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
-              child: TextFormField(
-                onChanged: (input) {
-                  setState(() {});
-                },
-                keyboardType: TextInputType.multiline,
-                maxLines: null,
-                maxLength: 180,
-                decoration: InputDecoration(
-                  hintStyle: inputFieldTextStyle,
-                  border: InputBorder.none,
-                  labelText: widget.labelText,
-                  counterText: "",
-                ),
-              ),
-            ),
-            width: SizeConfig.blockSizeHorizontal * 90,
-            height: widget.bigBox == null
-                ? SizeConfig.blockSizeHorizontal * 14
-                : SizeConfig.blockSizeHorizontal * 35,
-            margin: const EdgeInsets.only(
-                bottom: 6.0), //Same as `blurRadius` i guess
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5.0),
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey,
-                  offset: Offset(0.0, 1.0), //(x,y)
-                  blurRadius: 6.0,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
   }
 }
