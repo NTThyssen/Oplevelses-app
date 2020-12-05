@@ -67,7 +67,7 @@ class _AddEventState extends State<RequestForEvents> with BasicMixin {
                   )
                 : Center(
                     child: Container(
-                      child: Text("Ingen anomodninger"),
+                      child: Text("Ingen anmodninger"),
                     ),
                   );
           },
@@ -158,6 +158,7 @@ class _AddOrRepostEventState extends State<AddOrRepostEvent> {
                 ),
               ],
             ),
+            // Image picker
             Padding(
               padding: const EdgeInsets.only(top: 20),
               child: Container(
@@ -203,173 +204,168 @@ class _AddOrRepostEventState extends State<AddOrRepostEvent> {
             SizedBox(
               height: SizeConfig.blockSizeVertical * 3,
             ),
+            // Title input field
             Padding(
               padding: EdgeInsets.only(top: 8),
               child: Center(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8.0),
-                  child: Container(
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
-                      child: TextFormField(
-                        textInputAction: TextInputAction.next,
-                        onFieldSubmitted: (_) =>
-                            FocusScope.of(context).nextFocus(),
-                        onChanged: (input) {
-                          widget.event.title = input;
-                        },
-                        keyboardType: TextInputType.text,
-                        maxLines: 1,
-                        maxLength: 180,
-                        initialValue: widget.event?.title ?? "",
-                        decoration: InputDecoration(
-                          hintStyle: inputFieldTextStyle,
-                          border: InputBorder.none,
-                          labelText: "Titel",
-                          counterText: "",
-                        ),
+                child: Container(
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
+                    child: TextFormField(
+                      textInputAction: TextInputAction.next,
+                      onFieldSubmitted: (_) =>
+                          FocusScope.of(context).nextFocus(),
+                      onChanged: (input) {
+                        widget.event.title = input;
+                      },
+                      keyboardType: TextInputType.text,
+                      maxLines: 1,
+                      maxLength: 180,
+                      initialValue: widget.event?.title ?? "",
+                      decoration: InputDecoration(
+                        hintStyle: inputFieldTextStyle,
+                        border: InputBorder.none,
+                        labelText: "Titel",
+                        counterText: "",
                       ),
                     ),
-                    width: SizeConfig.blockSizeHorizontal * 90,
-                    height: SizeConfig.blockSizeHorizontal * 15,
-                    margin: const EdgeInsets.only(
-                        bottom: 6.0), //Same as `blurRadius` i guess
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5.0),
-                      color: Colors.grey[50],
-                    ),
+                  ),
+                  width: SizeConfig.blockSizeHorizontal * 90,
+                  height: SizeConfig.blockSizeHorizontal * 15,
+                  margin: const EdgeInsets.only(
+                      bottom: 6.0), //Same as `blurRadius` i guess
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5.0),
+                    color: Colors.grey[50],
                   ),
                 ),
               ),
             ),
+            // Description input field
             Padding(
               padding: EdgeInsets.only(top: 8),
               child: Center(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8.0),
-                  child: Container(
-                    child: Padding(
+                child: Container(
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 8),
+                    child: TextFormField(
+                      textInputAction: TextInputAction.next,
+                      onFieldSubmitted: (_) =>
+                          FocusScope.of(context).nextFocus(),
+                      onChanged: (input) {
+                        widget.event.description = input;
+                      },
+                      keyboardType: TextInputType.multiline,
+                      maxLines: null,
+                      maxLength: 180,
+                      initialValue: widget.event?.description ?? "",
+                      decoration: InputDecoration(
+                        hintStyle: inputFieldTextStyle,
+                        border: InputBorder.none,
+                        labelText: "Beskrivelse",
+                        counterText: "",
+                      ),
+                    ),
+                  ),
+                  width: SizeConfig.blockSizeHorizontal * 90,
+                  height: SizeConfig.blockSizeHorizontal * 35,
+                  margin: const EdgeInsets.only(
+                      bottom: 6.0), //Same as `blurRadius` i guess
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5.0),
+                    color: Colors.grey[50],
+                  ),
+                ),
+              ),
+            ),
+            // Price input field
+            Padding(
+              padding: EdgeInsets.only(top: 8),
+              child: Center(
+                child: Container(
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 8),
+                    child: TextFormField(
+                      textInputAction: TextInputAction.next,
+                      onFieldSubmitted: (_) =>
+                          FocusScope.of(context).nextFocus(),
+                      onChanged: (input) {
+                        widget.event.price = input;
+                      },
+                      keyboardType: TextInputType.number,
+                      maxLines: null,
+                      maxLength: 180,
+                      initialValue: widget.event?.price ?? "",
+                      decoration: InputDecoration(
+                        hintStyle: inputFieldTextStyle,
+                        border: InputBorder.none,
+                        labelText: "Pris",
+                        counterText: "",
+                      ),
+                    ),
+                  ),
+                  width: SizeConfig.blockSizeHorizontal * 90,
+                  height: SizeConfig.blockSizeHorizontal * 15,
+                  margin: const EdgeInsets.only(
+                      bottom: 6.0), //Same as `blurRadius` i guess
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5.0),
+                    color: Colors.grey[50],
+                  ),
+                ),
+              ),
+            ),
+            // Date picker field
+            Padding(
+              padding: EdgeInsets.only(top: 8),
+              child: Center(
+                child: Container(
+                  child: Padding(
                       padding: EdgeInsets.only(left: 8),
-                      child: TextFormField(
+                      child: DateTimeField(
+                        initialValue: widget.event?.date != null
+                            ? DateFormat("dd/MM/yyyy")
+                                .parse(widget.event.date + "/2020")
+                            : DateTime.now(),
+                        decoration: InputDecoration(
+                          hintStyle: inputFieldTextStyle,
+                          border: InputBorder.none,
+                          labelText: "Vælg Dato",
+                          counterText: "",
+                        ),
+                        format: DateFormat("dd/MM/yyyy"),
                         textInputAction: TextInputAction.next,
                         onFieldSubmitted: (_) =>
                             FocusScope.of(context).nextFocus(),
                         onChanged: (input) {
-                          widget.event.description = input;
-                        },
-                        keyboardType: TextInputType.multiline,
-                        maxLines: null,
-                        maxLength: 180,
-                        initialValue: widget.event?.description ?? "",
-                        decoration: InputDecoration(
-                          hintStyle: inputFieldTextStyle,
-                          border: InputBorder.none,
-                          labelText: "Beskrivelse",
-                          counterText: "",
-                        ),
-                      ),
-                    ),
-                    width: SizeConfig.blockSizeHorizontal * 90,
-                    height: SizeConfig.blockSizeHorizontal * 35,
-                    margin: const EdgeInsets.only(
-                        bottom: 6.0), //Same as `blurRadius` i guess
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5.0),
-                      color: Colors.grey[50],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 8),
-              child: Center(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8.0),
-                  child: Container(
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 8),
-                      child: TextFormField(
-                        textInputAction: TextInputAction.next,
-                        onFieldSubmitted: (_) =>
-                            FocusScope.of(context).nextFocus(),
-                        onChanged: (input) {
-                          widget.event.price = input;
-                        },
-                        keyboardType: TextInputType.number,
-                        maxLines: null,
-                        maxLength: 180,
-                        initialValue: widget.event?.price ?? "",
-                        decoration: InputDecoration(
-                          hintStyle: inputFieldTextStyle,
-                          border: InputBorder.none,
-                          labelText: "Pris",
-                          counterText: "",
-                        ),
-                      ),
-                    ),
-                    width: SizeConfig.blockSizeHorizontal * 90,
-                    height: SizeConfig.blockSizeHorizontal * 15,
-                    margin: const EdgeInsets.only(
-                        bottom: 6.0), //Same as `blurRadius` i guess
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5.0),
-                      color: Colors.grey[50],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 8),
-              child: Center(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8.0),
-                  child: Container(
-                    child: Padding(
-                        padding: EdgeInsets.only(left: 8),
-                        child: DateTimeField(
-                          initialValue: widget.event?.date != null
-                              ? DateFormat("dd/MM/yyyy")
-                                  .parse(widget.event.date + "/2020")
-                              : DateFormat("").parse(""),
-                          decoration: InputDecoration(
-                            hintStyle: inputFieldTextStyle,
-                            border: InputBorder.none,
-                            labelText: "Vælg Dato",
-                            counterText: "",
-                          ),
-                          format: DateFormat("dd-MM-yyyy"),
-                          textInputAction: TextInputAction.next,
-                          onFieldSubmitted: (_) =>
-                              FocusScope.of(context).nextFocus(),
-                          onChanged: (input) {
+                          setState(() {
                             widget.event.date = (input.day.toString() +
                                 "/" +
                                 input.month.toString() +
                                 "/" +
                                 input.year.toString());
-                          },
-                          onShowPicker: (context, currentValue) {
-                            return showDatePicker(
-                                context: context,
-                                firstDate: DateTime(1900),
-                                initialDate: currentValue ?? DateTime.now(),
-                                lastDate: DateTime(2100));
-                          },
-                        )),
-                    width: SizeConfig.blockSizeHorizontal * 90,
-                    height: SizeConfig.blockSizeHorizontal * 14,
-                    margin: const EdgeInsets.only(
-                        bottom: 6.0), //Same as `blurRadius` i guess
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5.0),
-                      color: Colors.grey[50],
-                    ),
+                          });
+                        },
+                        onShowPicker: (context, currentValue) {
+                          return showDatePicker(
+                              context: context,
+                              firstDate: DateTime(1900),
+                              initialDate: currentValue ?? DateTime.now(),
+                              lastDate: DateTime(2100));
+                        },
+                      )),
+                  width: SizeConfig.blockSizeHorizontal * 90,
+                  height: SizeConfig.blockSizeHorizontal * 14,
+                  margin: const EdgeInsets.only(
+                      bottom: 6.0), //Same as `blurRadius` i guess
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8.0),
+                    color: Colors.grey[50],
                   ),
                 ),
               ),
             ),
+            // City input field
             Padding(
               padding: EdgeInsets.only(top: 8, bottom: 15),
               child: Center(
@@ -406,10 +402,12 @@ class _AddOrRepostEventState extends State<AddOrRepostEvent> {
                 ),
               ),
             ),
+            // Category selector
             Text("Vælg kategori"),
             CategoryGrid(
               selectAll: false,
             ),
+            // Create or repost event button
             Padding(
               padding: const EdgeInsets.only(top: 30, bottom: 30),
               child: SizedBox(
