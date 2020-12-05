@@ -7,6 +7,7 @@ import 'package:flutter_app/size_config.dart';
 import 'package:flutter_app/widgets/category_grid.dart';
 import 'package:flutter_app/mixins/basic_mixin.dart';
 import 'package:flutter_app/widgets/event_request_widget.dart';
+import 'package:flutter_app/widgets/input_form_field.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
@@ -205,115 +206,34 @@ class _AddOrRepostEventState extends State<AddOrRepostEvent> {
               height: SizeConfig.blockSizeVertical * 3,
             ),
             // Title input field
-            Padding(
-              padding: EdgeInsets.only(top: 8),
-              child: Center(
-                child: Container(
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
-                    child: TextFormField(
-                      textInputAction: TextInputAction.next,
-                      onFieldSubmitted: (_) =>
-                          FocusScope.of(context).nextFocus(),
-                      onChanged: (input) {
-                        widget.event.title = input;
-                      },
-                      keyboardType: TextInputType.text,
-                      maxLines: 1,
-                      maxLength: 180,
-                      initialValue: widget.event?.title ?? "",
-                      decoration: InputDecoration(
-                        hintStyle: inputFieldTextStyle,
-                        border: InputBorder.none,
-                        labelText: "Titel",
-                        counterText: "",
-                      ),
-                    ),
-                  ),
-                  width: SizeConfig.blockSizeHorizontal * 90,
-                  height: SizeConfig.blockSizeHorizontal * 15,
-                  margin: const EdgeInsets.only(
-                      bottom: 6.0), //Same as `blurRadius` i guess
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5.0),
-                    color: Colors.grey[50],
-                  ),
-                ),
-              ),
+            InputFormField(
+              value: widget.event.title,
+              initialValue: widget.event?.title ?? "",
+              labelText: "Titel",
+              maxLines: 1,
+              keyboardType: TextInputType.text,
+              height: SizeConfig.blockSizeHorizontal * 15,
+              width: SizeConfig.blockSizeHorizontal * 90,
             ),
             // Description input field
-            Padding(
-              padding: EdgeInsets.only(top: 8),
-              child: Center(
-                child: Container(
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 8),
-                    child: TextFormField(
-                      textInputAction: TextInputAction.next,
-                      onFieldSubmitted: (_) =>
-                          FocusScope.of(context).nextFocus(),
-                      onChanged: (input) {
-                        widget.event.description = input;
-                      },
-                      keyboardType: TextInputType.multiline,
-                      maxLines: null,
-                      maxLength: 180,
-                      initialValue: widget.event?.description ?? "",
-                      decoration: InputDecoration(
-                        hintStyle: inputFieldTextStyle,
-                        border: InputBorder.none,
-                        labelText: "Beskrivelse",
-                        counterText: "",
-                      ),
-                    ),
-                  ),
-                  width: SizeConfig.blockSizeHorizontal * 90,
-                  height: SizeConfig.blockSizeHorizontal * 35,
-                  margin: const EdgeInsets.only(
-                      bottom: 6.0), //Same as `blurRadius` i guess
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5.0),
-                    color: Colors.grey[50],
-                  ),
-                ),
-              ),
+            InputFormField(
+              value: widget.event.description,
+              initialValue: widget.event?.description ?? "",
+              labelText: "Beskrivelse",
+              maxLines: null,
+              keyboardType: TextInputType.multiline,
+              height: SizeConfig.blockSizeHorizontal * 35,
+              width: SizeConfig.blockSizeHorizontal * 90,
             ),
             // Price input field
-            Padding(
-              padding: EdgeInsets.only(top: 8),
-              child: Center(
-                child: Container(
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 8),
-                    child: TextFormField(
-                      textInputAction: TextInputAction.next,
-                      onFieldSubmitted: (_) =>
-                          FocusScope.of(context).nextFocus(),
-                      onChanged: (input) {
-                        widget.event.price = input;
-                      },
-                      keyboardType: TextInputType.number,
-                      maxLines: null,
-                      maxLength: 180,
-                      initialValue: widget.event?.price ?? "",
-                      decoration: InputDecoration(
-                        hintStyle: inputFieldTextStyle,
-                        border: InputBorder.none,
-                        labelText: "Pris",
-                        counterText: "",
-                      ),
-                    ),
-                  ),
-                  width: SizeConfig.blockSizeHorizontal * 90,
-                  height: SizeConfig.blockSizeHorizontal * 15,
-                  margin: const EdgeInsets.only(
-                      bottom: 6.0), //Same as `blurRadius` i guess
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5.0),
-                    color: Colors.grey[50],
-                  ),
-                ),
-              ),
+            InputFormField(
+              value: widget.event.price,
+              initialValue: widget.event?.price ?? "",
+              labelText: "Pris",
+              maxLines: 1,
+              keyboardType: TextInputType.number,
+              height: SizeConfig.blockSizeHorizontal * 15,
+              width: SizeConfig.blockSizeHorizontal * 90,
             ),
             // Date picker field
             Padding(
@@ -366,44 +286,20 @@ class _AddOrRepostEventState extends State<AddOrRepostEvent> {
               ),
             ),
             // City input field
-            Padding(
-              padding: EdgeInsets.only(top: 8, bottom: 15),
-              child: Center(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8.0),
-                  child: Container(
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 8),
-                      child: TextFormField(
-                        onChanged: (input) {
-                          widget.event.city = input;
-                        },
-                        keyboardType: TextInputType.multiline,
-                        maxLines: null,
-                        maxLength: 180,
-                        initialValue: widget.event?.city ?? "",
-                        decoration: InputDecoration(
-                          hintStyle: inputFieldTextStyle,
-                          border: InputBorder.none,
-                          labelText: "By",
-                          counterText: "",
-                        ),
-                      ),
-                    ),
-                    width: SizeConfig.blockSizeHorizontal * 90,
-                    height: SizeConfig.blockSizeHorizontal * 15,
-                    margin: const EdgeInsets.only(
-                        bottom: 6.0), //Same as `blurRadius` i guess
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5.0),
-                      color: Colors.grey[50],
-                    ),
-                  ),
-                ),
-              ),
+            InputFormField(
+              value: widget.event.city,
+              initialValue: widget.event?.city ?? "",
+              labelText: "By",
+              keyboardType: TextInputType.streetAddress,
+              maxLines: 1,
+              height: SizeConfig.blockSizeHorizontal * 15,
+              width: SizeConfig.blockSizeHorizontal * 90,
             ),
             // Category selector
-            Text("Vælg kategori"),
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Text("Vælg kategori"),
+            ),
             CategoryGrid(
               selectAll: false,
             ),
