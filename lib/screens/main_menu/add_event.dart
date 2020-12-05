@@ -42,33 +42,39 @@ class _AddEventState extends State<RequestForEvents> with BasicMixin {
   Widget body({BuildContext context}) {
     final authUser = Provider.of<MockUser>(context);
     return StreamBuilder<List<EventRequest>>(
-        stream: DatabaseService().getEventRequests(authUser.uid),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            for (var index in snapshot.data) {
-              eventsFutures
-                  .add(DatabaseService().getEventFromUid(index.eventUid));
-            }
+      stream: DatabaseService().getEventRequests(authUser.uid),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          for (var index in snapshot.data) {
+            eventsFutures
+                .add(DatabaseService().getEventFromUid(index.eventUid));
           }
-          return FutureBuilder<List<Event>>(
-              future: Future.wait(eventsFutures),
-              builder: (context, AsyncSnapshot<List<Event>> snapshot) {
-                if (snapshot.hasData) {}
-                return snapshot.hasData
-                    ? Column(
-                        children: [
-                          for (var ele in snapshot.data)
-                            FadeIn(
-                                fadeTick += 0.4,
-                                EventRequestWidget(
-                                  eventTitle: ele.title,
-                                )),
-                        ],
-                      )
-                    : Center(
-                        child: Container(child: Text("Ingen anomodninger")));
-              });
-        });
+        }
+        return FutureBuilder<List<Event>>(
+          future: Future.wait(eventsFutures),
+          builder: (context, AsyncSnapshot<List<Event>> snapshot) {
+            if (snapshot.hasData) {}
+            return snapshot.hasData
+                ? Column(
+                    children: [
+                      for (var ele in snapshot.data)
+                        FadeIn(
+                          fadeTick += 0.4,
+                          EventRequestWidget(
+                            eventTitle: ele.title,
+                          ),
+                        ),
+                    ],
+                  )
+                : Center(
+                    child: Container(
+                      child: Text("Ingen anomodninger"),
+                    ),
+                  );
+          },
+        );
+      },
+    );
   }
 }
 
@@ -157,7 +163,7 @@ class _AddOrRepostEventState extends State<AddOrRepostEvent> {
               padding: const EdgeInsets.only(top: 20),
               child: Container(
                 width: SizeConfig.blockSizeHorizontal * 40,
-                height: SizeConfig.blockSizeVertical * 25,
+                height: SizeConfig.blockSizeVertical * 20,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(15.0)),
                   color: blue,
@@ -192,7 +198,7 @@ class _AddOrRepostEventState extends State<AddOrRepostEvent> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.only(top: 8),
               child: Text("Tilføj billede"),
             ),
             SizedBox(
@@ -211,12 +217,10 @@ class _AddOrRepostEventState extends State<AddOrRepostEvent> {
                         onFieldSubmitted: (_) =>
                             FocusScope.of(context).nextFocus(),
                         onChanged: (input) {
-                          setState(() {
-                            widget.event.title = input;
-                          });
+                          widget.event.title = input;
                         },
-                        keyboardType: TextInputType.multiline,
-                        maxLines: null,
+                        keyboardType: TextInputType.text,
+                        maxLines: 1,
                         maxLength: 180,
                         initialValue: widget.event?.title ?? "",
                         decoration: InputDecoration(
@@ -228,19 +232,12 @@ class _AddOrRepostEventState extends State<AddOrRepostEvent> {
                       ),
                     ),
                     width: SizeConfig.blockSizeHorizontal * 90,
-                    height: SizeConfig.blockSizeHorizontal * 14,
+                    height: SizeConfig.blockSizeHorizontal * 15,
                     margin: const EdgeInsets.only(
                         bottom: 6.0), //Same as `blurRadius` i guess
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5.0),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey,
-                          offset: Offset(0.0, 1.0), //(x,y)
-                          blurRadius: 6.0,
-                        ),
-                      ],
+                      color: Colors.grey[50],
                     ),
                   ),
                 ),
@@ -259,9 +256,7 @@ class _AddOrRepostEventState extends State<AddOrRepostEvent> {
                         onFieldSubmitted: (_) =>
                             FocusScope.of(context).nextFocus(),
                         onChanged: (input) {
-                          setState(() {
-                            widget.event.description = input;
-                          });
+                          widget.event.description = input;
                         },
                         keyboardType: TextInputType.multiline,
                         maxLines: null,
@@ -281,14 +276,7 @@ class _AddOrRepostEventState extends State<AddOrRepostEvent> {
                         bottom: 6.0), //Same as `blurRadius` i guess
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5.0),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey,
-                          offset: Offset(0.0, 1.0), //(x,y)
-                          blurRadius: 6.0,
-                        ),
-                      ],
+                      color: Colors.grey[50],
                     ),
                   ),
                 ),
@@ -307,9 +295,7 @@ class _AddOrRepostEventState extends State<AddOrRepostEvent> {
                         onFieldSubmitted: (_) =>
                             FocusScope.of(context).nextFocus(),
                         onChanged: (input) {
-                          setState(() {
-                            widget.event.price = input;
-                          });
+                          widget.event.price = input;
                         },
                         keyboardType: TextInputType.number,
                         maxLines: null,
@@ -324,32 +310,17 @@ class _AddOrRepostEventState extends State<AddOrRepostEvent> {
                       ),
                     ),
                     width: SizeConfig.blockSizeHorizontal * 90,
-                    height: SizeConfig.blockSizeHorizontal * 14,
+                    height: SizeConfig.blockSizeHorizontal * 15,
                     margin: const EdgeInsets.only(
                         bottom: 6.0), //Same as `blurRadius` i guess
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5.0),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey,
-                          offset: Offset(0.0, 1.0), //(x,y)
-                          blurRadius: 6.0,
-                        ),
-                      ],
+                      color: Colors.grey[50],
                     ),
                   ),
                 ),
               ),
             ),
-            /*TextFormField(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Address',
-                      ),
-                      enabled: true,
-
-                    ),*/
             Padding(
               padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
               child: Center(
@@ -394,14 +365,7 @@ class _AddOrRepostEventState extends State<AddOrRepostEvent> {
                         bottom: 6.0), //Same as `blurRadius` i guess
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5.0),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey,
-                          offset: Offset(0.0, 1.0), //(x,y)
-                          blurRadius: 6.0,
-                        ),
-                      ],
+                      color: Colors.grey[50],
                     ),
                   ),
                 ),
@@ -417,9 +381,7 @@ class _AddOrRepostEventState extends State<AddOrRepostEvent> {
                       padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
                       child: TextFormField(
                         onChanged: (input) {
-                          setState(() {
-                            widget.event.city = input;
-                          });
+                          widget.event.city = input;
                         },
                         keyboardType: TextInputType.multiline,
                         maxLines: null,
@@ -434,19 +396,12 @@ class _AddOrRepostEventState extends State<AddOrRepostEvent> {
                       ),
                     ),
                     width: SizeConfig.blockSizeHorizontal * 90,
-                    height: SizeConfig.blockSizeHorizontal * 14,
+                    height: SizeConfig.blockSizeHorizontal * 15,
                     margin: const EdgeInsets.only(
                         bottom: 6.0), //Same as `blurRadius` i guess
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5.0),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey,
-                          offset: Offset(0.0, 1.0), //(x,y)
-                          blurRadius: 6.0,
-                        ),
-                      ],
+                      color: Colors.grey[50],
                     ),
                   ),
                 ),
