@@ -35,6 +35,13 @@ class InputFormField extends StatelessWidget {
                 onChanged: (input) {
                   value = input;
                 },
+                onEditingComplete: () {
+                  if (labelText == "By") {
+                    FocusScope.of(context).unfocus();
+                  } else {
+                    FocusScope.of(context).nextFocus();
+                  }
+                },
                 keyboardType: keyboardType,
                 maxLines: maxLines,
                 maxLength: 180,
