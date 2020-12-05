@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/screens/main_menu/request_viewer.dart';
 
 import '../size_config.dart';
-import 'custom_scaffold_with_navBar.dart';
+import '../mixins/basic_mixin.dart';
 
 class EventRequestWidget extends StatefulWidget {
   final String eventTitle;
@@ -16,7 +16,7 @@ class EventRequestWidget extends StatefulWidget {
 class _EventRequestWidgetState extends State<EventRequestWidget> {
   @override
   Widget build(BuildContext context) {
-    return  Column(
+    return Column(
       children: [
         GestureDetector(
           onTap: () {
@@ -31,26 +31,24 @@ class _EventRequestWidgetState extends State<EventRequestWidget> {
                   padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
                   child: CircleAvatar(
                     radius: 32,
-                    backgroundColor: Theme
-                        .of(context)
-                        .secondaryHeaderColor,
+                    backgroundColor: Theme.of(context).secondaryHeaderColor,
                     child: CircleAvatar(
                       radius: 30,
                       backgroundColor: Colors.white,
-                      child: Icon(Icons.person_outline, color: Theme
-                          .of(context)
-                          .secondaryHeaderColor, size: 35,),
+                      child: Icon(
+                        Icons.person_outline,
+                        color: Theme.of(context).secondaryHeaderColor,
+                        size: 35,
+                      ),
                     ),
                   ),
                 ),
-                Text(widget.eventTitle ?? "title", style: TextStyle(
-                  fontSize: 16
-                  ),
+                Text(
+                  widget.eventTitle ?? "title",
+                  style: TextStyle(fontSize: 16),
                 ),
-
               ],
             ),
-
           ),
         ),
         Divider(

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/navigation/route_manager.dart' as router;
 import 'package:flutter_app/widgets/age_slider.dart';
 import 'package:flutter_app/widgets/category_grid.dart';
-import 'package:flutter_app/widgets/custom_scaffold_with_navBar.dart';
+import 'package:flutter_app/mixins/basic_mixin.dart';
 import 'package:flutter_app/widgets/distance_slider.dart';
 import 'package:flutter_app/widgets/navigation_button.dart';
 

@@ -8,7 +8,7 @@ import 'package:age/age.dart';
 import 'package:flutter_app/size_config.dart';
 import 'package:flutter_app/theme.dart';
 import 'package:flutter_app/widgets/about_text.dart';
-import 'package:flutter_app/widgets/custom_scaffold_with_navBar.dart';
+import 'package:flutter_app/mixins/basic_mixin.dart';
 import 'package:flutter_app/widgets/friends_widget.dart';
 import 'package:flutter_app/widgets/info_header_widget.dart';
 import 'package:flutter_app/widgets/instagram_images_widget.dart';
@@ -64,119 +64,123 @@ class _ProfileState extends State<Profile> with BasicMixin {
   Widget appBar() {
     // TODO: implement appBar
     return AppBar(
-      actions: [IconButton(icon: Icon(Icons.logout), onPressed: () {
-        AuthService auth = AuthService();
-        auth.signOut();
-      })],
+      actions: [
+        IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: () {
+              AuthService auth = AuthService();
+              auth.signOut();
+            })
+      ],
       title: Text("Profil"),
       centerTitle: true,
       backgroundColor: primaryBlue,
     );
   }
 
-
   @override
   Widget body() {
     final authUser = Provider.of<MockUser>(context);
     name = checkFbData();
     return FutureBuilder<MockUser>(
-      future: DatabaseService().getUserFromUid(authUser.uid),
-      builder: (BuildContext context, AsyncSnapshot<MockUser> snapshot){
-        if(snapshot.hasData){
-          print(snapshot.data.uid);
-        }
+        future: DatabaseService().getUserFromUid(authUser.uid),
+        builder: (BuildContext context, AsyncSnapshot<MockUser> snapshot) {
+          if (snapshot.hasData) {
+            print(snapshot.data.uid);
+          }
 
-        return snapshot.hasData ? Container(
-          color: Theme.of(context).primaryColor,
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Profile image with gradient
-                Stack(
-                  children: [
-                    Container(
-                      width: SizeConfig.blockSizeHorizontal * 100,
-                      height: SizeConfig.blockSizeVertical * 70,
-                      child: snapshot.data.profilePicture != null ? CachedNetworkImage(
-                          imageUrl: snapshot.data.profilePicture,
-                        fit: BoxFit.cover,
-                        placeholder: (context, url) => Container(
-
-                          child: SpinKitCubeGrid(
-                            color: appTheme.accentColor,
-                            size: 80,
-                          ),
-                        ),
-                      ) : AssetImage("images/pia-profile-pic.jpg")
-                    ),
-                    Container(
-                      height: SizeConfig.blockSizeVertical * 70,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          stops: [0.5, 1.0],
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            Colors.transparent,
-                            Theme.of(context).primaryColor,
+          return snapshot.hasData
+              ? Container(
+                  color: Theme.of(context).primaryColor,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Profile image with gradient
+                        Stack(
+                          children: [
+                            Container(
+                                width: SizeConfig.blockSizeHorizontal * 100,
+                                height: SizeConfig.blockSizeVertical * 70,
+                                child: snapshot.data.profilePicture != null
+                                    ? CachedNetworkImage(
+                                        imageUrl: snapshot.data.profilePicture,
+                                        fit: BoxFit.cover,
+                                        placeholder: (context, url) =>
+                                            Container(
+                                          child: SpinKitCubeGrid(
+                                            color: appTheme.accentColor,
+                                            size: 80,
+                                          ),
+                                        ),
+                                      )
+                                    : AssetImage("images/pia-profile-pic.jpg")),
+                            Container(
+                              height: SizeConfig.blockSizeVertical * 70,
+                              width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  stops: [0.5, 1.0],
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    Colors.transparent,
+                                    Theme.of(context).primaryColor,
+                                  ],
+                                ),
+                              ),
+                            ),
                           ],
                         ),
-                      ),
-                    ),
-                  ],
-                ),
-                // Profile name and age
-                Padding(
-                  padding: EdgeInsets.all(11),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "${snapshot.data.name}, ${snapshot.data.age.toString()}" ,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 30,
+                        // Profile name and age
+                        Padding(
+                          padding: EdgeInsets.all(11),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "${snapshot.data.name}, ${snapshot.data.age.toString()}",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 30,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                        // Home town info
+                        InfoHeaderWidget(
+                          icon: Icons.place,
+                          text: 'København NV',
+                        ),
+                        // Work info
+                        InfoHeaderWidget(
+                          icon: Icons.work,
+                          text: 'Fotograf hos Hansens billeder',
+                        ),
+                        // School info
+                        InfoHeaderWidget(
+                          icon: Icons.school,
+                          text: 'Dansk fotograf institut',
+                        ),
+                        // About person text
+                        AboutText(
+                          heading: 'Om dig',
+                          body:
+                              'Typen der altid løber efter bussen, og altid ender med at komme i alt for god tid.',
+                        ),
+                        // Common friends
+                        // FriendsWidget(text: 'Venner',),
+                        // Instagram
+                        // Padding(
+                        //   padding: const EdgeInsets.only(bottom: 100),
+                        //   child: InstagramImagesWidget(),
+                        // ),
+                      ],
+                    ),
                   ),
-                ),
-                // Home town info
-                InfoHeaderWidget(
-                  icon: Icons.place,
-                  text: 'København NV',
-                ),
-                // Work info
-                InfoHeaderWidget(
-                  icon: Icons.work,
-                  text: 'Fotograf hos Hansens billeder',
-                ),
-                // School info
-                InfoHeaderWidget(
-                  icon: Icons.school,
-                  text: 'Dansk fotograf institut',
-                ),
-                // About person text
-                AboutText(
-                  heading: 'Om dig',
-                  body:
-                  'Typen der altid løber efter bussen, og altid ender med at komme i alt for god tid.',
-                ),
-                // Common friends
-                // FriendsWidget(text: 'Venner',),
-                // Instagram
-                // Padding(
-                //   padding: const EdgeInsets.only(bottom: 100),
-                //   child: InstagramImagesWidget(),
-                // ),
-              ],
-            ),
-          ),
-        ) : Text("ERROR");
-      }
-
-    );
+                )
+              : Text("ERROR");
+        });
   }
 }

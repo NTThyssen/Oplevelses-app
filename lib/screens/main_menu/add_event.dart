@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/service/DatabaseService.dart';
 import 'package:flutter_app/size_config.dart';
 import 'package:flutter_app/widgets/category_grid.dart';
-import 'package:flutter_app/widgets/custom_scaffold_with_navBar.dart';
+import 'package:flutter_app/mixins/basic_mixin.dart';
 import 'package:flutter_app/widgets/event_request_widget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
@@ -13,7 +13,6 @@ import 'package:provider/provider.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import '../../model/user.dart';
 import 'package:intl/intl.dart';
-import 'package:path/path.dart';
 import '../../theme.dart';
 import 'my_favorites.dart';
 import 'package:flutter_app/navigation/route_manager.dart' as router;
@@ -42,33 +41,39 @@ class _AddEventState extends State<RequestForEvents> with BasicMixin {
   Widget body({BuildContext context}) {
     final authUser = Provider.of<MockUser>(context);
     return StreamBuilder<List<EventRequest>>(
-        stream: DatabaseService().getEventRequests(authUser.uid),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            for (var index in snapshot.data) {
-              eventsFutures
-                  .add(DatabaseService().getEventFromUid(index.eventUid));
-            }
+      stream: DatabaseService().getEventRequests(authUser.uid),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          for (var index in snapshot.data) {
+            eventsFutures
+                .add(DatabaseService().getEventFromUid(index.eventUid));
           }
-          return FutureBuilder<List<Event>>(
-              future: Future.wait(eventsFutures),
-              builder: (context, AsyncSnapshot<List<Event>> snapshot) {
-                if (snapshot.hasData) {}
-                return snapshot.hasData
-                    ? Column(
-                        children: [
-                          for (var ele in snapshot.data)
-                            FadeIn(
-                                fadeTick += 0.4,
-                                EventRequestWidget(
-                                  eventTitle: ele.title,
-                                )),
-                        ],
-                      )
-                    : Center(
-                        child: Container(child: Text("Ingen anomodninger")));
-              });
-        });
+        }
+        return FutureBuilder<List<Event>>(
+          future: Future.wait(eventsFutures),
+          builder: (context, AsyncSnapshot<List<Event>> snapshot) {
+            if (snapshot.hasData) {}
+            return snapshot.hasData
+                ? Column(
+                    children: [
+                      for (var ele in snapshot.data)
+                        FadeIn(
+                          fadeTick += 0.4,
+                          EventRequestWidget(
+                            eventTitle: ele.title,
+                          ),
+                        ),
+                    ],
+                  )
+                : Center(
+                    child: Container(
+                      child: Text("Ingen anomodninger"),
+                    ),
+                  );
+          },
+        );
+      },
+    );
   }
 }
 
@@ -157,7 +162,7 @@ class _AddOrRepostEventState extends State<AddOrRepostEvent> {
               padding: const EdgeInsets.only(top: 20),
               child: Container(
                 width: SizeConfig.blockSizeHorizontal * 40,
-                height: SizeConfig.blockSizeVertical * 25,
+                height: SizeConfig.blockSizeVertical * 20,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(15.0)),
                   color: blue,
@@ -192,14 +197,14 @@ class _AddOrRepostEventState extends State<AddOrRepostEvent> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.only(top: 8),
               child: Text("Tilføj billede"),
             ),
             SizedBox(
               height: SizeConfig.blockSizeVertical * 3,
             ),
             Padding(
-              padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
+              padding: EdgeInsets.only(top: 8),
               child: Center(
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
@@ -211,12 +216,10 @@ class _AddOrRepostEventState extends State<AddOrRepostEvent> {
                         onFieldSubmitted: (_) =>
                             FocusScope.of(context).nextFocus(),
                         onChanged: (input) {
-                          setState(() {
-                            widget.event.title = input;
-                          });
+                          widget.event.title = input;
                         },
-                        keyboardType: TextInputType.multiline,
-                        maxLines: null,
+                        keyboardType: TextInputType.text,
+                        maxLines: 1,
                         maxLength: 180,
                         initialValue: widget.event?.title ?? "",
                         decoration: InputDecoration(
@@ -228,40 +231,31 @@ class _AddOrRepostEventState extends State<AddOrRepostEvent> {
                       ),
                     ),
                     width: SizeConfig.blockSizeHorizontal * 90,
-                    height: SizeConfig.blockSizeHorizontal * 14,
+                    height: SizeConfig.blockSizeHorizontal * 15,
                     margin: const EdgeInsets.only(
                         bottom: 6.0), //Same as `blurRadius` i guess
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5.0),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey,
-                          offset: Offset(0.0, 1.0), //(x,y)
-                          blurRadius: 6.0,
-                        ),
-                      ],
+                      color: Colors.grey[50],
                     ),
                   ),
                 ),
               ),
             ),
             Padding(
-              padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
+              padding: EdgeInsets.only(top: 8),
               child: Center(
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
                   child: Container(
                     child: Padding(
-                      padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
+                      padding: EdgeInsets.only(left: 8),
                       child: TextFormField(
                         textInputAction: TextInputAction.next,
                         onFieldSubmitted: (_) =>
                             FocusScope.of(context).nextFocus(),
                         onChanged: (input) {
-                          setState(() {
-                            widget.event.description = input;
-                          });
+                          widget.event.description = input;
                         },
                         keyboardType: TextInputType.multiline,
                         maxLines: null,
@@ -281,35 +275,26 @@ class _AddOrRepostEventState extends State<AddOrRepostEvent> {
                         bottom: 6.0), //Same as `blurRadius` i guess
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5.0),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey,
-                          offset: Offset(0.0, 1.0), //(x,y)
-                          blurRadius: 6.0,
-                        ),
-                      ],
+                      color: Colors.grey[50],
                     ),
                   ),
                 ),
               ),
             ),
             Padding(
-              padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
+              padding: EdgeInsets.only(top: 8),
               child: Center(
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
                   child: Container(
                     child: Padding(
-                      padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
+                      padding: EdgeInsets.only(left: 8),
                       child: TextFormField(
                         textInputAction: TextInputAction.next,
                         onFieldSubmitted: (_) =>
                             FocusScope.of(context).nextFocus(),
                         onChanged: (input) {
-                          setState(() {
-                            widget.event.price = input;
-                          });
+                          widget.event.price = input;
                         },
                         keyboardType: TextInputType.number,
                         maxLines: null,
@@ -324,40 +309,25 @@ class _AddOrRepostEventState extends State<AddOrRepostEvent> {
                       ),
                     ),
                     width: SizeConfig.blockSizeHorizontal * 90,
-                    height: SizeConfig.blockSizeHorizontal * 14,
+                    height: SizeConfig.blockSizeHorizontal * 15,
                     margin: const EdgeInsets.only(
                         bottom: 6.0), //Same as `blurRadius` i guess
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5.0),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey,
-                          offset: Offset(0.0, 1.0), //(x,y)
-                          blurRadius: 6.0,
-                        ),
-                      ],
+                      color: Colors.grey[50],
                     ),
                   ),
                 ),
               ),
             ),
-            /*TextFormField(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Address',
-                      ),
-                      enabled: true,
-
-                    ),*/
             Padding(
-              padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
+              padding: EdgeInsets.only(top: 8),
               child: Center(
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
                   child: Container(
                     child: Padding(
-                        padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
+                        padding: EdgeInsets.only(left: 8),
                         child: DateTimeField(
                           initialValue: widget.event?.date != null
                               ? DateFormat("dd/MM/yyyy")
@@ -394,32 +364,23 @@ class _AddOrRepostEventState extends State<AddOrRepostEvent> {
                         bottom: 6.0), //Same as `blurRadius` i guess
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5.0),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey,
-                          offset: Offset(0.0, 1.0), //(x,y)
-                          blurRadius: 6.0,
-                        ),
-                      ],
+                      color: Colors.grey[50],
                     ),
                   ),
                 ),
               ),
             ),
             Padding(
-              padding: EdgeInsets.fromLTRB(0, 8, 0, 15),
+              padding: EdgeInsets.only(top: 8, bottom: 15),
               child: Center(
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
                   child: Container(
                     child: Padding(
-                      padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
+                      padding: EdgeInsets.only(left: 8),
                       child: TextFormField(
                         onChanged: (input) {
-                          setState(() {
-                            widget.event.city = input;
-                          });
+                          widget.event.city = input;
                         },
                         keyboardType: TextInputType.multiline,
                         maxLines: null,
@@ -434,19 +395,12 @@ class _AddOrRepostEventState extends State<AddOrRepostEvent> {
                       ),
                     ),
                     width: SizeConfig.blockSizeHorizontal * 90,
-                    height: SizeConfig.blockSizeHorizontal * 14,
+                    height: SizeConfig.blockSizeHorizontal * 15,
                     margin: const EdgeInsets.only(
                         bottom: 6.0), //Same as `blurRadius` i guess
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5.0),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey,
-                          offset: Offset(0.0, 1.0), //(x,y)
-                          blurRadius: 6.0,
-                        ),
-                      ],
+                      color: Colors.grey[50],
                     ),
                   ),
                 ),
@@ -517,12 +471,14 @@ class _MenuOverviewState extends State<MenuOverview> with BasicMixin {
         centerTitle: true,
         actions: [
           Padding(
-              padding: EdgeInsets.fromLTRB(0, 0, 15, 0),
-              child: GestureDetector(
-                  onTap: () {
-                    Navigator.pushNamed(this.context, router.EventRequestRoute);
-                  },
-                  child: Icon(Icons.notifications_none)))
+            padding: EdgeInsets.only(right: 8),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(this.context, router.EventRequestRoute);
+              },
+              child: Icon(Icons.notifications_none),
+            ),
+          ),
         ],
         title: Container(
           width: SizeConfig.blockSizeHorizontal * 40,
@@ -538,16 +494,17 @@ class _MenuOverviewState extends State<MenuOverview> with BasicMixin {
                     });
                   },
                   child: Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(9),
-                              topLeft: Radius.circular(9)),
-                          border: Border.all(color: Colors.blue),
-                          color: isFavorite == false
-                              ? Colors.blue
-                              : Colors.transparent),
-                      child: Icon(Icons.messenger_outline)),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(9),
+                            topLeft: Radius.circular(9)),
+                        border: Border.all(color: Colors.blue),
+                        color: isFavorite == false
+                            ? Colors.blue
+                            : Colors.transparent),
+                    child: Icon(Icons.messenger_outline),
+                  ),
                 ),
               ),
               Flexible(
@@ -559,16 +516,17 @@ class _MenuOverviewState extends State<MenuOverview> with BasicMixin {
                     });
                   },
                   child: Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(9),
-                              bottomRight: Radius.circular(9)),
-                          border: Border.all(color: Colors.blue),
-                          color: isFavorite == false
-                              ? Colors.transparent
-                              : Colors.blue),
-                      child: Icon(Icons.favorite)),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(9),
+                            bottomRight: Radius.circular(9)),
+                        border: Border.all(color: Colors.blue),
+                        color: isFavorite == false
+                            ? Colors.transparent
+                            : Colors.blue),
+                    child: Icon(Icons.favorite),
+                  ),
                 ),
               ),
             ],
@@ -585,11 +543,6 @@ class _MenuOverviewState extends State<MenuOverview> with BasicMixin {
             height: SizeConfig.blockSizeVertical * 100,
             child: Stack(
               children: [
-                // SingleChildScrollView(
-                //   child: Column(
-                //     children: [Container()],
-                //   ),
-                // ),
                 Center(
                   child: Text(
                     "Ingen beskeder",
@@ -605,20 +558,26 @@ class _MenuOverviewState extends State<MenuOverview> with BasicMixin {
                       child: SizedBox(
                         height: 50,
                         child: RaisedButton(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30)),
-                            child: Text(
-                              "Nyt Event",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                              ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          child: Text(
+                            "Nyt Event",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
                             ),
-                            color: blue,
-                            onPressed: () {
-                              Navigator.push(this.context,
-                                  FadeRoute(page: AddOrRepostEvent()));
-                            }),
+                          ),
+                          color: blue,
+                          onPressed: () {
+                            Navigator.push(
+                              this.context,
+                              FadeRoute(
+                                page: AddOrRepostEvent(),
+                              ),
+                            );
+                          },
+                        ),
                       ),
                     ),
                   ),
@@ -626,67 +585,5 @@ class _MenuOverviewState extends State<MenuOverview> with BasicMixin {
               ],
             ),
           );
-  }
-}
-
-class InoutBoxWithBottomShadow extends StatefulWidget {
-  final String labelText;
-  final bool bigBox;
-  InoutBoxWithBottomShadow(this.labelText, {this.bigBox});
-
-  @override
-  _InoutBoxWithBottomShadowState createState() =>
-      _InoutBoxWithBottomShadowState();
-}
-
-class _InoutBoxWithBottomShadowState extends State<InoutBoxWithBottomShadow> {
-  String textInput;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
-      child: Center(
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(8.0),
-          child: Container(
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
-              child: TextFormField(
-                onChanged: (input) {
-                  setState(() {});
-                },
-                keyboardType: TextInputType.multiline,
-                maxLines: null,
-                maxLength: 180,
-                decoration: InputDecoration(
-                  hintStyle: inputFieldTextStyle,
-                  border: InputBorder.none,
-                  labelText: widget.labelText,
-                  counterText: "",
-                ),
-              ),
-            ),
-            width: SizeConfig.blockSizeHorizontal * 90,
-            height: widget.bigBox == null
-                ? SizeConfig.blockSizeHorizontal * 14
-                : SizeConfig.blockSizeHorizontal * 35,
-            margin: const EdgeInsets.only(
-                bottom: 6.0), //Same as `blurRadius` i guess
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5.0),
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey,
-                  offset: Offset(0.0, 1.0), //(x,y)
-                  blurRadius: 6.0,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
   }
 }

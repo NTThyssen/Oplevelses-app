@@ -7,7 +7,7 @@ import 'package:path/path.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_app/size_config.dart';
-import 'package:flutter_app/widgets/custom_scaffold_with_navBar.dart';
+import 'package:flutter_app/mixins/basic_mixin.dart';
 
 class EditProfile extends StatefulWidget {
   @override
@@ -18,56 +18,55 @@ class _EditProfileState extends State<EditProfile> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        decoration: BoxDecoration(
-          color: Color.fromRGBO(239, 239, 244, 1),
-        ),
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CameraConnect(),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    CameraConnect(),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    CameraConnect(),
-                  ],
+      decoration: BoxDecoration(
+        color: Color.fromRGBO(239, 239, 244, 1),
+      ),
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CameraConnect(),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  CameraConnect(),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  CameraConnect(),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 5, 0, 10),
+              child:
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                CameraConnect(),
+                SizedBox(
+                  width: 5,
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 5, 0, 10),
-                child:
-                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                      CameraConnect(),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      CameraConnect(),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      CameraConnect()
-                ]),
-              ),
-              TitleAndTextField(
-                  "Om Mig", "Skriv lidt om dig selv", 75, 20, true),
-              TitleAndTextField("By", "Skriv din by her", 75, 6, false),
-              TitleAndTextField("Job", "Skriv dit job her", 75, 6, false),
-              TitleAndTextField(
-                  "Udannelse", "Skriv din uddannelse her", 75, 6, false),
-            ],
-          ),
+                CameraConnect(),
+                SizedBox(
+                  width: 5,
+                ),
+                CameraConnect()
+              ]),
+            ),
+            TitleAndTextField("Om Mig", "Skriv lidt om dig selv", 75, 20, true),
+            TitleAndTextField("By", "Skriv din by her", 75, 6, false),
+            TitleAndTextField("Job", "Skriv dit job her", 75, 6, false),
+            TitleAndTextField(
+                "Udannelse", "Skriv din uddannelse her", 75, 6, false),
+          ],
         ),
-      );
+      ),
+    );
   }
 }
 
@@ -85,16 +84,16 @@ class _CameraConnectState extends State<CameraConnect> {
     if (image == null) {
       File img = await ImagePicker.pickImage(source: ImageSource.gallery);
       if (img != null) {
-      image = img;
-      setState(() {});
-      uploadFile();
+        image = img;
+        setState(() {});
+        uploadFile();
       }
     } else {
       image = null;
       setState(() {});
     }
-
   }
+
   Future uploadFile() async {
     StorageReference storageReference = FirebaseStorage.instance
         .ref()

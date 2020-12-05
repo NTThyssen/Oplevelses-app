@@ -3,7 +3,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/service/DatabaseService.dart';
-import 'package:flutter_app/widgets/custom_scaffold_with_navBar.dart';
+import 'package:flutter_app/mixins/basic_mixin.dart';
 import 'package:flutter_app/size_config.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_animations/simple_animations.dart';
@@ -39,22 +39,31 @@ class _MyFavoritesState extends State<MyFavorites> {
           }
           print(snapshot.data);
           if (snapshot.hasData && snapshot.data.isNotEmpty) {
-
-            return snapshot.data.elementAt(0).event != null ? Scaffold(
-                body: SingleChildScrollView(
-                  child: Column(
-                      children:
-                      snapshot.data.map((e) => FadeIn(0.5,FavoriteCardView(favorite: e,)),).toList(),
-                )
-            )) : Center(child: Text("Du har ingen Favoritter"),);
-          }else {
+            return snapshot.data.elementAt(0).event != null
+                ? Scaffold(
+                    body: SingleChildScrollView(
+                        child: Column(
+                    children: snapshot.data
+                        .map(
+                          (e) => FadeIn(
+                              0.5,
+                              FavoriteCardView(
+                                favorite: e,
+                              )),
+                        )
+                        .toList(),
+                  )))
+                : Center(
+                    child: Text("Du har ingen Favoritter"),
+                  );
+          } else {
             return Center(
-              child: Center(child: Text("Du har ingen Favoritter"),),
+              child: Center(
+                child: Text("Du har ingen Favoritter"),
+              ),
             );
-        }
-      }
-    );
-
+          }
+        });
   }
 }
 
@@ -185,7 +194,8 @@ class _FavoriteCardViewState extends State<FavoriteCardView> {
                             fit: BoxFit.fitWidth,
                             alignment: FractionalOffset.centerLeft,
                             image: widget.favorite.event.pictureUrl != null
-                                ? CachedNetworkImageProvider(widget.favorite.event.pictureUrl)
+                                ? CachedNetworkImageProvider(
+                                    widget.favorite.event.pictureUrl)
                                 : AssetImage('images/big-ice.png'),
                           ),
                         )),
