@@ -1,10 +1,8 @@
 import 'dart:math';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/authenticate/sing_up.dart';
 import 'package:flutter_app/model/user.dart';
-import 'package:flutter_app/screens/home/home_screen.dart';
 import 'package:flutter_app/service/DatabaseService.dart';
 import 'package:flutter_app/size_config.dart';
 import 'package:flutter_app/theme.dart';
@@ -12,7 +10,6 @@ import 'package:flutter_app/mixins/basic_mixin.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:flutter_app/service/auth.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:provider/provider.dart';
 
 import '../main.dart';
 
@@ -83,14 +80,15 @@ class _LoginState extends State<Login> {
                       child: Column(
                         children: [
                           Padding(
-                            padding: EdgeInsets.fromLTRB(
-                                0, SizeConfig.blockSizeVertical * 5, 0, 0),
+                            padding: EdgeInsets.only(
+                                top: SizeConfig.blockSizeVertical * 5),
                             child: Container(
                               decoration: BoxDecoration(
-                                  color: Colors.transparent,
-                                  border: Border(
-                                      bottom:
-                                          BorderSide(width: 2.0, color: blue))),
+                                color: Colors.transparent,
+                                border: Border(
+                                  bottom: BorderSide(width: 2.0, color: blue),
+                                ),
+                              ),
                               width: SizeConfig.blockSizeHorizontal * 80,
                               child: Theme(
                                 data: Theme.of(context).copyWith(
@@ -100,12 +98,10 @@ class _LoginState extends State<Login> {
                                   style: TextStyle(color: white),
                                   textAlign: TextAlign.left,
                                   validator: (val) =>
-                                      val.isEmpty ? "enter email" : null,
+                                      val.isEmpty ? "Indtast email" : null,
                                   onChanged: (val) {
-                                    setState(() {
-                                      email = val;
-                                      print(val);
-                                    });
+                                    email = val;
+                                    print(val);
                                   },
                                   decoration: InputDecoration(
                                       prefixIcon: Icon(Icons.email_outlined),
@@ -134,13 +130,11 @@ class _LoginState extends State<Login> {
                                   textAlign: TextAlign.left,
                                   obscureText: true,
                                   validator: (val) => val.length < 6
-                                      ? "must be greater than 6 chars"
+                                      ? "Skal være mere end 6 karakterer"
                                       : null,
                                   onChanged: (val) {
-                                    setState(() {
-                                      password = val;
-                                      print(val);
-                                    });
+                                    password = val;
+                                    print(val);
                                   },
                                   decoration: InputDecoration(
                                       hintStyle: inputFieldTextStyle,
@@ -200,7 +194,7 @@ class _LoginState extends State<Login> {
                                     MockUser(
                                         age: agei.toString(),
                                         profilePicture: pics.elementAt(pic),
-                                        name: "Test-Person-${i}",
+                                        name: "Test-Person-$i",
                                         uid: user.uid));
                                 Navigator.pop(context);
                               },
@@ -276,9 +270,12 @@ class _LoginState extends State<Login> {
                         child: FacebookSignInButton(
                             borderRadius: 10,
                             onPressed: () async {
-                              key.currentState.showSnackBar(SnackBar(
+                              key.currentState.showSnackBar(
+                                SnackBar(
                                   content: Text(
-                                      "Facebook virker ikke midlertidligt")));
+                                      "Facebook virker ikke midlertidligt"),
+                                ),
+                              );
                               /* setState(() {
                                 isLoggingIn = true;
                               });
