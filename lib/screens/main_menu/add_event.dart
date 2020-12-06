@@ -77,217 +77,219 @@ class _AddOrRepostEventState extends State<AddOrRepostEvent> {
 
     return Scaffold(
       key: key,
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Row(
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Spacer(),
+                Form(
+                  child: Column(
+                    children: [
+                      // Image picker
+                      Padding(
+                        padding: const EdgeInsets.only(top: 80),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: GestureDetector(
+                            onTap: cameraConnect,
+                            child: Container(
+                              width: SizeConfig.blockSizeHorizontal * 40,
+                              height: SizeConfig.blockSizeVertical * 20,
+                              color: blue,
+                              child: widget.event.pictureUrl == null
+                                  ? Icon(
+                                      Icons.add,
+                                      size: 70,
+                                      color: Colors.white.withOpacity(0.50),
+                                    )
+                                  : Image.network(
+                                      widget.event.pictureUrl,
+                                      fit: BoxFit.cover,
+                                    ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8),
+                        child: Text(
+                          "Tilføj billede",
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: SizeConfig.blockSizeVertical * 3,
+                      ),
+                      // Title input field
+                      InputFormField(
+                        value: widget.event.title,
+                        initialValue: widget.event?.title ?? "",
+                        labelText: "Titel",
+                        maxLines: 1,
+                        keyboardType: TextInputType.text,
+                        height: SizeConfig.blockSizeHorizontal * 15,
+                        width: SizeConfig.blockSizeHorizontal * 90,
+                      ),
+                      // Description input field
+                      InputFormField(
+                        value: widget.event.description,
+                        initialValue: widget.event?.description ?? "",
+                        labelText: "Beskrivelse",
+                        maxLines: null,
+                        keyboardType: TextInputType.multiline,
+                        height: SizeConfig.blockSizeHorizontal * 35,
+                        width: SizeConfig.blockSizeHorizontal * 90,
+                      ),
+                      // Price input field
+                      InputFormField(
+                        value: widget.event.price ?? "Gratis",
+                        initialValue: widget.event?.price ?? "",
+                        labelText: "Pris",
+                        maxLines: 1,
+                        keyboardType: TextInputType.number,
+                        height: SizeConfig.blockSizeHorizontal * 15,
+                        width: SizeConfig.blockSizeHorizontal * 90,
+                      ),
+                      // Date picker field
+                      Padding(
+                        padding: EdgeInsets.only(top: 8),
+                        child: Center(
+                          child: Container(
+                            child: Padding(
+                                padding: EdgeInsets.only(left: 8),
+                                child: DateTimeField(
+                                  initialValue: widget.event?.date != null
+                                      ? DateFormat("dd/MM/yyyy")
+                                          .parse(widget.event.date + "/2020")
+                                      : DateTime.now(),
+                                  decoration: InputDecoration(
+                                    hintStyle: inputFieldTextStyle,
+                                    border: InputBorder.none,
+                                    labelText: "Vælg Dato",
+                                    counterText: "",
+                                  ),
+                                  format: DateFormat("dd/MM/yyyy"),
+                                  textInputAction: TextInputAction.next,
+                                  onFieldSubmitted: (_) =>
+                                      FocusScope.of(context).nextFocus(),
+                                  onChanged: (input) {
+                                    setState(() {
+                                      widget.event.date =
+                                          (input.day.toString() +
+                                              "/" +
+                                              input.month.toString() +
+                                              "/" +
+                                              input.year.toString());
+                                    });
+                                  },
+                                  onShowPicker: (context, currentValue) {
+                                    return showDatePicker(
+                                        context: context,
+                                        firstDate: DateTime(1900),
+                                        initialDate:
+                                            currentValue ?? DateTime.now(),
+                                        lastDate: DateTime(2100));
+                                  },
+                                )),
+                            width: SizeConfig.blockSizeHorizontal * 90,
+                            height: SizeConfig.blockSizeHorizontal * 14,
+                            margin: const EdgeInsets.only(
+                                bottom: 6.0), //Same as `blurRadius` i guess
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8.0),
+                              color: Colors.grey[50],
+                            ),
+                          ),
+                        ),
+                      ),
+                      // City input field
+                      InputFormField(
+                        value: widget.event.city,
+                        initialValue: widget.event?.city ?? "",
+                        labelText: "By",
+                        keyboardType: TextInputType.streetAddress,
+                        maxLines: 1,
+                        height: SizeConfig.blockSizeHorizontal * 15,
+                        width: SizeConfig.blockSizeHorizontal * 90,
+                      ),
+                      // Category selector
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8),
+                        child: Text("Vælg kategori"),
+                      ),
+                      CategoryGrid(
+                        selectAll: false,
+                      ),
+                    ],
+                  ),
+                ),
+                // Create or repost event button
                 Padding(
-                  padding: const EdgeInsets.only(right: 20, top: 30),
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.close,
-                      size: 30,
+                  padding: const EdgeInsets.only(top: 30, bottom: 30),
+                  child: SizedBox(
+                    height: 50,
+                    child: RaisedButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30)),
+                      child: widget.event == null
+                          ? Text(
+                              "Repost Event",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                              ),
+                            )
+                          : Text(
+                              "Opret Event",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                              ),
+                            ),
+                      color: blue,
+                      onPressed: () {
+                        event = Event(
+                            userUid: authUser.uid,
+                            title: widget.event.title,
+                            pictureUrl: widget.event.pictureUrl,
+                            price: widget.event.price,
+                            date: widget.event.date,
+                            city: widget.event.city,
+                            description: widget.event.description);
+                        DatabaseService(uid: authUser.uid)
+                            .createEventWithUser(authUser.uid, event);
+                        key.currentState.showSnackBar(
+                          SnackBar(
+                            content: Text("Event Oprettet"),
+                          ),
+                        );
+                        Navigator.of(context).pop();
+                      },
                     ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
                   ),
                 ),
               ],
             ),
-            Form(
-              child: Column(
-                children: [
-                  // Image picker
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8.0),
-                      child: GestureDetector(
-                        onTap: cameraConnect,
-                        child: Container(
-                          width: SizeConfig.blockSizeHorizontal * 40,
-                          height: SizeConfig.blockSizeVertical * 20,
-                          color: blue,
-                          child: widget.event.pictureUrl == null
-                              ? Icon(
-                                  Icons.add,
-                                  size: 70,
-                                  color: Colors.white.withOpacity(0.50),
-                                )
-                              : Image.network(
-                                  widget.event.pictureUrl,
-                                  fit: BoxFit.cover,
-                                ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8),
-                    child: Text(
-                      "Tilføj billede",
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: SizeConfig.blockSizeVertical * 3,
-                  ),
-                  // Title input field
-                  InputFormField(
-                    value: widget.event.title,
-                    initialValue: widget.event?.title ?? "",
-                    labelText: "Titel",
-                    maxLines: 1,
-                    keyboardType: TextInputType.text,
-                    height: SizeConfig.blockSizeHorizontal * 15,
-                    width: SizeConfig.blockSizeHorizontal * 90,
-                  ),
-                  // Description input field
-                  InputFormField(
-                    value: widget.event.description,
-                    initialValue: widget.event?.description ?? "",
-                    labelText: "Beskrivelse",
-                    maxLines: null,
-                    keyboardType: TextInputType.multiline,
-                    height: SizeConfig.blockSizeHorizontal * 35,
-                    width: SizeConfig.blockSizeHorizontal * 90,
-                  ),
-                  // Price input field
-                  InputFormField(
-                    value: widget.event.price ?? "Gratis",
-                    initialValue: widget.event?.price ?? "",
-                    labelText: "Pris",
-                    maxLines: 1,
-                    keyboardType: TextInputType.number,
-                    height: SizeConfig.blockSizeHorizontal * 15,
-                    width: SizeConfig.blockSizeHorizontal * 90,
-                  ),
-                  // Date picker field
-                  Padding(
-                    padding: EdgeInsets.only(top: 8),
-                    child: Center(
-                      child: Container(
-                        child: Padding(
-                            padding: EdgeInsets.only(left: 8),
-                            child: DateTimeField(
-                              initialValue: widget.event?.date != null
-                                  ? DateFormat("dd/MM/yyyy")
-                                      .parse(widget.event.date + "/2020")
-                                  : DateTime.now(),
-                              decoration: InputDecoration(
-                                hintStyle: inputFieldTextStyle,
-                                border: InputBorder.none,
-                                labelText: "Vælg Dato",
-                                counterText: "",
-                              ),
-                              format: DateFormat("dd/MM/yyyy"),
-                              textInputAction: TextInputAction.next,
-                              onFieldSubmitted: (_) =>
-                                  FocusScope.of(context).nextFocus(),
-                              onChanged: (input) {
-                                setState(() {
-                                  widget.event.date = (input.day.toString() +
-                                      "/" +
-                                      input.month.toString() +
-                                      "/" +
-                                      input.year.toString());
-                                });
-                              },
-                              onShowPicker: (context, currentValue) {
-                                return showDatePicker(
-                                    context: context,
-                                    firstDate: DateTime(1900),
-                                    initialDate: currentValue ?? DateTime.now(),
-                                    lastDate: DateTime(2100));
-                              },
-                            )),
-                        width: SizeConfig.blockSizeHorizontal * 90,
-                        height: SizeConfig.blockSizeHorizontal * 14,
-                        margin: const EdgeInsets.only(
-                            bottom: 6.0), //Same as `blurRadius` i guess
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8.0),
-                          color: Colors.grey[50],
-                        ),
-                      ),
-                    ),
-                  ),
-                  // City input field
-                  InputFormField(
-                    value: widget.event.city,
-                    initialValue: widget.event?.city ?? "",
-                    labelText: "By",
-                    keyboardType: TextInputType.streetAddress,
-                    maxLines: 1,
-                    height: SizeConfig.blockSizeHorizontal * 15,
-                    width: SizeConfig.blockSizeHorizontal * 90,
-                  ),
-                  // Category selector
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8),
-                    child: Text("Vælg kategori"),
-                  ),
-                  CategoryGrid(
-                    selectAll: false,
-                  ),
-                ],
+          ),
+          Positioned(
+            top: 30,
+            right: 20,
+            child: IconButton(
+              icon: Icon(
+                Icons.close,
+                size: 30,
               ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
             ),
-            // Create or repost event button
-            Padding(
-              padding: const EdgeInsets.only(top: 30, bottom: 30),
-              child: SizedBox(
-                height: 50,
-                child: RaisedButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30)),
-                  child: widget.event == null
-                      ? Text(
-                          "Repost Event",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                          ),
-                        )
-                      : Text(
-                          "Opret Event",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                          ),
-                        ),
-                  color: blue,
-                  onPressed: () {
-                    event = Event(
-                        userUid: authUser.uid,
-                        title: widget.event.title,
-                        pictureUrl: widget.event.pictureUrl,
-                        price: widget.event.price,
-                        date: widget.event.date,
-                        city: widget.event.city,
-                        description: widget.event.description);
-                    DatabaseService(uid: authUser.uid)
-                        .createEventWithUser(authUser.uid, event);
-                    key.currentState.showSnackBar(
-                      SnackBar(
-                        content: Text("Event Oprettet"),
-                      ),
-                    );
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
