@@ -38,13 +38,13 @@ class _AddOrRepostEventState extends State<AddOrRepostEvent> {
     final authUser = Provider.of<MockUser>(context);
     final key = new GlobalKey<ScaffoldState>();
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-    File image;
+    PickedFile image;
 
     Future uploadFile() async {
       StorageReference storageReference = FirebaseStorage.instance
           .ref()
           .child('eventPicture/${basename(image.path)}');
-      StorageUploadTask uploadTask = storageReference.putFile(image);
+      StorageUploadTask uploadTask = storageReference.putFile(File(image.path));
 
       await uploadTask.onComplete;
       print('File Uploaded');
@@ -61,7 +61,8 @@ class _AddOrRepostEventState extends State<AddOrRepostEvent> {
     cameraConnect() async {
       print('Picker is Called');
       if (image == null) {
-        File img = await ImagePicker.pickImage(source: ImageSource.camera);
+        PickedFile img =
+            await ImagePicker().getImage(source: ImageSource.camera);
         if (img != null) {
           image = img;
           setState(

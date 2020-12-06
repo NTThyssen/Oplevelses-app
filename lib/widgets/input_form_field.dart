@@ -32,16 +32,13 @@ class InputFormField extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.only(left: 8),
               child: TextFormField(
+                textCapitalization: TextCapitalization.sentences,
                 onChanged: (input) {
                   value = input;
                 },
-                onEditingComplete: () {
-                  if (labelText == "By") {
-                    FocusScope.of(context).unfocus();
-                  } else {
-                    FocusScope.of(context).nextFocus();
-                  }
-                },
+                onEditingComplete: () => labelText == "By"
+                    ? FocusScope.of(context).unfocus()
+                    : FocusScope.of(context).nextFocus(),
                 keyboardType: keyboardType,
                 maxLines: maxLines,
                 maxLength: 180,
