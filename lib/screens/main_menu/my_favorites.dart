@@ -54,12 +54,12 @@ class _MyFavoritesState extends State<MyFavorites> {
                         .toList(),
                   )))
                 : Center(
-                    child: Text("Du har ingen Favoritter"),
+                    child: Text("Du har ingen favoritter"),
                   );
           } else {
             return Center(
               child: Center(
-                child: Text("Du har ingen Favoritter"),
+                child: Text("Du har ingen favoritter"),
               ),
             );
           }

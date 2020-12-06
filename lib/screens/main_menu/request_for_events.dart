@@ -56,7 +56,7 @@ class _RequestForEventsState extends State<RequestForEvents> with BasicMixin {
                   )
                 : Center(
                     child: Container(
-                      child: Text("Ingen anmodninger"),
+                      child: Text("Du har ingen anmodninger"),
                     ),
                   );
           },

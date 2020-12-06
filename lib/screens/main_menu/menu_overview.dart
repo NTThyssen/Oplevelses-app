@@ -96,8 +96,7 @@ class _MenuOverviewState extends State<MenuOverview> with BasicMixin {
               children: [
                 Center(
                   child: Text(
-                    "Ingen beskeder",
-                    style: TextStyle(color: Colors.grey, fontSize: 30),
+                    "Du har ingen beskeder",
                   ),
                 ),
                 Positioned(
