@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/authenticate/sing_up.dart';
-import 'package:flutter_app/model/user.dart';
+import 'package:flutter_app/models/user.dart';
 import 'package:flutter_app/service/DatabaseService.dart';
 import 'package:flutter_app/size_config.dart';
 import 'package:flutter_app/theme.dart';

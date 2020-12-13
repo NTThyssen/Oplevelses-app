@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_app/models/event.dart';
 import 'package:flutter_app/screens/main_menu/add_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/service/DatabaseService.dart';
@@ -10,7 +11,7 @@ import 'package:flutter_app/widgets/info_header_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_app/navigation/route_manager.dart' as router;
 
-import '../../model/user.dart';
+import '../../models/user.dart';
 import '../../theme.dart';
 
 class Test extends StatefulWidget {

@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/model/user.dart';
+import 'package:flutter_app/models/user.dart';
 import 'package:flutter_app/service/DatabaseService.dart';
 import 'package:flutter_app/service/auth.dart';
 import 'package:age/age.dart';
@@ -9,9 +9,7 @@ import 'package:flutter_app/size_config.dart';
 import 'package:flutter_app/theme.dart';
 import 'package:flutter_app/widgets/about_text.dart';
 import 'package:flutter_app/mixins/basic_mixin.dart';
-import 'package:flutter_app/widgets/friends_widget.dart';
 import 'package:flutter_app/widgets/info_header_widget.dart';
-import 'package:flutter_app/widgets/instagram_images_widget.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 

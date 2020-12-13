@@ -1,16 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/models/favorite.dart';
 import 'package:flutter_app/service/DatabaseService.dart';
-import 'package:flutter_app/mixins/basic_mixin.dart';
 import 'package:flutter_app/size_config.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_animations/simple_animations.dart';
-import 'package:simple_animations/simple_animations.dart';
 import 'package:supercharged/supercharged.dart';
 
-import '../../model/user.dart';
+import '../../models/user.dart';
 
 class MyFavorites extends StatefulWidget {
   @override
@@ -20,7 +18,6 @@ class MyFavorites extends StatefulWidget {
 class _MyFavoritesState extends State<MyFavorites> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -42,17 +39,23 @@ class _MyFavoritesState extends State<MyFavorites> {
             return snapshot.data.elementAt(0).event != null
                 ? Scaffold(
                     body: SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 80),
                         child: Column(
-                    children: snapshot.data
-                        .map(
-                          (e) => FadeIn(
-                              0.5,
-                              FavoriteCardView(
-                                favorite: e,
-                              )),
-                        )
-                        .toList(),
-                  )))
+                          children: snapshot.data
+                              .map(
+                                (e) => FadeIn(
+                                  0.5,
+                                  FavoriteCardView(
+                                    favorite: e,
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                        ),
+                      ),
+                    ),
+                  )
                 : Center(
                     child: Text("Du har ingen favoritter"),
                   );
@@ -150,10 +153,11 @@ class _FavoriteCardViewState extends State<FavoriteCardView> {
                             Text(
                               "med person",
                               style: TextStyle(
-                                  color: Colors.grey,
-                                  letterSpacing: 0.7,
-                                  fontWeight: FontWeight.w300,
-                                  fontSize: 16),
+                                color: Colors.grey,
+                                letterSpacing: 0.7,
+                                fontWeight: FontWeight.w300,
+                                fontSize: 16,
+                              ),
                             ),
                           ],
                         ),
@@ -186,19 +190,20 @@ class _FavoriteCardViewState extends State<FavoriteCardView> {
                   child: AspectRatio(
                     aspectRatio: 204.5 / 100,
                     child: Container(
-                        height: SizeConfig.blockSizeVertical * 25,
-                        decoration: new BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(Radius.circular(15)),
-                          image: new DecorationImage(
-                            fit: BoxFit.fitWidth,
-                            alignment: FractionalOffset.centerLeft,
-                            image: widget.favorite.event.pictureUrl != null
-                                ? CachedNetworkImageProvider(
-                                    widget.favorite.event.pictureUrl)
-                                : AssetImage('images/big-ice.png'),
-                          ),
-                        )),
+                      height: SizeConfig.blockSizeVertical * 25,
+                      decoration: new BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                        image: new DecorationImage(
+                          fit: BoxFit.fitWidth,
+                          alignment: FractionalOffset.centerLeft,
+                          image: widget.favorite.event.pictureUrl != null
+                              ? CachedNetworkImageProvider(
+                                  widget.favorite.event.pictureUrl)
+                              : AssetImage('images/big-ice.png'),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               )
