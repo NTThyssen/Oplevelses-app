@@ -11,7 +11,7 @@ import 'package:flutter_app/widgets/info_header_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_app/navigation/route_manager.dart' as router;
 
-import '../../models/user.dart';
+import '../../models/mock_user.dart';
 import '../../theme.dart';
 
 class Test extends StatefulWidget {

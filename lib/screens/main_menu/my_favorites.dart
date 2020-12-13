@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:simple_animations/simple_animations.dart';
 import 'package:supercharged/supercharged.dart';
 
-import '../../models/user.dart';
+import '../../models/mock_user.dart';
 
 class MyFavorites extends StatefulWidget {
   @override

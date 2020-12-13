@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_app/models/user.dart';
+import 'package:flutter_app/models/mock_user.dart';
 import 'package:flutter_app/service/DatabaseService.dart';
 import 'package:flutter_app/size_config.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';

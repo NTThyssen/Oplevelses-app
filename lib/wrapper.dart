@@ -5,7 +5,7 @@ import 'package:flutter_app/screens/settings/profile.dart';
 import 'package:provider/provider.dart';
 
 import 'authenticate/not_signed_in.dart';
-import 'models/user.dart';
+import 'models/mock_user.dart';
 
 class Wrapper extends StatelessWidget {
   final String route;

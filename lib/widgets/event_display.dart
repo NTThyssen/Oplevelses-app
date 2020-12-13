@@ -3,7 +3,7 @@ import 'package:flare_flutter/flare_controls.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/models/event.dart';
 import 'package:flutter_app/models/favorite.dart';
-import 'package:flutter_app/models/user.dart';
+import 'package:flutter_app/models/mock_user.dart';
 import 'package:flutter_app/service/DatabaseService.dart';
 import 'package:flutter_app/service/auth.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';

@@ -11,7 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-import '../../models/user.dart';
+import '../../models/mock_user.dart';
 import 'package:intl/intl.dart';
 import '../../theme.dart';
 

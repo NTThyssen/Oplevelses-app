@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/models/user.dart';
+import 'package:flutter_app/models/mock_user.dart';
 
 class FriendsWidget extends StatelessWidget {
   final String text;

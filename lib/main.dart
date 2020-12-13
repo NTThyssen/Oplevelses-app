@@ -13,7 +13,7 @@ import 'package:flutter_app/theme.dart';
 import 'package:flutter_app/widgets/pop_up_menu.dart';
 import 'package:flutter_app/wrapper.dart';
 import 'package:provider/provider.dart';
-import 'models/user.dart';
+import 'models/mock_user.dart';
 import 'mixins/basic_mixin.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;

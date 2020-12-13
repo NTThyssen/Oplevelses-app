@@ -1,4 +1,4 @@
-import 'package:flutter_app/models/user.dart';
+import 'package:flutter_app/models/mock_user.dart';
 
 class Event {
   String uid;

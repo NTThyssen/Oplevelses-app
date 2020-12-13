@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/mixins/basic_mixin.dart';
 import 'package:flutter_app/models/event.dart';
 import 'package:flutter_app/models/event_request.dart';
-import 'package:flutter_app/models/user.dart';
+import 'package:flutter_app/models/mock_user.dart';
 import 'package:flutter_app/screens/main_menu/my_favorites.dart';
 import 'package:flutter_app/service/DatabaseService.dart';
 import 'package:flutter_app/widgets/event_request_widget.dart';

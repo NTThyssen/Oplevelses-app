@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/models/user.dart';
+import 'package:flutter_app/models/mock_user.dart';
 import 'package:flutter_app/service/DatabaseService.dart';
 import 'package:flutter_app/service/auth.dart';
 import 'package:age/age.dart';

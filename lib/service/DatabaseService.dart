@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_app/models/event.dart';
 import 'package:flutter_app/models/event_request.dart';
 import 'package:flutter_app/models/favorite.dart';
-import 'package:flutter_app/models/user.dart';
+import 'package:flutter_app/models/mock_user.dart';
 
 class DatabaseService {
   final String uid;
