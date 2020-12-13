@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/model/user.dart';
+import 'package:flutter_app/models/user.dart';
 
 class FriendsWidget extends StatelessWidget {
   final String text;
@@ -34,7 +34,8 @@ class FriendsWidget extends StatelessWidget {
                   children: [
                     CircleAvatar(
                       radius: 35.0,
-                      backgroundImage: AssetImage(friends[index].profilePicture),
+                      backgroundImage:
+                          AssetImage(friends[index].profilePicture),
                     ),
                     SizedBox(
                       height: 6.0,
