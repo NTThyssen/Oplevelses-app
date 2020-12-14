@@ -1,174 +1,151 @@
+import 'package:convex_bottom_bar/convex_bottom_bar.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'event_details.dart';
-import 'profile.dart';
+import 'package:flutter_app/helpers/category_manager.dart';
+import 'package:flutter_app/models/event.dart';
+import 'package:flutter_app/navigation/route_manager.dart' as router;
+import 'package:flutter_app/screens/home/home_screen.dart';
+import 'package:flutter_app/screens/settings/settings_page.dart';
+import 'package:flutter_app/service/DatabaseService.dart';
+import 'package:flutter_app/service/auth.dart';
+import 'package:flutter_app/size_config.dart';
+import 'package:flutter_app/theme.dart';
+import 'package:flutter_app/widgets/pop_up_menu.dart';
+import 'package:flutter_app/wrapper.dart';
+import 'package:provider/provider.dart';
+import 'models/mock_user.dart';
+import 'mixins/basic_mixin.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart' show kDebugMode;
 
-void main() {
-  runApp(MaterialApp(
-    routes: {
-      '/': (context) => MyApp(),
-      '/event_details': (context) => Test(),
-      '/profile': (context) => Profile(),
-    },
-  ));
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(
+    MultiProvider(
+        providers: [
+          StreamProvider<List<MockUser>>.value(
+            value: DatabaseService().users,
+            child: MyApp(),
+          ),
+          StreamProvider<MockUser>.value(
+              value: AuthService().user, child: MyApp()),
+          StreamProvider<List<Event>>.value(
+              value: DatabaseService().events, child: MyApp()),
+          ChangeNotifierProvider<CategoryManager>(
+              create: (_) => CategoryManager()),
+        ],
+        child: MaterialApp(
+            initialRoute: router.RootRoute,
+            onGenerateRoute: router.generateRoute,
+            theme: appTheme,
+            home: MyApp())),
+  );
+
+  if (kDebugMode) {
+    // Force disable Crashlytics collection while doing every day development.
+    // Temporarily toggle this to true if you want to test crash reporting in your app.
+    await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+  } else {
+    // Handle Crashlytics enabled status when not in Debug,
+    // e.g. allow your users to opt-in to crash reporting.
+    await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+  }
 }
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class InitScreen extends StatefulWidget {
+  @override
+  _InitScreenState createState() => _InitScreenState();
+}
+
+class _InitScreenState extends State<InitScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 0,
+    return MaterialApp(
+      home: Container(),
+    );
+  }
+}
+
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+List<PopUpItem> choices = <PopUpItem>[
+  PopUpItem(title: 'Rediger'),
+  PopUpItem(title: 'Indstillinger'),
+];
+
+class _MyAppState extends State<MyApp> with BasicMixin {
+  PopUpItem selectedItem = choices[0];
+  int _selectedPage = 0;
+  List<Widget> widgetList = [
+    MainPage(),
+    Wrapper(
+      route: router.MenuOverviewRoute,
+    ),
+    SettingsPage()
+  ];
+
+  void _select(PopUpItem item) {
+    setState(() {
+      selectedItem = item;
+    });
+  }
+
+  @override
+  bool extendBody() => true;
+
+  @override
+  bool extendBehindAppBar() => true;
+
+  @override
+  Widget body() {
+    SizeConfig().init(context);
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: Scaffold(
+        extendBody: true,
+        extendBodyBehindAppBar: true,
+        body: widgetList.elementAt(_selectedPage),
       ),
-      body: GestureDetector(
-        onTap: () {
-          Navigator.pushNamed(context, '/event_details');
-        },
-        child: Stack(
-          children: [
-            PageView(
-              children: [
-                Container(
-                  child: Column(
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: Padding(
-                          padding: EdgeInsets.fromLTRB(20, 15, 0, 10),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              CircleAvatar(
-                                radius: 25.0,
-                                backgroundImage:
-                                    AssetImage('images/flower2.jpg'),
-                              ),
-                              Expanded(
-                                flex: 8,
-                                child: Padding(
-                                  padding: EdgeInsets.fromLTRB(15, 5, 0, 10),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Nicklas 23',
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            letterSpacing: 1.0,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16),
-                                      ),
-                                      Text(
-                                        'aktivitet 5km væk',
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            letterSpacing: 0.7,
-                                            fontWeight: FontWeight.w300,
-                                            fontSize: 16),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 3,
-                                child: Row(
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        print("sharing!");
-                                      },
-                                      child: Icon(
-                                        Icons.share, color: Colors.white
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 15,
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        print("Favorit!");
-                                      },
-                                      child: Icon(Icons.favorite_border, color: Colors.white),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 10,
-                        child: Container(
-                          child: Text("we"),
-                        ),
-                      ),
-                    ],
-                  ),
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      fit: BoxFit.fill,
-                      image: AssetImage("images/flower.jpg"),
-                    ),
-                  ),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      fit: BoxFit.fill,
-                      image: AssetImage("images/sexy.jpg"),
-                    ),
-                  ),
-                )
-              ],
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Padding(
-                  padding: EdgeInsets.fromLTRB(5, 0, 5, 5),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      FloatingActionButton(
-                        heroTag: "btn1",
-                        onPressed: () {
-                          // Add your onPressed code here!
-                        },
-                        child: Icon(Icons.filter_list),
-                        backgroundColor: Colors.lightBlue[300],
-                      ),
-                      FloatingActionButton(
-                        heroTag: "btn2",
-                        onPressed: () {
-                          print(
-                              "Size W is ${MediaQuery.of(context).size.width}");
-                          print(
-                              "Size H is ${MediaQuery.of(context).size.height}");
-                          // Add your onPressed code here!
-                        },
-                        child: Icon(Icons.add_circle_outline),
-                        backgroundColor: Colors.lightBlue[300],
-                      ),
-                      FloatingActionButton(
-                        heroTag: "btn3",
-                        onPressed: () {
-                          Navigator.pushNamed(context, "/profile");
-                        },
-                        child: Icon(Icons.account_circle),
-                        backgroundColor: Colors.lightBlue[300],
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ],
+    );
+  }
+
+  @override
+  Widget bottomNavigationBar() {
+    return ConvexAppBar(
+      color: blue,
+      activeColor: Colors.indigo,
+      style: TabStyle.fixedCircle,
+      initialActiveIndex: _selectedPage,
+      backgroundColor: primaryBlue,
+      items: [
+        TabItem(
+          icon: Icons.home,
+          title: 'Home',
         ),
-      ),
+        TabItem(
+          icon: Icon(
+            Icons.add,
+            color: Colors.white,
+            size: 50,
+          ),
+          title: 'Add',
+        ),
+        TabItem(
+          icon: Icons.settings,
+          title: 'Instillinger',
+        ),
+      ],
+      onTap: (index) {
+        setState(() {
+          _selectedPage = index;
+        });
+      },
     );
   }
 }
