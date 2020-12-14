@@ -31,7 +31,7 @@ class _MyFavoritesState extends State<MyFavorites> {
         builder:
             (BuildContext context, AsyncSnapshot<List<Favorite>> snapshot) {
           if (snapshot.hasError) {
-            print("errrror");
+            print("error");
             print(snapshot.error.toString());
           }
           print(snapshot.data);
