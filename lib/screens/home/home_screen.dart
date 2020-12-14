@@ -1,7 +1,9 @@
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flare_flutter/flare_controls.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/model/user.dart';
+import 'package:flutter_app/models/event.dart';
+import 'package:flutter_app/models/favorite.dart';
+import 'package:flutter_app/models/mock_user.dart';
 import 'package:flutter_app/service/DatabaseService.dart';
 import 'package:flutter_app/size_config.dart';
 import 'package:flutter_app/mixins/basic_mixin.dart';

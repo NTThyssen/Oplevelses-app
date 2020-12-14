@@ -2,9 +2,9 @@ import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/helpers/category_manager.dart';
+import 'package:flutter_app/models/event.dart';
 import 'package:flutter_app/navigation/route_manager.dart' as router;
 import 'package:flutter_app/screens/home/home_screen.dart';
-import 'package:flutter_app/screens/main_menu/add_event.dart';
 import 'package:flutter_app/screens/settings/settings_page.dart';
 import 'package:flutter_app/service/DatabaseService.dart';
 import 'package:flutter_app/service/auth.dart';
@@ -13,11 +13,10 @@ import 'package:flutter_app/theme.dart';
 import 'package:flutter_app/widgets/pop_up_menu.dart';
 import 'package:flutter_app/wrapper.dart';
 import 'package:provider/provider.dart';
-import 'model/user.dart';
+import 'models/mock_user.dart';
 import 'mixins/basic_mixin.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
-import 'package:flare_splash_screen/flare_splash_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
